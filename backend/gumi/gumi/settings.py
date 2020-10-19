@@ -197,6 +197,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # CORS 화이트 리스트
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8080",
+    "http://127.0.0.1:8000",
 ]
 
 # email backend
@@ -205,4 +206,4 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # 이미지 파일 설정용 세팅 추가
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'meida')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
