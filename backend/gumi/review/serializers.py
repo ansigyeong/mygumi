@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Review, Comment
+from .models import Review, Comment, ReviewImage
 from accounts.serializers import UserSerializer
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -14,11 +14,17 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['content']
 
+class ReviewImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewImage
+        fields = ['picture']
+
 class ReviewSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
+    images = ReviewImageSerializer(many=True, read_only=True)
     class Meta:
         model = Review
-        fields = ['id', 'title', 'content', 'comments', 'user', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'content', 'comments', 'images', 'user', 'created_at', 'updated_at']
     def get_comments(self, instance):
         com_get = Comment.objects.filter(review=instance)
         com_serializer = CommentSerializer(instance=com_get, many=True)

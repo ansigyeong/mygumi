@@ -15,3 +15,8 @@ class Comment(models.Model):
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+class ReviewImage(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='images')
+    # 파일이 MEDIA_ROOT/uploads/연도/월/날짜/ 에 저장됨
+    picture = models.ImageField(upload_to="uploads/%Y/%m/%d/")
