@@ -17,6 +17,8 @@ from .models import Review, Comment, ReviewImage
 from .serializers import ReviewSerializer, ReviewCreateSerializer, CommentSerializer, CommentCreateSerializer, ReviewImageSerializer
 from .permissions import ReViewPermission
 
+# images 업로드 부분은 삭제 가능
+# front와 image 표시 관련 협의 후 수정 예정
 class ReviewView(APIView):
     parser_class = (FileUploadParser,)
     permission_classes =[ReViewPermission]
