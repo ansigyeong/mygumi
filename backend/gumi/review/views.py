@@ -7,16 +7,18 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import permission_classes
+from rest_framework.parsers import FileUploadParser
 # from rest_framework.renderers import JSONRenderer
 # from rest_framework.parsers import JSONParser
 
 from drf_yasg.utils import swagger_auto_schema
 
-from .models import Review, Comment
-from .serializers import ReviewSerializer, ReviewCreateSerializer, CommentSerializer, CommentCreateSerializer
+from .models import Review, Comment, ReviewImage
+from .serializers import ReviewSerializer, ReviewCreateSerializer, CommentSerializer, CommentCreateSerializer, ReviewImageSerializer
 from .permissions import ReViewPermission
 
 class ReviewView(APIView):
+    parser_class = (FileUploadParser,)
     permission_classes =[ReViewPermission]
 
     @swagger_auto_schema(request_body=ReviewCreateSerializer)
@@ -27,6 +29,15 @@ class ReviewView(APIView):
         serializer = ReviewCreateSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
+            
+            # request 로 넘어온 files 중 images 를 모음
+            images_data = request.FILES.getlist('images')
+            # 이미지 저장 시 사용할 review를 다시 확인
+            # serializer를 그대로 사용할 방법을 모르겠음
+            review = get_object_or_404(Review, pk=serializer.data['id'])
+            for image_data in images_data:
+                images = ReviewImage.objects.create(review=review, picture=image_data)
+                images.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     def get(self, request):
