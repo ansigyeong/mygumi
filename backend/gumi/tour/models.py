@@ -11,12 +11,12 @@ class Place(models.Model):
     content = models.TextField()
 
 class Mission(models.Model):
-    place_pk = models.ForeignKey(Place,on_delete=models.CASCADE)
+    place = models.ForeignKey(Place,on_delete=models.CASCADE)
     title = models.CharField(max_length=30)
     content = models.TextField()
 
-class Custom(models.Model):
-    user_pk = models.ForeignKey(User,on_delete=models.CASCADE)
+class CustomMission(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     place = models.CharField(max_length=30)
     title = models.CharField(max_length=30)
     content = models.TextField()   
