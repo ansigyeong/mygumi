@@ -25,7 +25,7 @@ SECRET_KEY = '-=t2fgru*wt@8z_576&42yrb+7%)k+s1y+p^wsnykn_3u0xu!v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'k3d201.p.ssafy.io', 'k3d201.p.ssafy.io:8000']
 
 
 # Application definition
@@ -190,6 +190,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # 유저 모델 생성 후 수정
 AUTH_USER_MODEL = 'accounts.CustomUser'
