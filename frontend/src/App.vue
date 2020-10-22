@@ -10,5 +10,6 @@
 
 #app {
 	min-height: 100vh;
+	background: $gumiBlue;
 }
 </style>
