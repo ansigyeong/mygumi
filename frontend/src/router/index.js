@@ -36,11 +36,6 @@ const routes = [
 		name: 'course',
 		component: () => import('@/views/course/CoursePage.vue'),
 	},
-	{
-		path: '/review/detail',
-		name: 'reviewDetail',
-		component: () => import('@/views/ReviewDetailPage.vue'),
-	},
 ];
 
 const router = new VueRouter({
