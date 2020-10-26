@@ -9,6 +9,11 @@ const routes = [
 		name: 'main',
 		component: () => import('@/views/MainPage.vue'),
 	},
+	{
+		path: '/profile',
+		name: 'profile',
+		component: () => import('@/views/accounts/ProfilePage.vue'),
+	},
 ];
 
 const router = new VueRouter({
