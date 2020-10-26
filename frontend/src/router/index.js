@@ -27,7 +27,7 @@ const routes = [
 			{
 				path: 'result',
 				name: 'searchResult',
-				component: () => import('@/components/SearchResult.vue'),
+				component: () => import('@/components/search/SearchResult.vue'),
 			},
 		],
 	},
@@ -35,6 +35,11 @@ const routes = [
 		path: '/course',
 		name: 'course',
 		component: () => import('@/views/course/CoursePage.vue'),
+	},
+	{
+		path: '/schedule',
+		name: 'schedule',
+		component: () => import('@/views/schedule/SchedulePage.vue'),
 	},
 ];
 
