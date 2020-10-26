@@ -30,7 +30,7 @@
 
 			<v-card-actions>
 				<div>
-					<v-btn class="mx-2" fab dark large color="indigo">
+					<v-btn class="mx-2" fab dark color="indigo">
 						<v-icon dark>
 							mdi-plus
 						</v-icon>
@@ -39,7 +39,7 @@
 				</div>
 
 				<div>
-					<v-btn class="mx-2" fab dark large color="indigo">
+					<v-btn class="mx-2" fab dark color="indigo">
 						<v-icon dark>
 							mdi-pencil
 						</v-icon>
@@ -76,6 +76,12 @@
 			<v-card-subtitle>
 				1,000 miles of wonder
 			</v-card-subtitle>
+			<div style="padding: 10px;">
+				<v-avatar>
+					<img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+				</v-avatar>
+				기성용
+			</div>
 		</v-card>
 
 		<v-card class="mx-auto" style="margin: 10px;">
@@ -91,6 +97,13 @@
 			<v-card-subtitle>
 				1,000 miles of wonder
 			</v-card-subtitle>
+
+			<div style="padding: 10px;">
+				<v-avatar>
+					<img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+				</v-avatar>
+				기성용
+			</div>
 		</v-card>
 
 		<v-card class="mx-auto" style="margin: 10px;">
@@ -105,6 +118,12 @@
 			<v-card-subtitle>
 				1,000 miles of wonder
 			</v-card-subtitle>
+			<div style="padding: 10px;">
+				<v-avatar>
+					<img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+				</v-avatar>
+				기성용
+			</div>
 		</v-card>
 	</div>
 </template>
