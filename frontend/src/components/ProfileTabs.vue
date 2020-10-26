@@ -17,7 +17,7 @@
 			</v-tab-item>
 
 			<v-tab-item>
-				<!-- <review-card /> -->
+				<review-card />
 			</v-tab-item>
 		</v-tabs-items>
 	</section>
@@ -25,7 +25,7 @@
 
 <script>
 import ProfilePhoto from '@/components/ProfilePhoto.vue';
-// import ReviewCard from '@/components/ReviewCard.vue';
+import ReviewCard from '@/components/ReviewCard.vue';
 
 export default {
 	data() {
@@ -35,7 +35,7 @@ export default {
 	},
 	components: {
 		ProfilePhoto,
-		// ReviewCard,
+		ReviewCard,
 	},
 };
 </script>
