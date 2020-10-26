@@ -10,14 +10,36 @@ const routes = [
 		component: () => import('@/views/MainPage.vue'),
 	},
 	{
-		path: '/login',
-		name: 'login',
-		component: () => import('@/views/accounts/LoginPage.vue'),
+		path: '/location',
+		name: 'location',
+		component: () => import('@/views/LocationPage.vue'),
+	},
+	{
+		path: '/profile',
+		name: 'profile',
+		component: () => import('@/views/accounts/ProfilePage.vue'),
 	},
 	{
 		path: '/search',
 		name: 'search',
-		component: () => import('@/views/SearchPage.vue'),
+		component: () => import('@/views/search/SearchPage.vue'),
+		children: [
+			{
+				path: 'result',
+				name: 'searchResult',
+				component: () => import('@/components/SearchResult.vue'),
+			},
+		],
+	},
+	{
+		path: '/course',
+		name: 'course',
+		component: () => import('@/views/course/CoursePage.vue'),
+	},
+	{
+		path: '/review/detail',
+		name: 'reviewDetail',
+		component: () => import('@/views/ReviewDetailPage.vue'),
 	},
 ];
 
