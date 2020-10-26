@@ -13,8 +13,8 @@ const routes = [
 		path: '/location',
 		name: 'location',
 		component: () => import('@/views/LocationPage.vue'),
-    },
-    {
+	},
+	{
 		path: '/profile',
 		name: 'profile',
 		component: () => import('@/views/accounts/ProfilePage.vue'),
