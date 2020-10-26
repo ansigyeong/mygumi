@@ -1,5 +1,5 @@
 <template>
-	<v-bottom-navigation :value="value" color="primary" grow>
+	<v-bottom-navigation :value="value" color="primary" grow class="bottom-nav">
 		<v-btn>
 			<span>홈</span>
 
