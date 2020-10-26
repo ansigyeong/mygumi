@@ -13,7 +13,7 @@
 }
 
 body {
-    font-family: 'jejugothic';
+    font-family: 'jejugothic' !important;
 }
 
 .container {

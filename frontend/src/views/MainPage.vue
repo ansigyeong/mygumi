@@ -1,14 +1,17 @@
 <template>
 	<div>
-		가나다
-		<v-app>
-			<v-btn elevation="2"></v-btn>
-		</v-app>
+		<BottomNav></BottomNav>
 	</div>
 </template>
 
 <script>
-export default {};
+import BottomNav from '../components/common/BottomNav';
+
+export default {
+	components: {
+		BottomNav,
+	},
+};
 </script>
 
 <style></style>
