@@ -30,4 +30,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.bottom-nav {
+	position: fixed;
+	bottom: 0;
+}
+</style>
