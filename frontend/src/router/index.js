@@ -13,8 +13,8 @@ const routes = [
 		path: '/location',
 		name: 'location',
 		component: () => import('@/views/LocationPage.vue'),
-    },
-    {
+	},
+	{
 		path: '/profile',
 		name: 'profile',
 		component: () => import('@/views/accounts/ProfilePage.vue'),
@@ -35,6 +35,11 @@ const routes = [
 		path: '/course',
 		name: 'course',
 		component: () => import('@/views/course/CoursePage.vue'),
+	},
+	{
+		path: '/review/detail',
+		name: 'reviewDetail',
+		component: () => import('@/views/ReviewDetailPage.vue'),
 	},
 ];
 
