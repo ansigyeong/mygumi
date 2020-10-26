@@ -13,6 +13,23 @@ const routes = [
 		path: '/location',
 		name: 'location',
 		component: () => import('@/views/LocationPage.vue'),
+    },
+    {
+		path: '/profile',
+		name: 'profile',
+		component: () => import('@/views/accounts/ProfilePage.vue'),
+	},
+	{
+		path: '/search',
+		name: 'search',
+		component: () => import('@/views/search/SearchPage.vue'),
+		children: [
+			{
+				path: 'result',
+				name: 'searchResult',
+				component: () => import('@/components/SearchResult.vue'),
+			},
+		],
 	},
 ];
 

@@ -1,3 +1,4 @@
+import '@mdi/font/css/materialdesignicons.css';
 import Vue from 'vue';
 import App from './App.vue';
 import './registerServiceWorker';
@@ -20,6 +21,10 @@ Vue.use(VueCookies);
 new Vue({
 	router,
 	store,
-	vuetify: new Vuetify(),
+	vuetify: new Vuetify({
+		icons: {
+			iconfont: 'mdi',
+		},
+	}),
 	render: h => h(App),
 }).$mount('#app');
