@@ -7,20 +7,20 @@
 			<profile-user />
 		</section>
 		<section>
-			<!-- <profile-tabs /> -->
+			<profile-tabs />
 		</section>
 	</v-container>
 </template>
 
 <script>
 import ProfileUser from '@/components/ProfileUser';
-// import ProfileTabs from '@/components/ProfileTabs'
+import ProfileTabs from '@/components/ProfileTabs';
 
 export default {
 	name: 'profile',
 	components: {
 		ProfileUser,
-		// ProfileTabs,
+		ProfileTabs,
 	},
 };
 </script>
