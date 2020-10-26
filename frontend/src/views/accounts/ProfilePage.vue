@@ -1,15 +1,17 @@
 <template>
-	<v-container>
-		<header>
-			<h2 class="profile-title">프로필</h2>
-		</header>
-		<section>
-			<profile-user />
-		</section>
-		<section>
-			<profile-tabs />
-		</section>
-	</v-container>
+	<v-app>
+		<v-container>
+			<header>
+				<h2 class="profile-title">프로필</h2>
+			</header>
+			<section>
+				<profile-user />
+			</section>
+			<section>
+				<profile-tabs />
+			</section>
+		</v-container>
+	</v-app>
 </template>
 
 <script>
