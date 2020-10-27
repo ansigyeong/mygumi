@@ -32,7 +32,8 @@ export default {
 
 <style scoped>
 .bottom-nav {
-	position: fixed;
+	position: sticky;
 	bottom: 0;
+	z-index: 10;
 }
 </style>
