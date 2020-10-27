@@ -1,5 +1,5 @@
 <template>
-	<v-app>
+	<section>
 		<svg class="bicycle" viewBox="0 0 588.35 360.02">
 			<g class="bicycle-pedal-left">
 				<g class="bicycle-pedal-left-inner">
@@ -732,7 +732,7 @@
 				y2="358.52"
 			/>
 		</svg>
-	</v-app>
+	</section>
 </template>
 
 <script>
@@ -815,13 +815,23 @@ $bicycle-yellow-light: #feecd6;
 
 // Bicycle
 // ==================================================
+@keyframes riding {
+	0% {
+		left: 80px;
+	}
+
+	100% {
+		left: 300px;
+	}
+}
 .bicycle {
-	width: 300px;
-	height: 300px;
+	width: 170px;
+	height: 170px;
 	position: absolute;
-	left: 50%;
-	top: 100px;
+	left: 300px;
+	top: 160px;
 	transform: translate3d(-50%, -50%, 0);
+	animation: riding ease-in-out 3s 1 alternate;
 }
 
 .bicycle-seat-highlight {
