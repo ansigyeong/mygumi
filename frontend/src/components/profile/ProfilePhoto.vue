@@ -6,6 +6,7 @@
 				<v-img
 					:src="`https://picsum.photos/500/300?image=${i * 5 + 10}`"
 					aspect-ratio="1"
+					v-ripple
 				/>
 			</v-col>
 		</v-row>
