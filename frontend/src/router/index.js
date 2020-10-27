@@ -10,6 +10,11 @@ const routes = [
 		component: () => import('@/views/MainPage.vue'),
 	},
 	{
+		path: '/location',
+		name: 'location',
+		component: () => import('@/views/LocationPage.vue'),
+	},
+	{
 		path: '/profile',
 		name: 'profile',
 		component: () => import('@/views/accounts/ProfilePage.vue'),
@@ -22,9 +27,19 @@ const routes = [
 			{
 				path: 'result',
 				name: 'searchResult',
-				component: () => import('@/components/SearchResult.vue'),
+				component: () => import('@/components/search/SearchResult.vue'),
 			},
 		],
+	},
+	{
+		path: '/course',
+		name: 'course',
+		component: () => import('@/views/course/CoursePage.vue'),
+	},
+	{
+		path: '/schedule',
+		name: 'schedule',
+		component: () => import('@/views/schedule/SchedulePage.vue'),
 	},
 ];
 

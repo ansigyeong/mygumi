@@ -1,14 +1,16 @@
 <template>
-	<v-container>
-		<header>
-			<h2 class="search-title">검색</h2>
-			<!-- 검색창 -->
-		</header>
-		<section>
-			<!-- 자동완성 or 검색결과 -->
-			<router-view />
-		</section>
-	</v-container>
+	<v-app>
+		<v-container>
+			<header>
+				<h2 class="search-title">검색</h2>
+				<!-- 검색창 -->
+			</header>
+			<section>
+				<!-- 자동완성 or 검색결과 -->
+				<router-view />
+			</section>
+		</v-container>
+	</v-app>
 </template>
 
 <script>

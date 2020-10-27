@@ -1,20 +1,22 @@
 <template>
-	<v-container>
-		<header>
-			<h2 class="profile-title">프로필</h2>
-		</header>
-		<section>
-			<profile-user />
-		</section>
-		<section>
-			<profile-tabs />
-		</section>
-	</v-container>
+	<v-app>
+		<v-container>
+			<header>
+				<h2 class="profile-title">프로필</h2>
+			</header>
+			<section>
+				<profile-user />
+			</section>
+			<section>
+				<profile-tabs />
+			</section>
+		</v-container>
+	</v-app>
 </template>
 
 <script>
-import ProfileUser from '@/components/ProfileUser';
-import ProfileTabs from '@/components/ProfileTabs';
+import ProfileUser from '@/components/profile/ProfileUser';
+import ProfileTabs from '@/components/profile/ProfileTabs';
 
 export default {
 	name: 'profile',
