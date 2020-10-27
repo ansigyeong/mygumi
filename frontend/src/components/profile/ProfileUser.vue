@@ -18,7 +18,7 @@
 				<p class="profile-content">업적</p>
 			</v-col>
 			<!-- 여행 일정(클릭시 일정리스트로 이동) -->
-			<v-col class="profile-active">
+			<v-col class="profile-active" @click="goSchedule">
 				<p class="profile-cnt">{{ travelCnt }}</p>
 				<p class="profile-content">일정</p>
 			</v-col>
@@ -58,6 +58,11 @@ export default {
 
 			profileImg: 'https://picsum.photos/200', // 유저 프로필 이미지
 		};
+	},
+	methods: {
+		goSchedule() {
+			this.$router.push('/schedule');
+		},
 	},
 };
 </script>

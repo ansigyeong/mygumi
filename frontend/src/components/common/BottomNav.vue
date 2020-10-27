@@ -1,18 +1,18 @@
 <template>
 	<v-bottom-navigation :value="value" color="primary" grow class="bottom-nav">
-		<v-btn>
+		<v-btn @click="goHome">
 			<span>홈</span>
 
 			<v-icon>mdi-home</v-icon>
 		</v-btn>
 
-		<v-btn>
+		<v-btn @click="goSchedule">
 			<span>여행 시작하기</span>
 
 			<v-icon>mdi-map-marker</v-icon>
 		</v-btn>
 
-		<v-btn>
+		<v-btn @click="goProfile">
 			<span>프로필</span>
 
 			<v-icon>mdi-account</v-icon>
@@ -26,6 +26,17 @@ export default {
 		return {
 			value: 1,
 		};
+	},
+	methods: {
+		goHome() {
+			this.$router.push('/');
+		},
+		goSchedule() {
+			this.$router.push('/schedule');
+		},
+		goProfile() {
+			this.$router.push('/profile');
+		},
 	},
 };
 </script>
