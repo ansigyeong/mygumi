@@ -37,9 +37,9 @@ const routes = [
 		component: () => import('@/views/course/CoursePage.vue'),
 	},
 	{
-		path: '/review/detail',
-		name: 'reviewDetail',
-		component: () => import('@/views/ReviewDetailPage.vue'),
+		path: '/mission',
+		name: 'mission',
+		component: () => import('@/views/MissionPage.vue'),
 	},
 ];
 
