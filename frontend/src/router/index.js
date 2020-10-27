@@ -44,7 +44,7 @@ const routes = [
 	{
 		path: '/schedule',
 		name: 'schedule',
-		component: () => import('@/views/schedule/SchedulePage.vue'),
+		component: () => import('@/views/schedule/ScheduleListPage.vue'),
 	},
 ];
 
