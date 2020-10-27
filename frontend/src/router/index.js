@@ -27,7 +27,7 @@ const routes = [
 			{
 				path: 'result',
 				name: 'searchResult',
-				component: () => import('@/components/SearchResult.vue'),
+				component: () => import('@/components/search/SearchResult.vue'),
 			},
 		],
 	},
@@ -40,6 +40,11 @@ const routes = [
 		path: '/mission',
 		name: 'mission',
 		component: () => import('@/views/MissionPage.vue'),
+	},
+	{
+		path: '/schedule',
+		name: 'schedule',
+		component: () => import('@/views/schedule/SchedulePage.vue'),
 	},
 ];
 

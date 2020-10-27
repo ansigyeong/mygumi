@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import ProfileUser from '@/components/ProfileUser';
-import ProfileTabs from '@/components/ProfileTabs';
+import ProfileUser from '@/components/profile/ProfileUser';
+import ProfileTabs from '@/components/profile/ProfileTabs';
 
 export default {
 	name: 'profile',
