@@ -9,9 +9,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import permission_classes
 
-from .models import Mission, Place, CustomMission
-from .serializers import PlaceSerializer, CustomSerializer, MissionSerializer
+from .models import Mission, Place, CustomMission, SearchRecord
+from .serializers import PlaceSerializer, CustomSerializer, MissionSerializer, SearchRecordSerializer
 from .permissions import Permission
+
+User = get_user_model()
 
 class CourseView(APIView):
 
@@ -110,4 +112,31 @@ class CustomInfoView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-        
+class SearchGetView(APIView):
+    def get(self, request, user_id):
+        searchs = SearchRecord.objects.filter(user=user_id)
+        serializer = SearchRecordSerializer(instance=searchs, many=True)
+        return Response(serializer.data)
+
+class SearchView(APIView):
+    def get(self, request, user_id, dong):
+        searchs = Place.objects.filter(dong=dong)
+        print(dong)
+        user = get_object_or_404(User, pk=user_id)
+        searchSerializer = PlaceSerializer(instance=searchs, many=True)
+        userSearch = SearchRecord.objects.filter(user=user).order_by('created_at')
+        check_dong = SearchRecord.objects.filter(user=user, search=dong)
+        if len(check_dong) > 0:
+            return Response(searchSerializer.data)
+        elif len(userSearch) >= 10:
+            userSearch[0].delete()
+        searchPlus = SearchRecord()
+        searchPlus.search = dong
+        searchPlus.user = user
+        searchPlus.save()
+        return Response(searchSerializer.data)
+
+    def delete(self, request, user_id, dong):
+        search = get_object_or_404(SearchRecord, user=user_id, search=dong)
+        search.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
