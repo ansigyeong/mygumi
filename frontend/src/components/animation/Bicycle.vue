@@ -817,19 +817,19 @@ $bicycle-yellow-light: #feecd6;
 // ==================================================
 @keyframes riding {
 	0% {
-		left: 80px;
+		left: 20%;
 	}
 
 	100% {
-		left: 300px;
+		left: 80%;
 	}
 }
 .bicycle {
-	width: 170px;
-	height: 170px;
+	width: 100px;
+	height: 100px;
 	position: absolute;
-	left: 300px;
-	top: 160px;
+	left: 80%;
+	top: 170px;
 	transform: translate3d(-50%, -50%, 0);
 	animation: riding ease-in-out 3s 1 alternate;
 }
@@ -989,15 +989,15 @@ $bicycle-yellow-light: #feecd6;
 
 // Presentation
 // ==================================================
-@media (max-width: 520px) {
-	.bicycle {
-		transform: translate3d(-50%, -50%, 0) scale(0.775);
-	}
-}
+// @media (max-width: 520px) {
+// 	.bicycle {
+// 		transform: translate3d(-50%, -50%, 0) scale(0.775);
+// 	}
+// }
 
-@media (max-width: 420px) {
-	.bicycle {
-		transform: translate3d(-50%, -50%, 0) scale(0.5);
-	}
-}
+// @media (max-width: 420px) {
+// 	.bicycle {
+// 		transform: translate3d(-50%, -50%, 0) scale(0.5);
+// 	}
+// }
 </style>

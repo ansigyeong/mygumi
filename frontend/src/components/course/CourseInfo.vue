@@ -5,7 +5,7 @@
 				<v-app-bar flat color="rgba(0, 0, 0, 0)" class="app-bar">
 					<v-spacer />
 
-					<!-- 코스 추가 버튼 -->
+					<!-- 일정 추가 버튼 -->
 					<v-btn class="course-add" color="white" icon>
 						<v-icon>mdi-calendar-plus</v-icon>
 					</v-btn>
