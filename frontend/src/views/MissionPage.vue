@@ -1,21 +1,8 @@
 <template>
 	<v-app>
 		<v-container>
-			<!-- Header 영역 -->
-			<header>
-				<h2 class="mission-title">도전! 미션 여행</h2>
-			</header>
-			<section>
-				<v-row class="mission-content">
-					<v-col>
-						<p class="mission-text">랜덤 미션</p>
-						<p class="mission-sub-text">주변 여행을 즐기고 싶다면?</p>
-					</v-col>
-				</v-row>
-			</section>
-
 			<!-- 미션 카드 -->
-			<section class="mission">
+			<section>
 				<v-timeline :dense="$vuetify.breakpoint.smAndDown">
 					<v-timeline-item color="purple lighten-2" fill-dot right>
 						<v-card>
@@ -131,38 +118,6 @@ export default {
 	min-height: auto;
 }
 .container {
-	background-color: $gumiBlue;
 	padding: 0px;
-}
-.mission-title {
-	margin: 15px;
-	// font-weight: bold;
-	text-align: center;
-	font-size: 20px;
-	color: lightsteelblue;
-	text-shadow: 2px 2px 6px navy;
-}
-.mission-content {
-	margin: 0px;
-	height: 115px;
-
-	.mission-text {
-		margin: 10px 5px 5px;
-		font-size: 20px;
-		color: white;
-		text-shadow: 2px 2px 6px navy;
-	}
-	.mission-sub-text {
-		margin: 0px 5px;
-		font-size: 12px;
-		color: lightblue;
-		text-shadow: 2px 2px 6px navy;
-	}
-}
-.mission {
-	width: 100%;
-	background-color: white;
-	border-top-left-radius: 50px;
-	box-shadow: -3px -3px 10px 1px navy;
 }
 </style>
