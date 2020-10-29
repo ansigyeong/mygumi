@@ -46,6 +46,11 @@ const routes = [
 		name: 'schedule',
 		component: () => import('@/views/schedule/SchedulePage.vue'),
 	},
+	{
+		path: '/achieve',
+		name: 'achieve',
+		component: () => import('@/views/AchievePage.vue'),
+	},
 ];
 
 const router = new VueRouter({
