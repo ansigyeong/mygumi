@@ -9,6 +9,10 @@ db.sqlite3-journal
 
 venv/
 
+static/
+
+media/
+
 *.png
 *.jpg
 *.jpeg
