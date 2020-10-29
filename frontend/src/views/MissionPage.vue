@@ -47,7 +47,7 @@
 
 					<v-timeline-item color="amber lighten-1" fill-dot left small>
 						<v-card>
-							<v-card-title class="amber lighten-1 justify-end">
+							<v-card-title class="amber lighten-1">
 								<v-icon class="mr-4" dark size="30">
 									mdi-map-marker-outline
 								</v-icon>
