@@ -25,14 +25,6 @@
 						<button
 							type="button"
 							class="menubar__button"
-							:class="{ 'is-active': isActive.underline() }"
-							@click="commands.underline"
-						>
-							<img class="icon" src="@/assets/images/icons/underline.svg" />
-						</button>
-						<button
-							type="button"
-							class="menubar__button"
 							@click="showImagePrompt(commands.image)"
 						>
 							<img class="icon" src="@/assets/images/icons/image.svg" />
@@ -47,14 +39,7 @@
 
 <script>
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
-import {
-	Bold,
-	Underline,
-	Image,
-	Placeholder,
-	BulletList,
-	ListItem,
-} from 'tiptap-extensions';
+import { Bold, Image, Placeholder } from 'tiptap-extensions';
 export default {
 	components: {
 		EditorContent,
@@ -82,11 +67,8 @@ export default {
 		fetchData() {
 			const tempEditor = new Editor({
 				extensions: [
-					new BulletList(),
-					new ListItem(),
 					new Image(),
 					new Bold(),
-					new Underline(),
 					new Placeholder({
 						emptyEditorClass: 'is-editor-empty',
 						emptyNodeClass: 'is-empty',

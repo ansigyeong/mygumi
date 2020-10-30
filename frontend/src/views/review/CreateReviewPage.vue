@@ -21,14 +21,8 @@ export default {
 		};
 	},
 	created() {
-		// const isUpdate = this.$route.params.articleId ? true : false;
-		// if (isUpdate) {
-		// 	this.title = '글 수정';
-		// 	this.status = 'update';
-		// } else {
 		this.title = '글 작성';
 		this.status = 'create';
-		// }
 	},
 };
 </script>

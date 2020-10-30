@@ -20,6 +20,11 @@ const routes = [
 		component: () => import('@/views/review/CreateReviewPage.vue'),
 	},
 	{
+		path: '/location/reviews/:reviewId',
+		name: 'reviewDetail',
+		component: () => import('@/views/review/ReviewDetailPage.vue'),
+	},
+	{
 		path: '/profile',
 		name: 'profile',
 		component: () => import('@/views/accounts/ProfilePage.vue'),
