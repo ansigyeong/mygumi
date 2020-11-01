@@ -46,6 +46,16 @@ const routes = [
 		name: 'course',
 		component: () => import('@/views/course/CoursePage.vue'),
 	},
+	{
+		path: '/login',
+		name: 'login',
+		component: () => import('@/views/accounts/LoginPage.vue'),
+	},
+	{
+		path: '/signup',
+		name: 'signup',
+		components: () => import('@/views/accounts/SignupPage.vue'),
+	},
 ];
 
 const router = new VueRouter({
