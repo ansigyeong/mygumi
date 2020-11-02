@@ -10,6 +10,11 @@ const routes = [
 		component: () => import('@/views/MainPage.vue'),
 	},
 	{
+		path: '/signup',
+		name: 'signup',
+		component: () => import('@/views/accounts/SignupPage.vue'),
+	},
+	{
 		path: '/location',
 		name: 'location',
 		component: () => import('@/views/LocationPage.vue'),
@@ -50,11 +55,6 @@ const routes = [
 		path: '/login',
 		name: 'login',
 		component: () => import('@/views/accounts/LoginPage.vue'),
-	},
-	{
-		path: '/signup',
-		name: 'signup',
-		components: () => import('@/views/accounts/SignupPage.vue'),
 	},
 ];
 

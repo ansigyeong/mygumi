@@ -18,7 +18,7 @@ export default new Vuex.Store({
 		getId: state => state.id,
 	},
 	mutations: {
-		serUsername(state, username) {
+		setUsername(state, username) {
 			cookies.set('username', username);
 			state.username = username;
 		},
