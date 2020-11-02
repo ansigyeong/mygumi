@@ -37,6 +37,11 @@ const routes = [
 		component: () => import('@/views/course/CoursePage.vue'),
 	},
 	{
+		path: '/mission',
+		name: 'mission',
+		component: () => import('@/views/MissionPage.vue'),
+	},
+	{
 		path: '/schedule',
 		name: 'schedule',
 		component: () => import('@/views/schedule/SchedulePage.vue'),
@@ -45,6 +50,11 @@ const routes = [
 		path: '/plan',
 		name: 'plan',
 		component: () => import('@/views/schedule/SchedulePlanPage.vue'),
+	},
+	{
+		path: '/achieve',
+		name: 'achieve',
+		component: () => import('@/views/AchievePage.vue'),
 	},
 ];
 
