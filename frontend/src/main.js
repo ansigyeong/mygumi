@@ -1,15 +1,14 @@
-import '@mdi/font/css/materialdesignicons.css';
-import Vue from 'vue';
 import App from './App.vue';
+import Vue from 'vue';
 import './registerServiceWorker';
 import router from './router';
 import store from './store';
 import VueCookies from 'vue-cookies';
-// Vuetify
 import axios from 'axios';
 import vueMoment from 'vue-moment'; //날짜
 import Vuetify from 'vuetify'; //Vuetify 1
 import 'vuetify/dist/vuetify.min.css'; //Vuetify 2
+import '@mdi/font/css/materialdesignicons.css';
 
 Vue.use(vueMoment); //날짜
 Vue.prototype.$http = axios;
