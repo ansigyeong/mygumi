@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<v-app>
 		<div class="plan-wrapper">
 			<!--======= Header =======-->
 
@@ -30,10 +30,10 @@
 				<v-expansion-panels>
 					<v-expansion-panel>
 						<v-expansion-panel-header>
-							May 15, 2018
+							{{ viewDate }}
 						</v-expansion-panel-header>
 						<v-expansion-panel-content>
-							<v-date-picker no-title />
+							<v-date-picker no-title v-model="selectDate" />
 						</v-expansion-panel-content>
 					</v-expansion-panel>
 				</v-expansion-panels>
@@ -51,6 +51,8 @@
 						여행 일정
 					</h3>
 					<div class="events-wrapper">
+						<!-- 시간되면 정렬기능 추가 -->
+						<!-- 수정 및 삭제 팝업 -->
 						<div class="event">
 							<v-icon class="fire-icon done">mdi-help-circle</v-icon>
 							<h4 class="event__point">첫번째 여행지 (퀴즈)</h4>
@@ -85,39 +87,239 @@
 						</div>
 						<v-row class="event active">
 							<i class="ion ion-ios-radio-button-on icon-in-active-mode"></i>
-							<div>
+							<div style="width: 70%;">
 								<span class="event__point">친구 추가</span>
-								<p class="event__description">
-									김영주, 안시경
-								</p>
+								<br />
+								<span
+									v-for="(friend, index) in selectFriends"
+									:key="index"
+									class="event__description"
+								>
+									{{ friend }}
+								</span>
 							</div>
 							<v-spacer />
-							<v-btn icon>
+							<v-btn icon @click="modalFriends = true">
 								<v-icon>mdi-account-plus</v-icon>
 							</v-btn>
 						</v-row>
-					</div>
-					<button class="add-event-button">
-						<span class="add-event-button__title">Add Event</span>
+						<v-dialog v-model="modalFriends" max-width="500px">
+							<v-card>
+								<v-card-title>
+									친구 추가
+								</v-card-title>
+								<v-card-text>
+									<v-col cols="12">
+										<v-autocomplete
+											v-model="selectFriends"
+											:items="userList"
+											filled
+											chips
+											color="blue-grey lighten-2"
+											label="친구 추가"
+											item-text="name"
+											item-value="name"
+											multiple
+										>
+											<template v-slot:selection="addFriend">
+												<v-chip
+													v-bind="addFriend.attrs"
+													:input-value="addFriend.selected"
+													close
+													@click="addFriend.select"
+													@click:close="remove(addFriend.item)"
+												>
+													<v-avatar left>
+														<v-img :src="addFriend.item.avatar"></v-img>
+													</v-avatar>
+													{{ addFriend.item.name }}
+												</v-chip>
+											</template>
 
+											<template v-slot:item="friends">
+												<template v-if="typeof friends.item !== 'object'">
+													<v-list-item-content
+														v-text="friends.item"
+													></v-list-item-content>
+												</template>
+												<template v-else>
+													<v-list-item-avatar>
+														<img :src="friends.item.avatar" />
+													</v-list-item-avatar>
+													<v-list-item-content>
+														<v-list-item-title
+															v-html="friends.item.name"
+														></v-list-item-title>
+													</v-list-item-content>
+												</template>
+											</template>
+										</v-autocomplete>
+									</v-col>
+								</v-card-text>
+								<v-card-actions>
+									<v-btn color="primary" text @click="modalFriends = false">
+										Close
+									</v-btn>
+								</v-card-actions>
+							</v-card>
+						</v-dialog>
+					</div>
+					<v-btn text class="add-event-button">
+						<span class="add-event-button__title">일정 작성</span>
 						<span class="add-event-button__icon">
-							<i class="ion ion-ios-star-outline"></i>
+							<v-icon>mdi-playlist-plus</v-icon>
 						</span>
-					</button>
+					</v-btn>
+					<!-- <v-btn text class="event-btn">
+						<v-icon class="fire-icon done">mdi-playlist-plus</v-icon>
+						<h4 class="event__point">여행지 추가</h4>
+					</v-btn> -->
+					<!-- <v-btn class="add-event-button">
+						<span class="add-event-button__title">여행지 추가하기</span>
+					</v-btn> -->
 				</div>
 			</section>
 		</div>
-	</div>
+	</v-app>
 </template>
 
 <script>
 export default {
 	data() {
 		return {
-			date: new Date().toISOString().substr(0, 10),
+			selectDate: new Date().toISOString().substr(0, 10), // 선택한 날짜
+			viewDate: null, // 선택된 날짜 형식 변경
+			modalFriends: false, // 친구 추가 모달
+			autoUpdate: true,
+			selectFriends: [], // 선택한 친구 목록
+			isUpdating: false,
+			userList: [
+				{
+					name: '김영주',
+					avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+				},
+				{
+					name: '도정우',
+					avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+				},
+				{
+					name: '문종혁',
+					avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+				},
+				{
+					name: '안시경',
+					avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
+				},
+				{
+					name: '황영준',
+					avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
+				},
+			],
 		};
 	},
-	methods: {},
+	mounted() {
+		var today = new Date().toISOString().substr(0, 10);
+		// 월만 따로 저장
+		var todayMonth = today[5] + today[6];
+		var todayM = '';
+		if (todayMonth == '01') {
+			todayM = 'Jan';
+		} else if (todayMonth == '02') {
+			todayM = 'Feb';
+		} else if (todayMonth == '03') {
+			todayM = 'Mar';
+		} else if (todayMonth == '04') {
+			todayM = 'Apr';
+		} else if (todayMonth == '05') {
+			todayM = 'May';
+		} else if (todayMonth == '06') {
+			todayM = 'Jun';
+		} else if (todayMonth == '07') {
+			todayM = 'Jul';
+		} else if (todayMonth == '08') {
+			todayM = 'Aug';
+		} else if (todayMonth == '09') {
+			todayM = 'Sep';
+		} else if (todayMonth == '10') {
+			todayM = 'Oct';
+		} else if (todayMonth == '11') {
+			todayM = 'Nov';
+		} else if (todayMonth == '12') {
+			todayM = 'Dec';
+		}
+		// 일만 따로 저장
+		var todayDate = today[9];
+		if (today[8]) {
+			todayDate = today[8] + today[9];
+		}
+		// 년도만 따로 저장
+		var todayYear = today[0] + today[1] + today[2] + today[3];
+		this.viewDate = todayM + ' ' + todayDate + ', ' + todayYear;
+
+		// 캘린더 css 변경
+		window.$('.v-expansion-panels').click(() => {
+			var dateToggle = window.$('.v-expansion-panel')[0].ariaExpanded;
+			if (dateToggle == 'true') {
+				window.$('.v-picker__body')[0].style.width = 'auto';
+				window.$('.v-btn--active')[0].style.color = 'black';
+			}
+		});
+	},
+	watch: {
+		selectDate() {
+			// 월만 따로 저장
+			var selectMonth = this.selectDate[5] + this.selectDate[6];
+			var selectM = '';
+			if (selectMonth == '01') {
+				selectM = 'Jan';
+			} else if (selectMonth == '02') {
+				selectM = 'Feb';
+			} else if (selectMonth == '03') {
+				selectM = 'Mar';
+			} else if (selectMonth == '04') {
+				selectM = 'Apr';
+			} else if (selectMonth == '05') {
+				selectM = 'May';
+			} else if (selectMonth == '06') {
+				selectM = 'Jun';
+			} else if (selectMonth == '07') {
+				selectM = 'Jul';
+			} else if (selectMonth == '08') {
+				selectM = 'Aug';
+			} else if (selectMonth == '09') {
+				selectM = 'Sep';
+			} else if (selectMonth == '10') {
+				selectM = 'Oct';
+			} else if (selectMonth == '11') {
+				selectM = 'Nov';
+			} else if (selectMonth == '12') {
+				selectM = 'Dec';
+			}
+			// 일만 따로 저장
+			var selectD = this.selectDate[9];
+			if (this.selectDate[8]) {
+				selectD = this.selectDate[8] + this.selectDate[9];
+			}
+			// 년도만 따로 저장
+			var selectYear =
+				this.selectDate[0] +
+				this.selectDate[1] +
+				this.selectDate[2] +
+				this.selectDate[3];
+			this.viewDate = selectM + ' ' + selectD + ', ' + selectYear;
+		},
+		isUpdating(val) {
+			if (val) {
+				setTimeout(() => (this.isUpdating = false), 3000);
+			}
+		},
+	},
+	methods: {
+		remove(item) {
+			const index = this.selectFriends.indexOf(item.name);
+			if (index >= 0) this.selectFriends.splice(index, 1);
+		},
+	},
 };
 </script>
 
@@ -432,6 +634,10 @@ export default {
 				}
 			}
 		}
+		// .event-btn {
+		// 	width: 100%;
+		// 	box-shadow: none;
+		// }
 	}
 }
 
@@ -451,5 +657,47 @@ export default {
 .upcoming {
 	font-weight: bold;
 	color: #777;
+}
+
+.add-event-button {
+	height: 50px !important;
+	width: 170px;
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	border: 0;
+	padding: 0;
+	background: linear-gradient(to left, #485fed, rgba(255, 44, 118, 0.25)),
+		#485fed;
+	border-radius: 50px;
+	cursor: pointer;
+	box-shadow: 0px 0px 40px -9px #485fed;
+	&:active {
+		position: relative;
+		top: 2px;
+		left: 2px;
+	}
+	.add-event-button__title {
+		color: #fff;
+		padding: 0 18px 0 23px;
+		text-shadow: 0px 0px 5px rgba(#000, 0.2);
+		font: {
+			family: 'Lato';
+			size: 15px;
+			weight: 600;
+		}
+	}
+	.add-event-button__icon {
+		display: inline-block;
+		background: rgba(#fff, 0.1);
+		padding: 0 17px 0 12px;
+		height: 100%;
+		i {
+			margin: 0;
+			color: #fff;
+			font-size: 25px;
+			padding: 13px 0;
+		}
+	}
 }
 </style>
