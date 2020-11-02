@@ -6,7 +6,7 @@
 				<p class="result">🏆 3/27</p>
 				<hr />
 			</div>
-			<v-list rounded>
+			<v-list>
 				<v-list-item-group v-model="selectedItem" color="primary">
 					<v-subheader>완료한 업적</v-subheader>
 					<v-list-item v-for="(item, i) in items" :key="i">
