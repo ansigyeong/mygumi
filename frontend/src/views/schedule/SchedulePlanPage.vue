@@ -52,7 +52,6 @@
 					</h3>
 					<div class="events-wrapper">
 						<!-- 시간되면 정렬기능 추가 -->
-						<!-- 수정 및 삭제 팝업 -->
 						<div class="event">
 							<v-icon class="fire-icon done">mdi-help-circle</v-icon>
 							<h4 class="event__point">첫번째 여행지 (퀴즈)</h4>
@@ -261,7 +260,7 @@ export default {
 			var dateToggle = window.$('.v-expansion-panel')[0].ariaExpanded;
 			if (dateToggle == 'true') {
 				window.$('.v-picker__body')[0].style.width = 'auto';
-				window.$('.v-btn--active')[0].style.color = 'black';
+				// window.$('.v-btn--active')[0].style.color = 'black';
 			}
 		});
 	},
