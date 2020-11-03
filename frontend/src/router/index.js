@@ -76,6 +76,14 @@ const routes = [
 		name: 'achieve',
 		component: () => import('@/views/AchievePage.vue'),
 	},
+	{
+		path: '*',
+		redirect: '/404',
+	},
+	{
+		path: '/404',
+		component: () => import('@/views/NotFoundPage.vue'),
+	},
 ];
 
 const router = new VueRouter({
