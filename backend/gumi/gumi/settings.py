@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-=t2fgru*wt@8z_576&42yrb+7%)k+s1y+p^wsnykn_3u0xu!v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*', 'k3d201.p.ssafy.io', 'k3d201.p.ssafy.io:8000']
 
@@ -87,7 +87,6 @@ SWAGGER_SETTINGS = {
             'in': 'header'
         }
     },
-    "basePath": "k3d201.p.ssafy.io:8080/",
 }
 
 # JWT settings
@@ -201,6 +200,9 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:8080",
     "http://127.0.0.1:8000",
     "http://k3d201.p.ssafy.io:8000",
+    "https://k3d201.p.ssafy.io",
+    "https://k3d201.p.ssafy.io:8080",
+    "https://k3d201.p.ssafy.io:8000",
 ]
 
 # email backend
@@ -210,3 +212,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # 이미지 파일 설정용 세팅 추가
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# swagger api base url is ignored 로 추가
+FORCE_SCRIPT_NAME = '/'

@@ -28,11 +28,12 @@ schema_view = get_schema_view(
     openapi.Info(
         title="GumiTour API",
         default_version='v1',
-        description="Test description",
+        description="",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
     ),
+    url='https://k3d201.p.ssafy.io:8080',
     public=True,
     permission_classes=(permissions.AllowAny,),
 )
