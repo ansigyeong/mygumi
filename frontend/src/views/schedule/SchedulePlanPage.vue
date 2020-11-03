@@ -6,11 +6,6 @@
 			<header class="header">
 				<div class="container">
 					<span>일정 작성</span>
-					<v-row>
-						<v-col cols="12">
-							<v-text-field label="일정 제목" clearable />
-						</v-col>
-					</v-row>
 				</div>
 			</header>
 
@@ -18,15 +13,6 @@
 
 			<section class="today-box" id="today-box">
 				<span class="breadcrumb">여행 날짜</span>
-				<!-- <v-col class="my-2 px-1" cols="12" sm="6">
-					<v-date-picker
-						v-model="date"
-						@contextmenu:year="contextMenu"
-						@dblclick:date="dblClick"
-						@mouseenter:month="mouseEnter"
-						@mouseleave:month="mouseLeave"
-					></v-date-picker>
-				</v-col> -->
 				<v-expansion-panels>
 					<v-expansion-panel>
 						<v-expansion-panel-header>
@@ -50,39 +36,42 @@
 					<h3>
 						여행 일정
 					</h3>
+					<v-col cols="12">
+						<v-text-field label="일정 제목" clearable />
+					</v-col>
 					<div class="events-wrapper">
 						<!-- 시간되면 정렬기능 추가 -->
 						<div class="event">
-							<v-icon class="fire-icon done">mdi-help-circle</v-icon>
 							<h4 class="event__point">첫번째 여행지 (퀴즈)</h4>
 							<span class="event__duration">약 30분 소요</span>
 							<p class="event__description">
 								황상동 52-3번지
 							</p>
+							<v-icon class="fire-icon hot">mdi-close-circle</v-icon>
 						</div>
 						<div class="event">
-							<v-icon class="fire-icon done">mdi-flag-checkered</v-icon>
 							<h4 class="event__point">두번째 여행지 (장소)</h4>
 							<span class="event__duration">약 1시간 소요</span>
 							<p class="event__description">
 								진평동 373번지
 							</p>
+							<v-icon class="fire-icon hot">mdi-close-circle</v-icon>
 						</div>
 						<div class="event">
-							<v-icon class="fire-icon done">mdi-airballoon</v-icon>
 							<h4 class="event__point">세번째 여행지 (활동)</h4>
 							<span class="event__duration">약 45분 소요</span>
 							<p class="event__description">
 								옥계동 3-23번지
 							</p>
+							<v-icon class="fire-icon hot">mdi-close-circle</v-icon>
 						</div>
 						<div class="event">
-							<v-icon class="fire-icon done">mdi-food</v-icon>
 							<h4 class="event__point">네번째 여행지 (음식)</h4>
 							<span class="event__duration">약 20분 소요</span>
 							<p class="event__description">
 								산동면 32번지
 							</p>
+							<v-icon class="fire-icon hot"> mdi-close-circle</v-icon>
 						</div>
 						<v-row class="event active">
 							<i class="ion ion-ios-radio-button-on icon-in-active-mode"></i>
@@ -514,7 +503,6 @@ export default {
 		h3 {
 			color: #333;
 			font-size: 17px;
-			margin-bottom: 30px;
 			position: relative;
 			&::before {
 				content: '';
@@ -544,19 +532,22 @@ export default {
 			// 	top: -10px;
 			// }
 		}
+		.col-12 {
+			padding: 12px 0px;
+		}
 		.events-wrapper {
 			margin-bottom: 30px;
 			.event {
 				position: relative;
 				margin-bottom: 25px;
-				padding-left: 30px;
+				padding-left: 0px;
 				cursor: pointer;
 				.fire-icon {
 					font-size: 24px;
 					font-weight: 100;
 					position: absolute;
-					left: 0;
-					top: -4px;
+					right: 0;
+					top: 0px;
 				}
 				.event__point {
 					margin: 0px 10px;
@@ -569,8 +560,8 @@ export default {
 				}
 				.event__duration {
 					position: absolute;
-					top: 5px;
-					right: 0;
+					top: 30px;
+					right: 20px;
 					color: #999;
 					font: {
 						size: 10px;
