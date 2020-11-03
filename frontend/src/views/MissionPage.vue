@@ -9,7 +9,7 @@
 			</div>
 
 			<!-- 미션 카드 -->
-			<section>
+			<section class="mission">
 				<v-timeline :dense="$vuetify.breakpoint.smAndDown">
 					<v-timeline-item color="purple lighten-2" fill-dot right>
 						<v-card>
@@ -121,6 +121,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mission {
+	padding-right: 1rem;
+}
 .card-header {
 	margin: 1.5rem;
 	.title {
