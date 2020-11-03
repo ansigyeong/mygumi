@@ -38,7 +38,7 @@ export default new Vuex.Store({
 	actions: {
 		SETUP_USER({ commit }, { user: { username, id }, key }) {
 			cookies.set('id', id);
-			cookies.set('child_name', username);
+			cookies.set('username', username);
 			cookies.set('auth-token', key);
 			commit('setUsername', username);
 			commit('setToken', key);

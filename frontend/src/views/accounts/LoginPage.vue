@@ -19,7 +19,7 @@
 				v-model="loginData.password"
 				placeholder="*********"
 			/>
-			<span class="signup-box">회원가입</span>
+			<span class="signup-box" @click="goToSignup">회원가입</span>
 		</div>
 		<button class="submit-btn" @click.prevent="submitForm">로그인</button>
 	</section>
@@ -31,6 +31,7 @@ export default {
 	data() {
 		return {
 			loginData: {
+				// username: '김김김',
 				email: '',
 				password: '',
 			},
@@ -41,11 +42,14 @@ export default {
 			try {
 				const { data } = await loginUser(this.loginData);
 				this.$store.dispatch('SETUP_USER', data);
-				this.$store.dispatch('LOGIN', data);
+				// this.$store.dispatch('LOGIN', data);
 				this.$router.push('/');
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		goToSignup() {
+			this.$router.push('/signup');
 		},
 	},
 };
@@ -82,6 +86,9 @@ export default {
 		color: #3e4042;
 		text-align: end;
 		margin-right: 5%;
+		&:hover {
+			cursor: pointer;
+		}
 	}
 	.submit-btn {
 		margin-top: 1rem;
