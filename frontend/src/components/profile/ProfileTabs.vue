@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import ProfilePhoto from '@/components/ProfilePhoto.vue';
-import ReviewCard from '@/components/ReviewCard.vue';
+import ProfilePhoto from '@/components/profile/ProfilePhoto.vue';
+import ReviewCard from '@/components/review/ReviewCard.vue';
 
 export default {
 	data() {

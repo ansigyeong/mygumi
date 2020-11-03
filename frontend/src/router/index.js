@@ -42,7 +42,7 @@ const routes = [
 			{
 				path: 'result',
 				name: 'searchResult',
-				component: () => import('@/components/SearchResult.vue'),
+				component: () => import('@/components/search/SearchResult.vue'),
 			},
 		],
 	},
@@ -55,6 +55,26 @@ const routes = [
 		path: '/login',
 		name: 'login',
 		component: () => import('@/views/accounts/LoginPage.vue'),
+	},
+	{
+		path: '/mission',
+		name: 'mission',
+		component: () => import('@/views/MissionPage.vue'),
+	},
+	{
+		path: '/schedule',
+		name: 'schedule',
+		component: () => import('@/views/schedule/SchedulePage.vue'),
+	},
+	{
+		path: '/plan',
+		name: 'plan',
+		component: () => import('@/views/schedule/SchedulePlanPage.vue'),
+	},
+	{
+		path: '/achieve',
+		name: 'achieve',
+		component: () => import('@/views/AchievePage.vue'),
 	},
 ];
 
