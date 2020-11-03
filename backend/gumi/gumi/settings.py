@@ -64,6 +64,11 @@ INSTALLED_APPS = [
 
 ]
 
+# register serializer 수정
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'accounts.serializers.RegisterSerializer',
+}
+
 # account 인증 방법 email, username 미사용
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True   
