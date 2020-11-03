@@ -59,7 +59,7 @@ export default {
 		async submitForm() {
 			try {
 				const { data } = await registerUser(this.signupData);
-				this.$store.dispatch('SETUP_USER', data);
+				// this.$store.dispatch('SETUP_USER', data);
 				this.$store.dispatch('LOGIN', data);
 				this.$router.push('/');
 			} catch (error) {

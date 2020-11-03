@@ -31,7 +31,6 @@ export default {
 	data() {
 		return {
 			loginData: {
-				// username: '김김김',
 				email: '',
 				password: '',
 			},
@@ -42,7 +41,6 @@ export default {
 			try {
 				const { data } = await loginUser(this.loginData);
 				this.$store.dispatch('SETUP_USER', data);
-				// this.$store.dispatch('LOGIN', data);
 				this.$router.push('/');
 			} catch (error) {
 				console.log(error);
