@@ -1,6 +1,13 @@
 <template>
 	<v-app>
 		<v-container>
+			<!-- 헤더 -->
+			<div class="card-header">
+				<p class="title">미션</p>
+				<p class="result">🏆 1/5</p>
+				<hr />
+			</div>
+
 			<!-- 미션 카드 -->
 			<section>
 				<v-timeline :dense="$vuetify.breakpoint.smAndDown">
@@ -114,6 +121,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-header {
+	margin: 1.5rem;
+	.title {
+		display: inline-block;
+		font-size: 2rem;
+		font-weight: bold;
+	}
+	.result {
+		display: inline-block;
+		font-size: 1rem;
+		float: right;
+	}
+}
 .v-application--wrap {
 	min-height: auto;
 }
