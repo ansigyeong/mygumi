@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'jejugothic';
-  src: url('https://fonts.googleapis.com/earlyaccess/jejugothic.css');
+  font-family: 'JejuGothic';
+  src: url('../fonts/JejuGothic.ttf') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -13,7 +13,7 @@
 }
 
 body {
-    font-family: 'jejugothic';
+    font-family: 'JejuGothic';
 }
 
 .container {
