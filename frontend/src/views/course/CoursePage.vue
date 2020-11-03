@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import CourseInfo from '@/components/CourseInfo.vue';
-import CourseTimeline from '@/components/CourseTimeline.vue';
+import CourseInfo from '@/components/course/CourseInfo.vue';
+import CourseTimeline from '@/components/course/CourseTimeline.vue';
 
 export default {
 	components: {
