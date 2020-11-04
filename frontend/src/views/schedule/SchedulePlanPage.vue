@@ -183,7 +183,7 @@ export default {
 			isUpdating: false,
 			userList: [
 				{
-					name: '김영주',
+					name: '김영주.',
 					avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
 				},
 				{
