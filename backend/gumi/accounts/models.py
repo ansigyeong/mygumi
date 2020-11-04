@@ -7,6 +7,7 @@ User = settings.AUTH_USER_MODEL
 # Create your models here.
 
 class CustomUser(AbstractUser):
+    nickname = models.CharField(max_length=50)
     profile_image = models.ImageField(upload_to='media/profile/', default='media/default.jpg')
 
 class VisitCheck(models.Model):
