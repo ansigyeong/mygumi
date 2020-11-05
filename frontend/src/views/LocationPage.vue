@@ -29,7 +29,7 @@
 			</v-img>
 
 			<v-card-actions>
-				<div style="margin-right: 10px;">
+				<div style="margin-right: 10px;" @click="addTravelList">
 					<v-btn class="mx-2" fab dark color="indigo">
 						<v-icon dark>
 							mdi-plus
@@ -38,7 +38,7 @@
 					<small style="margin-left: 10px;">여행지 추가</small>
 				</div>
 
-				<div>
+				<div @click="goWriteReview">
 					<v-btn class="mx-2" fab dark color="indigo">
 						<v-icon dark>
 							mdi-pencil
@@ -65,25 +65,29 @@
 			style="width:300px;height:500px; margin: auto; z-index: 0;"
 		></div>
 
-		<!-- 후기 => if문으로 변경하기 -->
-		<v-card class="mx-auto" style="margin: 10px;">
+		<v-card
+			class="mx-auto"
+			v-for="review in reviews"
+			:key="`review_${review.id}`"
+			style="margin: 10px;"
+		>
 			<v-img
 				src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
 				height="200px"
 			></v-img>
 
 			<v-card-title>
-				단풍 구경은 금오산에서!
+				{{ review.title }}
 			</v-card-title>
 
 			<v-card-subtitle>
-				1,000 miles of wonder
+				{{ review.created_at }}
 			</v-card-subtitle>
 			<div style="padding: 10px;">
 				<v-avatar>
 					<img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
 				</v-avatar>
-				기성용
+				{{ review.user }}
 			</div>
 		</v-card>
 
@@ -109,7 +113,7 @@
 			</div>
 		</v-card>
 
-		<v-card class="mx-auto" style="margin: 10px;">
+		<v-card class="mx-auto" style="margin: 10px; margin-bottom: 100px;">
 			<v-img
 				src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
 				height="200px"
@@ -132,7 +136,14 @@
 </template>
 
 <script>
+import { base } from '@/api/index';
+
 export default {
+	data() {
+		return {
+			reviews: [],
+		};
+	},
 	// data() {
 	// 	return {
 	// 		container: document.getElementById('map'),
@@ -143,6 +154,9 @@ export default {
 	// 		map: new kakao.maps.Map(container, options),
 	// 	};
 	// },
+	created() {
+		this.fetchData();
+	},
 	computed: {
 		kakaoKey() {
 			return process.env.VUE_APP_KAKAO_KEY;
@@ -166,6 +180,12 @@ export default {
 		}
 	},
 	methods: {
+		fetchData() {
+			base
+				.get('/reviews/')
+				.then(res => (this.reviews = res.data))
+				.catch(err => console.error(err));
+		},
 		initMap() {
 			var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
@@ -215,6 +235,9 @@ export default {
 			// 키워드로 장소를 검색합니다
 			ps.keywordSearch('금오산', placesSearchCB);
 			map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
+		},
+		goWriteReview() {
+			this.$router.push('/location/create');
 		},
 	},
 	// async keywordToLoaction() {
