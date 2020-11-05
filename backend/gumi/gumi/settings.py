@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'accounts',
     'tour',
     'review',
+    'achievements',
 
 ]
 
@@ -220,3 +221,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # swagger api base url is ignored 로 추가
 FORCE_SCRIPT_NAME = '/'
+
+# nickname이 unique 하지 않다는 경고를 무시
+SILENCED_SYSTEM_CHECKS = ['auth.W004']
