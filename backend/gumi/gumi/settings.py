@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'accounts',
     'tour',
     'review',
+    'achievements',
 
 ]
 
@@ -212,3 +213,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # 이미지 파일 설정용 세팅 추가
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# nickname이 unique 하지 않다는 경고를 무시
+SILENCED_SYSTEM_CHECKS = ['auth.W004']
