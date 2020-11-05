@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<v-row v-if="isLogin">
+		<v-row>
 			<v-col class="profile-info">
 				<section class="profile-user">
 					<v-avatar size="90">
@@ -18,7 +18,7 @@
 				<p class="profile-content">업적</p>
 			</v-col>
 			<!-- 여행 일정(클릭시 일정리스트로 이동) -->
-			<v-col class="profile-active" @click="goSchedule">
+			<v-col class="profile-active" @click="goToSchedule">
 				<p class="profile-cnt">{{ travelCnt }}</p>
 				<p class="profile-content">일정</p>
 			</v-col>
@@ -28,8 +28,8 @@
 				<p class="profile-content">후기</p>
 			</v-col>
 		</v-row>
-		<v-row v-else class="profile-undefined" />
-		<v-row v-if="isLogin" class="profile-btn">
+		<!-- <v-row v-else class="profile-undefined" /> -->
+		<v-row class="profile-btn">
 			<v-btn style="width: 70%;" color="grey" outlined>
 				프로필 편집
 			</v-btn>
@@ -38,18 +38,15 @@
 				로그아웃
 			</v-btn>
 		</v-row>
-		<v-btn v-else class="profile-btn" color="grey" outlined>
-			로그인
-		</v-btn>
 	</section>
 </template>
 
 <script>
+// import { profileUser } from '@/api/auth';
+import axios from 'axios';
 export default {
 	data() {
 		return {
-			isLogin: true, // 로그인 여부
-
 			userName: '김영주', // 유저 이름
 
 			achieveCnt: 0, // 완료한 업적 수
@@ -57,10 +54,19 @@ export default {
 			reviewCnt: 0, // 작성된 후기 수
 
 			profileImg: 'https://picsum.photos/200', // 유저 프로필 이미지
+
+			userId: 3,
 		};
 	},
+	mounted() {
+		axios
+			.get(`https://k3d201.p.ssafy.io:8080/user/${this.userId}/`)
+			.then(response => {
+				console.log(response.data);
+			});
+	},
 	methods: {
-		goSchedule() {
+		goToSchedule() {
 			this.$router.push('/schedule');
 		},
 	},
@@ -99,11 +105,5 @@ export default {
 		font-size: 15px;
 		margin: 0px;
 	}
-}
-.profile-btn {
-	width: 100%;
-	margin: 0px;
-	box-shadow: none;
-	background-color: white !important;
 }
 </style>
