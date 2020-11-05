@@ -29,13 +29,13 @@
 			</v-img>
 
 			<v-card-actions>
-				<div>
+				<div style="margin-right: 10px;">
 					<v-btn class="mx-2" fab dark color="indigo">
 						<v-icon dark>
 							mdi-plus
 						</v-icon>
 					</v-btn>
-					<small>여행지 추가</small>
+					<small style="margin-left: 10px;">여행지 추가</small>
 				</div>
 
 				<div>
@@ -44,7 +44,7 @@
 							mdi-pencil
 						</v-icon>
 					</v-btn>
-					<small>여행지 후기</small>
+					<small style="margin-left: 10px;">여행지 후기</small>
 				</div>
 			</v-card-actions>
 
@@ -60,7 +60,10 @@
 		</v-card>
 
 		<!-- 지도 -->
-		<div id="map" style="width:300px;height:500px;"></div>
+		<div
+			id="map"
+			style="width:300px;height:500px; margin: auto; z-index: 0;"
+		></div>
 
 		<!-- 후기 => if문으로 변경하기 -->
 		<v-card class="mx-auto" style="margin: 10px;">
