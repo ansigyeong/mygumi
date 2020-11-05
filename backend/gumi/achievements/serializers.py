@@ -8,4 +8,4 @@ User = get_user_model()
 class AchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
-        fields = '__all__'
+        fields = ['jinpyeong', 'geumosan', 'bicycle', 'seowon', 'explorer', 'korean']
