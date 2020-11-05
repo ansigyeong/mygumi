@@ -49,12 +49,13 @@ class MissionView(APIView):
 
     permission_classes = [Permission]
     
-    def get_object(self, mission_id):
-        return get_object_or_404(Mission, pk=mission_id)
+    def get_place(self, place_id):
+        return get_object_or_404(Place, pk=place_id)
 
-    def get(self, request, mission_id):
-        mission = self.get_object(mission_id)
-        serializer = MissionSerializer(mission)
+    def get(self, request, place_id):
+        place = self.get_place(place_id)
+        missions = Mission.objects.filter(place = place)
+        serializer = MissionSerializer(missions, many = True)
         res = {
             'data' : serializer.data
         }
