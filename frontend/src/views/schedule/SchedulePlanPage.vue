@@ -326,7 +326,7 @@ export default {
 	// width: 380px;
 	min-height: 100%;
 	// margin: auto;
-	padding: 10px 0 20px;
+	padding: 10px 0 60px;
 	// border-radius: 10px;
 	// box-shadow: 0px 10px 30px -10px #000;
 	overflow: auto;

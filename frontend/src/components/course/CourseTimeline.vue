@@ -2,102 +2,68 @@
 	<section>
 		<v-card-text class="course-timeline">
 			<div class="course-total">
-				약 5시간 소요
+				<p class="course-time">여행 일정</p>
 			</div>
-
-			<v-timeline class="course-line" align-top dense>
-				<v-timeline-item
+			<div
+				class="v-timeline course-line v-timeline--align-top v-timeline--dense theme--light"
+			>
+				<div
 					v-for="course in courses"
-					:key="course.index"
-					:color="course.color"
-					small
+					:key="course.id"
+					class="v-timeline-item theme--light"
 				>
-					<v-card class="course-card">
-						<v-row class="course-content">
-							<v-col class="course-info">
-								<strong>{{ course.name }}</strong>
-								<article>{{ course.address }}</article>
-							</v-col>
-							<v-col class="course-img">
-								<v-img :src="course.image" />
-							</v-col>
+					<div class="v-timeline-item__body">
+						<div class="course-card v-card v-sheet theme--light">
+							<div class="row course-content">
+								<div class="course-info col">
+									<strong>{{ course.place }}</strong>
+									<article>{{ course.dong }}</article>
+								</div>
+							</div>
+						</div>
+						<v-row v-if="course.time" class="course-moving">
+							<span class="course-time">
+								<v-icon small>mdi-timetable</v-icon>
+								{{ course.time }}
+							</span>
 						</v-row>
-					</v-card>
-					<v-row class="course-moving">
-						<span class="course-transport">
-							<v-icon small>mdi-car</v-icon>
-							{{ course.time.car }}
-						</span>
-						<span class="course-transport">
-							<v-icon small>mdi-bus</v-icon>
-							{{ course.time.bus }}
-						</span>
-						<span class="course-transport">
-							<v-icon small>mdi-bike</v-icon>
-							{{ course.time.bike }}
-						</span>
-						<span class="course-transport">
-							<v-icon small>mdi-walk</v-icon>
-							{{ course.time.walk }}
-						</span>
-					</v-row>
-				</v-timeline-item>
-			</v-timeline>
+					</div>
+					<div class="v-timeline-item__divider">
+						<div class="v-timeline-item__dot v-timeline-item__dot--small">
+							<v-img
+								:src="`${course.image}`"
+								class="v-timeline-item__inner-dot blue"
+							></v-img>
+						</div>
+					</div>
+				</div>
+			</div>
 		</v-card-text>
 	</section>
 </template>
 
 <script>
+import { courseTour } from '@/api/tour';
 export default {
 	data() {
 		return {
-			courses: [
-				// 코스 정보
-				{
-					index: 1,
-					image: 'https://picsum.photos/100',
-					name: '동락공원',
-					address: '경북 구미시 3공단1로 191',
-					dayoff: '무휴',
-					color: 'deep-purple lighten-1',
-					time: {
-						car: '약 20분',
-						bus: '약 40분',
-						bike: '약 1시간',
-						walk: '약 1시간 40분',
-					},
-				},
-				{
-					index: 2,
-					image: 'https://picsum.photos/200',
-					name: '낙동강체육공원',
-					address: '경북 구미시 낙동제방길 200',
-					dayoff: '무휴',
-					color: 'green',
-					time: {
-						car: '약 20분',
-						bus: '약 40분',
-						bike: '약 1시간',
-						walk: '약 1시간 40분',
-					},
-				},
-				{
-					index: 3,
-					image: 'https://picsum.photos/400',
-					name: '새마을운동테마공원',
-					address: '경북 구미시 박정희로 155',
-					dayoff:
-						'매일 10:00 - 17:00 야외공원 24시간 / 월요일 휴무 신정, 설, 추석당일 휴무',
-					color: 'deep-purple lighten-1',
-					time: {
-						car: '약 20분',
-						bus: '약 40분',
-						bike: '약 1시간',
-						walk: '약 1시간 40분',
-					},
-				},
-			],
+			courseId: null,
+			courses: [],
 		};
+	},
+	mounted() {
+		this.courseData();
+	},
+	methods: {
+		async courseData() {
+			try {
+				const coursePk = this.$route.params.courseId;
+				const { data } = await courseTour(coursePk);
+				this.courses = data.data;
+			} catch (error) {
+				console.log(error);
+			}
+		},
 	},
 };
 </script>
@@ -106,11 +72,24 @@ export default {
 .course-timeline {
 	padding-left: 0px;
 	padding-right: 0px;
+	padding-bottom: 40px;
 
 	.course-total {
 		font-weight: bold;
-		margin-left: 20px;
 		margin-bottom: 8px;
+
+		.course-time {
+			margin: 0px 20px;
+		}
+	}
+	.course-total:after {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 55px;
+		background: #fff;
+		margin-top: -40px;
+		box-shadow: 0 5px 15px lavender;
 	}
 	.course-line {
 		.course-card {
@@ -135,11 +114,59 @@ export default {
 			margin-left: 0px;
 			width: 90%;
 
-			.course-transport {
-				font-size: 10px;
+			.course-time {
+				font-size: 14px;
 				margin-right: 10px;
 			}
 		}
 	}
+}
+.v-timeline:before {
+	bottom: 0;
+	content: '';
+	height: 100%;
+	position: absolute;
+	top: -8px;
+	width: 2px;
+}
+.v-application--is-ltr
+	.v-timeline--dense
+	.v-timeline-item
+	.v-timeline-item__body
+	> .v-card:before {
+	transform: rotate(0);
+	left: -10px;
+	top: 25px;
+	right: auto;
+}
+.v-timeline-item__divider {
+	position: relative;
+	min-width: 180px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.v-timeline-item__dot--small {
+	height: 130px;
+	left: calc(50% - 12px);
+	width: 130px;
+}
+.v-timeline-item__dot--small .v-timeline-item__inner-dot {
+	height: 120px;
+	margin: 5px;
+	width: 120px;
+}
+.v-application--is-ltr .v-timeline--dense:not(.v-timeline--reverse):before,
+.v-application--is-rtl .v-timeline--reverse.v-timeline--dense:before {
+	right: auto;
+	left: 90px;
+}
+.v-timeline--align-top .v-timeline-item__body > .v-card:after {
+	top: 23px;
+}
+.course-timeline .course-line .course-card {
+	width: 90%;
+	padding: 10px;
+	margin: 30px 0px 10px;
 }
 </style>

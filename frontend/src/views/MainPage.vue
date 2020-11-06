@@ -17,6 +17,7 @@
 					class="recommend-img"
 					src="@/assets/images/temp_gumi.png"
 					alt="recommendImg"
+					@click="goToCoursePage"
 				/>
 			</section>
 			<section class="recommend-card">
@@ -34,12 +35,21 @@
 import AppHeader from '@/components/common/AppHeader.vue';
 
 export default {
+	data() {
+		return {
+			// 임시
+			courseId: 1,
+		};
+	},
 	components: {
 		AppHeader,
 	},
 	methods: {
 		goToSearchPage() {
 			this.$router.push('/search');
+		},
+		goToCoursePage() {
+			this.$router.push(`/course/${this.courseId}`);
 		},
 	},
 };
