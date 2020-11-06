@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import cookies from 'vue-cookies';
-import { loginUser, registerUser } from '@/api/auth';
+import { loginUser } from '@/api/auth';
 
 Vue.use(Vuex);
 
@@ -52,14 +52,14 @@ export default new Vuex.Store({
 				console.log(error);
 			}
 		},
-		async SIGNUP({ dispatch }, userData) {
-			try {
-				const { data } = await registerUser(userData);
-				dispatch('SETUP_USER', data);
-			} catch (error) {
-				console.log(error);
-			}
-		},
+		// async SIGNUP({ dispatch }, userData) {
+		// 	try {
+		// 		const { data } = await registerUser(userData);
+		// 		dispatch('SETUP_USER', data);
+		// 	} catch (error) {
+		// 		console.log(error);
+		// 	}
+		// },
 	},
 	modules: {},
 });

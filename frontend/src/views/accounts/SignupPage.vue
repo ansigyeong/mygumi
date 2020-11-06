@@ -15,7 +15,7 @@
 			<input
 				id="name"
 				type="text"
-				v-model="signupData.username"
+				v-model="signupData.nickname"
 				placeholder="김구미"
 			/>
 		</div>
@@ -48,7 +48,7 @@ export default {
 	data() {
 		return {
 			signupData: {
-				username: '',
+				nickname: '',
 				email: '',
 				password1: '',
 				password2: '',
