@@ -15,7 +15,7 @@
 			<input
 				id="name"
 				type="text"
-				v-model="signupData.username"
+				v-model="signupData.nickname"
 				placeholder="김구미"
 			/>
 		</div>
@@ -48,7 +48,7 @@ export default {
 	data() {
 		return {
 			signupData: {
-				username: '',
+				nickname: '',
 				email: '',
 				password1: '',
 				password2: '',
@@ -59,7 +59,6 @@ export default {
 		async submitForm() {
 			try {
 				const { data } = await registerUser(this.signupData);
-				// this.$store.dispatch('SETUP_USER', data);
 				this.$store.dispatch('LOGIN', data);
 				this.$router.push('/');
 			} catch (error) {
