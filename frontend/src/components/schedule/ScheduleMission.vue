@@ -6,7 +6,7 @@
 				<v-spacer />
 
 				<!-- 일정 추가 버튼 -->
-				<v-btn class="schedule-icon" icon>
+				<v-btn class="schedule-icon" icon @click="goToPlanPage">
 					<v-icon>mdi-calendar-plus</v-icon>
 				</v-btn>
 			</v-app-bar>
@@ -27,7 +27,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+	methods: {
+		goToPlanPage() {
+			this.$router.push('/plan');
+		},
+	},
+};
 </script>
 
 <style lang="scss" scoped>

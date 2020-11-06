@@ -1,8 +1,9 @@
 import { base } from './index';
 
 export function registerUser(userData) {
-	return base.post('accounts/signup/', userData);
+	console.log(userData);
+	return base.post('rest-auth/signup/', userData);
 }
 export function loginUser(userData) {
-	return base.post('accounts/login/', userData);
+	return base.post('rest-auth/login/', userData);
 }

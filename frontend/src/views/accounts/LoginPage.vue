@@ -4,23 +4,52 @@
 		<p class="login-msg">로그인</p>
 		<div class="login-box">
 			<label class="login-label" for="email">이메일</label>
-			<input id="email" type="email" v-model="email" />
+			<input
+				id="email"
+				type="email"
+				v-model="loginData.email"
+				placeholder="example@example.com"
+			/>
 		</div>
 		<div class="login-box">
 			<label class="login-label" for="password">비밀번호</label>
-			<input id="password" type="password" v-model="password" />
-			<span class="login-msg"></span>
+			<input
+				id="password"
+				type="password"
+				v-model="loginData.password"
+				placeholder="*********"
+			/>
+			<span class="signup-box" @click="goToSignup">회원가입</span>
 		</div>
+		<button class="submit-btn" @click.prevent="submitForm">로그인</button>
 	</section>
 </template>
 
 <script>
+import { loginUser } from '@/api/auth';
 export default {
 	data() {
 		return {
-			email: '',
-			password: '',
+			loginData: {
+				email: '',
+				password: '',
+			},
 		};
+	},
+	methods: {
+		async submitForm() {
+			try {
+				const { data } = await loginUser(this.loginData);
+				this.$store.dispatch('SETUP_USER', data);
+				console.log(data);
+				this.$router.push('/');
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		goToSignup() {
+			this.$router.push('/signup');
+		},
 	},
 };
 </script>
@@ -28,14 +57,45 @@ export default {
 <style lang="scss" scoped>
 .login-container {
 	margin: 5% 3%;
-}
-.temp {
-	width: 100px;
-	height: 50px;
-	background: $gumiBlue;
-}
-.login-box {
-	display: flex;
-	flex-direction: column;
+	.login-msg {
+		font-size: 2rem;
+		color: #3e4042;
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+	}
+	.login-box {
+		display: flex;
+		flex-direction: column;
+		label {
+			margin-top: 10px;
+			margin-bottom: 3px;
+		}
+		input {
+			border: 1px solid #e5e8e9;
+			margin-top: 2px;
+			border-radius: 3px;
+			width: 95%;
+			height: 3rem;
+			padding: 10px;
+		}
+	}
+	.signup-box {
+		margin-top: 1rem;
+		font-size: 12px;
+		color: #3e4042;
+		text-align: end;
+		margin-right: 5%;
+		&:hover {
+			cursor: pointer;
+		}
+	}
+	.submit-btn {
+		margin-top: 1rem;
+		width: 95%;
+		height: 3rem;
+		background: $gumiBlue;
+		color: white;
+		font-weight: bolder;
+	}
 }
 </style>
