@@ -137,6 +137,7 @@
 
 <script>
 import { base } from '@/api/index';
+// import { location } from '@/api/tour';
 
 export default {
 	data() {
@@ -182,8 +183,11 @@ export default {
 	methods: {
 		fetchData() {
 			base
-				.get('/reviews/')
-				.then(res => (this.reviews = res.data))
+				.get('review/')
+				.then(res => {
+					this.reviews = res.data;
+					console.log(res.data);
+				})
 				.catch(err => console.error(err));
 		},
 		initMap() {
