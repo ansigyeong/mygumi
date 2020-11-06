@@ -6,6 +6,3 @@ export function registerUser(userData) {
 export function loginUser(userData) {
 	return base.post('rest-auth/login/', userData);
 }
-export function profileUser(userId) {
-	return base.get(`user/${userId}/`);
-}

@@ -14,7 +14,7 @@
 
 				<v-card-title class="white--text py-1">
 					<p class="course-title">
-						구미 산책 코스
+						{{ courseName }}
 					</p>
 				</v-card-title>
 			</v-img>
@@ -23,18 +23,27 @@
 </template>
 
 <script>
-// import { courseTour } from '@/api/tour';
+import { courseTour } from '@/api/tour';
 export default {
 	data() {
 		return {
 			courseImg: 'https://picsum.photos/300', // 코스 사진
-			courseId: null,
+			courseName: null,
 		};
 	},
 	mounted() {
-		// courseTour(this.$route.params.courseId).then(response => {
-		// 	console.log(response.data.data);
-		// });
+		this.courseData();
+	},
+	methods: {
+		async courseData() {
+			try {
+				const coursePk = this.$route.params.courseId;
+				const { data } = await courseTour(coursePk);
+				this.courseName = data.data[0].course_name;
+			} catch (error) {
+				console.log(error);
+			}
+		},
 	},
 };
 </script>

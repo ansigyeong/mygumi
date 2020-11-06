@@ -42,8 +42,8 @@
 </template>
 
 <script>
-// import { profileUser } from '@/api/auth';
-import axios from 'axios';
+import { fetchProfile } from '@/api/profile';
+// import axios from 'axios';
 export default {
 	data() {
 		return {
@@ -59,13 +59,17 @@ export default {
 		};
 	},
 	mounted() {
-		axios
-			.get(`https://k3d201.p.ssafy.io:8080/user/${this.userId}/`)
-			.then(response => {
-				console.log(response.data);
-			});
+		this.fetchData();
 	},
 	methods: {
+		async fetchData() {
+			try {
+				const userPK = this.userId;
+				await fetchProfile(userPK);
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		goToSchedule() {
 			this.$router.push('/schedule');
 		},

@@ -43,50 +43,27 @@
 </template>
 
 <script>
-// import { courseTour } from '@/api/tour';
-// import { base } from '@/api/index';
-import axios from 'axios';
+import { courseTour } from '@/api/tour';
 export default {
 	data() {
 		return {
 			courseId: null,
-			courses: [
-				// 코스 정보
-				// {
-				// 	index: 1,
-				// 	image: 'https://picsum.photos/100',
-				// 	name: '동락공원',
-				// 	address: '경북 구미시 3공단1로 191',
-				// 	dayoff: '무휴',
-				// 	color: 'deep-purple lighten-1',
-				// 	time: {
-				// 		car: '약 20분',
-				// 		bus: '약 40분',
-				// 		bike: '약 1시간',
-				// 		walk: '약 1시간 40분',
-				// 	},
-				// },
-			],
+			courses: [],
 		};
 	},
 	mounted() {
-		// console.log(`${this.$route.params.courseId}`);
-		// courseTour(this.$route.params.courseId).then(({ response }) => {
-		// 	console.log(response);
-		// });
-
-		// base.get(`tour/${this.$route.params.courseId}`).then(response => {
-		// 	this.courses = response.data.data;
-		// 	console.log(this.courses);
-		// });
-
-		axios
-			.get(
-				`https://k3d201.p.ssafy.io:8080/tour/${this.$route.params.courseId}/`,
-			)
-			.then(response => {
-				this.courses = response.data.data;
-			});
+		this.courseData();
+	},
+	methods: {
+		async courseData() {
+			try {
+				const coursePk = this.$route.params.courseId;
+				const { data } = await courseTour(coursePk);
+				this.courses = data.data;
+			} catch (error) {
+				console.log(error);
+			}
+		},
 	},
 };
 </script>
