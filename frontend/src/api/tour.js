@@ -1,4 +1,3 @@
-
 import { base } from '@/api/index';
 
 export function location(placeId) {
