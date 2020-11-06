@@ -41,6 +41,7 @@ export default {
 			try {
 				const { data } = await loginUser(this.loginData);
 				this.$store.dispatch('SETUP_USER', data);
+				console.log(data);
 				this.$router.push('/');
 			} catch (error) {
 				console.log(error);
