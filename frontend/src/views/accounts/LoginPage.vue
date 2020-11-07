@@ -27,6 +27,7 @@
 
 <script>
 import { loginUser } from '@/api/auth';
+
 export default {
 	data() {
 		return {
