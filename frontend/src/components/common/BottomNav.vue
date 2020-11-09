@@ -42,9 +42,9 @@ export default {
 			this.$router.push('/schedule');
 		},
 		goProfile() {
-
+			const userId = this.$store.getters.getId;
 			this.isLogined
-				? this.$router.push(`/profile/${userId}`')
+				? this.$router.push(`/profile/${userId}`)
 				: this.$router.push('/login');
 		},
 	},
