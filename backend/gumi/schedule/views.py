@@ -79,17 +79,17 @@ class PlaceView(APIView):
             schedule.place.add(place_id)
             serializer = ScheduleSerializer(instance=schedule)
             response = {
-                'status': True
+                'status': True,
                 'data': serializer.data,
                 'flag': True
             }
             return Response(response, status=status.HTTP_201_CREATED)
         else:
             response = {
-                'status': False
+                'status': False,
                 'message': '호스트만 방문 지역 추가가 가능합니다.'
             }
-            return Response(response.status=status.HTTP_200_OK)      
+            return Response(response, status=status.HTTP_200_OK)      
 
     def delete(self, request, place_id,schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
@@ -97,17 +97,17 @@ class PlaceView(APIView):
             schedule.place.remove(place_id)
             serializer = ScheduleSerializer(instance=schedule)
             response = {
-                'status': True
+                'status': True,
                 'data': serializer.data,
                 'flag': False
             }
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             response = {
-                'status': False
+                'status': False,
                 'message': '호스트만 방문 지역 삭제가 가능합니다.'
             }
-            return Response(response.status=status.HTTP_200_OK)   
+            return Response(response, status=status.HTTP_200_OK)   
 
 
 class InvitedView(APIView):
@@ -120,17 +120,17 @@ class InvitedView(APIView):
             schedule.user.add(user_id)
             serializer = ScheduleSerializer(instance=schedule)
             response = {
-                'status': True
+                'status': True,
                 'data': serializer.data,
                 'flag': True
             }
             return Response(response, status=status.HTTP_201_CREATED)       
         else:
             response = {
-                'status': False
+                'status': False,
                 'message': '호스트만 초대가 가능합니다.'
             }
-            return Response(response.status=status.HTTP_200_OK)
+            return Response(response, status=status.HTTP_200_OK)
 
     def delete(self, request, user_id, schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
@@ -138,14 +138,14 @@ class InvitedView(APIView):
             schedule.user.remove(user_id)
             serializer = ScheduleSerializer(instance=schedule)
             response = {
-                'status': True
+                'status': True,
                 'data': serializer.data,
                 'flag': False
             }
             return Response(serializer.data, status=status.HTTP_201_CREATED)  
         else:
             response = {
-                'status': False
+                'status': False,
                 'message': '호스트만 추방이 가능합니다.'
             }
-            return Response(response.status=status.HTTP_200_OK)
+            return Response(response, status=status.HTTP_200_OK)
