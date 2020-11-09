@@ -3,9 +3,9 @@
 		<div class="search-box">
 			<input class="search-input" type="text" v-model="inputData" />
 			<p class="search-cancle" @click="goToMain">취소</p>
-			<router-link to="/search/result" :fakeInput="inputData">
-				<p class="search-submitBtn" @click="submitData">확인</p>
-			</router-link>
+			<p class="search-submitBtn" @click="submitData">
+				확인
+			</p>
 		</div>
 		<span class="underline"></span>
 		<div class="search-history" v-if="!inputData">
@@ -20,7 +20,9 @@
 					v-for="item in searchHistoryArray"
 				>
 					<i class="icon ion-md-search"></i>
-					<p class="item-text">{{ item.search }}</p>
+					<p class="item-text" @click="submitHistory(item.search)">
+						{{ item.search }}
+					</p>
 					<i class="icon ion-md-close" @click="deleteData(item.search)"></i>
 				</div>
 			</div>
@@ -70,9 +72,20 @@ export default {
 				const userId = this.$store.state.id;
 				const searchData = this.inputData;
 				await getSearch(userId, searchData);
+				this.goToResult();
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		async submitHistory(data) {
+			try {
+				this.$router.push(`/search/${data}`);
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		goToResult() {
+			this.$router.push(`/search/${this.inputData}`);
 		},
 	},
 	computed: {

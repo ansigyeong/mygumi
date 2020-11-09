@@ -2,7 +2,7 @@
 	<section>
 		<!-- 클릭시 여행지 상세 페이지로 이동 -->
 		<v-card v-ripple class="search-card">
-			<v-img class="search-card-img" :src="searchImg" />
+			<v-img class="search-card-img" :src="totalURL" />
 
 			<v-card-title class="search-card-title">
 				{{ searchTitle }}
@@ -30,10 +30,24 @@
 export default {
 	data() {
 		return {
-			searchTitle: '낙동강 체육공원', // 여행지 제목
-			searchImg: 'https://picsum.photos/300', // 여행지 사진
+			searchTitle: this.searchData.place, // 여행지 제목
+			// searchImg: this.totalURL, // 여행지 사진
 			searchRating: 4, // 여행지 별점
 		};
+	},
+	props: {
+		searchData: Object,
+	},
+	computed: {
+		baseURL() {
+			return process.env.VUE_APP_API_URL;
+		},
+		imgURL() {
+			return this.searchData.image.slice(1);
+		},
+		totalURL() {
+			return this.baseURL + this.imgURL;
+		},
 	},
 };
 </script>
