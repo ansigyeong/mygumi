@@ -131,7 +131,8 @@ class SearchView(APIView):
     def get(self, request, user_id, dong):
         search_dong = Place.objects.filter(dong=dong)
         search_name = Place.objects.filter(course_name__contains=dong)
-        searchs = search_dong.union(search_name)
+        search_place = Place.objects.filter(place__contains=dong)
+        searchs = search_dong.union(search_name, search_place)
         user = get_object_or_404(User, pk=user_id)
         searchSerializer = PlaceSerializer(instance=searchs, many=True)
         userSearch = SearchRecord.objects.filter(user=user).order_by('created_at')
