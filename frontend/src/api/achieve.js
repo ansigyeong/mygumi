@@ -1,7 +1,7 @@
 import { base } from '@/api/index';
 
-function achieve(userId) {
+function fetchAchieve(userId) {
 	return base.get(`achievements/${userId}`);
 }
 
-export { achieve };
+export { fetchAchieve };
