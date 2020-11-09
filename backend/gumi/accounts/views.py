@@ -13,8 +13,8 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .serializers import UserSerializer, VisitSerializer
 from .models import VisitCheck
-from ..review.serializers import ReviewSerializer
-from ..review.models import Review
+from review.serializers import ReviewSerializer
+from review.models import Review
 
 User = get_user_model()
 
