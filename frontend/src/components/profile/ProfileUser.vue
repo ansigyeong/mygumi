@@ -28,13 +28,96 @@
 				<p class="profile-content">후기</p>
 			</v-col>
 		</v-row>
-		<!-- <v-row v-else class="profile-undefined" /> -->
+
 		<v-row class="profile-btn">
-			<v-btn style="width: 70%;" color="grey" outlined>
-				프로필 편집
-			</v-btn>
+			<v-dialog
+				v-model="profileEdit"
+				fullscreen
+				hide-overlay
+				transition="dialog-bottom-transition"
+			>
+				<template v-slot:activator="{ on, attrs }">
+					<v-btn
+						style="width: 70%;"
+						color="grey"
+						outlined
+						v-bind="attrs"
+						v-on="on"
+					>
+						프로필 편집
+					</v-btn>
+				</template>
+				<v-card>
+					<v-toolbar>
+						<v-btn icon @click="profileEdit = false">
+							<v-icon>mdi-close</v-icon>
+						</v-btn>
+						<v-toolbar-title>프로필 편집</v-toolbar-title>
+						<v-spacer></v-spacer>
+						<v-toolbar-items>
+							<v-btn
+								text
+								color="primary"
+								style="font-size:18px;"
+								:disabled="!editValid"
+							>
+								완료
+							</v-btn>
+						</v-toolbar-items>
+					</v-toolbar>
+					<v-list subheader class="profile-edit">
+						<v-avatar size="90" class="profile-edit-image">
+							<img :src="profileImg" alt="profile-image" />
+						</v-avatar>
+						<v-btn text class="profile-edit-icon">
+							편집<v-icon>mdi-tooltip-image</v-icon>
+						</v-btn>
+						<!-- <v-subheader>아이디</v-subheader> -->
+						<v-form ref="editForm" v-model="editValid" lazy-validation>
+							<v-list-item>
+								<v-text-field
+									v-model="email"
+									label="아이디"
+									readonly
+								></v-text-field>
+							</v-list-item>
+							<v-list-item>
+								<v-text-field
+									v-model="userName"
+									:counter="10"
+									:rules="nameRules"
+									label="이름"
+									clearable
+									required
+								></v-text-field>
+							</v-list-item>
+							<v-list-item>
+								<v-text-field
+									v-model="password1"
+									:append-icon="pwdShow1 ? 'mdi-eye' : 'mdi-eye-off'"
+									:rules="[pwdRules.required, pwdRules.min]"
+									:type="pwdShow1 ? 'text' : 'password'"
+									label="비밀번호"
+									@click:append="pwdShow1 = !pwdShow1"
+								></v-text-field>
+							</v-list-item>
+							<v-list-item>
+								<v-text-field
+									v-model="password2"
+									:append-icon="pwdShow2 ? 'mdi-eye' : 'mdi-eye-off'"
+									:rules="[pwdRules.required, pwdRules.min, pwdRules.check]"
+									:type="pwdShow2 ? 'text' : 'password'"
+									label="비밀번호 확인"
+									@click:append="pwdShow2 = !pwdShow2"
+								></v-text-field>
+							</v-list-item>
+						</v-form>
+					</v-list>
+				</v-card>
+			</v-dialog>
+
 			<v-spacer />
-			<v-btn style="width: 28%" color="red" outlined>
+			<v-btn style="width: 28%" color="red" outlined @click="logoutUser">
 				로그아웃
 			</v-btn>
 		</v-row>
@@ -43,35 +126,66 @@
 
 <script>
 import { fetchProfile } from '@/api/profile';
+import { mapMutations } from 'vuex';
 // import axios from 'axios';
 export default {
 	data() {
 		return {
-			userName: '김영주', // 유저 이름
-
 			achieveCnt: 0, // 완료한 업적 수
 			travelCnt: 0, // 작성된 여행일정 수
 			reviewCnt: 0, // 작성된 후기 수
 
-			profileImg: 'https://picsum.photos/200', // 유저 프로필 이미지
+			profileEdit: false,
+			editValid: true,
+			pwdShow1: false,
+			pwdShow2: false,
 
-			userId: 3,
+			userInfo: [],
+			userId: null,
+			email: '',
+			userName: '', // 유저 이름
+			profileImg: null, // 유저 프로필 이미지
+			password1: '',
+			password2: '',
+
+			nameRules: [
+				v => !!v || '이름을 입력해주세요.',
+				v => (v && v.length <= 10) || '10글자 이내로 입력해주세요.',
+			],
+			pwdRules: {
+				required: value => !!value || '비밀번호를 입력해주세요.',
+				min: v => v.length >= 8 || '비밀번호가 너무 짧습니다.',
+				check: v => this.password1 == v || '비밀번호가 일치하지 않습니다.',
+			},
 		};
 	},
 	mounted() {
 		this.fetchData();
 	},
 	methods: {
+		...mapMutations(['clearUsername', 'clearToken', 'clearId']),
 		async fetchData() {
 			try {
-				const userPK = this.userId;
-				await fetchProfile(userPK);
+				const userPK = this.$store.getters.getId;
+				const { data } = await fetchProfile(userPK);
+				this.profileImg = data.user.profile_image;
+				this.userName = data.user.nickname;
+				this.email = data.user.email;
 			} catch (error) {
 				console.log(error);
 			}
 		},
 		goToSchedule() {
 			this.$router.push('/schedule');
+		},
+		logoutUser() {
+			this.clearUsername();
+			this.clearToken();
+			this.clearId();
+			this.$cookies.remove('auth-token');
+			this.$cookies.remove('username');
+			this.$cookies.remove('id');
+			this.$router.push('/');
 		},
 	},
 };
@@ -108,6 +222,20 @@ export default {
 		text-align: center;
 		font-size: 15px;
 		margin: 0px;
+	}
+}
+.profile-btn {
+	width: 100%;
+	margin: 0px;
+	box-shadow: none;
+	background-color: white !important;
+}
+.profile-edit {
+	.profile-edit-image {
+		margin: 30px 38% 0px;
+	}
+	.profile-edit-icon {
+		margin: 0px 39%;
 	}
 }
 </style>

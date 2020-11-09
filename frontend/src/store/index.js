@@ -34,15 +34,18 @@ export default new Vuex.Store({
 		clearToken(state) {
 			state.token = null;
 		},
+		clearId(state) {
+			state.id = null;
+		},
 	},
 	actions: {
-		SETUP_USER({ commit }, { user: { nickname, id }, token }) {
-			cookies.set('id', id);
-			cookies.set('username', nickname);
+		SETUP_USER({ commit }, { user: { username, pk }, token }) {
+			cookies.set('id', pk);
+			cookies.set('username', username);
 			cookies.set('auth-token', token);
-			commit('setUsername', nickname);
+			commit('setUsername', username);
 			commit('setToken', token);
-			commit('setId', id);
+			commit('setId', pk);
 		},
 		async LOGIN({ dispatch }, userData) {
 			try {

@@ -19,13 +19,15 @@
 		<div class="nav-slot bg-white round-top-right" @click="goProfile">
 			<div class="nav-link">
 				<v-icon>mdi-account</v-icon>
-				<small class="explain"> 프로필</small>
+				<small class="explain" v-if="isLogined"> 프로필</small>
+				<small class="expalin" v-else> 로그인</small>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
 	data() {
 		return {
@@ -40,8 +42,14 @@ export default {
 			this.$router.push('/schedule');
 		},
 		goProfile() {
-			this.$router.push('/profile');
+			const userId = this.$store.getters.getId;
+			this.isLogined
+				? this.$router.push(`/profile/${userId}`)
+				: this.$router.push('/login');
 		},
+	},
+	computed: {
+		...mapGetters(['isLogined']),
 	},
 };
 </script>
@@ -75,6 +83,10 @@ export default {
 	border-radius: 50rem;
 	padding: 0.5rem 0.5rem;
 	transition: 0.3s all;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 .explain {
