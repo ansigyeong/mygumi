@@ -129,7 +129,7 @@ class SearchGetView(APIView):
 
 class SearchView(APIView):
     def get(self, request, user_id, dong):
-        search_dong = Place.objects.filter(dong=dong)
+        search_dong = Place.objects.filter(dong__contains=dong)
         search_name = Place.objects.filter(course_name__contains=dong)
         search_place = Place.objects.filter(place__contains=dong)
         searchs = search_dong.union(search_name, search_place)
