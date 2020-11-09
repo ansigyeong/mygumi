@@ -38,14 +38,13 @@ const routes = [
 		path: '/search',
 		name: 'search',
 		component: () => import('@/views/search/SearchPage.vue'),
-		children: [
-			{
-				path: 'result',
-				name: 'searchResult',
-				component: () => import('@/components/search/SearchResult.vue'),
-			},
-		],
 	},
+	{
+		path: '/search/result',
+		name: 'searchResult',
+		component: () => import('@/views/search/SearchResultPage.vue'),
+	},
+
 	{
 		path: '/course/:courseId',
 		name: 'course',

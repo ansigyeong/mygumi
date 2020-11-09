@@ -1,6 +1,7 @@
 <template>
 	<section>
-		<search-card />
+		<span class="underline"></span>
+		<SearchCard />
 	</section>
 </template>
 
