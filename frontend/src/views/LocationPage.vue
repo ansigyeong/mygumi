@@ -240,13 +240,13 @@ export default {
 			ps.keywordSearch('금오산', placesSearchCB);
 			map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
 		},
+		addTravelList() {
+			console.log('어느 페이지로 가야하지?');
+		},
 		goWriteReview() {
 			this.$router.push('/location/create');
 		},
 	},
-	// async keywordToLoaction() {
-
-	// }
 };
 </script>
 
