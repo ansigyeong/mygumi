@@ -49,12 +49,12 @@ export default {
 		async submitForm() {
 			try {
 				const { data } = await loginUser(this.loginData);
-				cookies.set('id', data.user.id);
+				cookies.set('id', data.user.pk);
 				cookies.set('username', data.user.username);
 				cookies.set('auth-token', data.token);
 				this.setUsername(data.user.username);
 				this.setToken(data.token);
-				this.setId(data.user.id);
+				this.setId(data.user.pk);
 				this.$router.push('/');
 			} catch (error) {
 				console.log(error);

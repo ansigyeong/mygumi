@@ -43,76 +43,83 @@
 						outlined
 						v-bind="attrs"
 						v-on="on"
+						@click="openEdit"
 					>
 						프로필 편집
 					</v-btn>
 				</template>
 				<v-card>
-					<v-toolbar>
-						<v-btn icon @click="profileEdit = false">
-							<v-icon>mdi-close</v-icon>
-						</v-btn>
-						<v-toolbar-title>프로필 편집</v-toolbar-title>
-						<v-spacer></v-spacer>
-						<v-toolbar-items>
-							<v-btn
-								text
-								color="primary"
-								style="font-size:18px;"
-								:disabled="!editValid"
-							>
-								완료
+					<v-form>
+						<v-toolbar>
+							<v-btn icon @click="profileEdit = false">
+								<v-icon>mdi-close</v-icon>
 							</v-btn>
-						</v-toolbar-items>
-					</v-toolbar>
-					<v-list subheader class="profile-edit">
-						<v-avatar size="90" class="profile-edit-image">
-							<img :src="profileImg" alt="profile-image" />
-						</v-avatar>
-						<v-btn text class="profile-edit-icon">
-							편집<v-icon>mdi-tooltip-image</v-icon>
-						</v-btn>
-						<!-- <v-subheader>아이디</v-subheader> -->
-						<v-form ref="editForm" v-model="editValid" lazy-validation>
-							<v-list-item>
-								<v-text-field
-									v-model="email"
-									label="아이디"
-									readonly
-								></v-text-field>
-							</v-list-item>
-							<v-list-item>
-								<v-text-field
-									v-model="userName"
-									:counter="10"
-									:rules="nameRules"
-									label="이름"
-									clearable
-									required
-								></v-text-field>
-							</v-list-item>
-							<v-list-item>
-								<v-text-field
-									v-model="password1"
-									:append-icon="pwdShow1 ? 'mdi-eye' : 'mdi-eye-off'"
-									:rules="[pwdRules.required, pwdRules.min]"
-									:type="pwdShow1 ? 'text' : 'password'"
-									label="비밀번호"
-									@click:append="pwdShow1 = !pwdShow1"
-								></v-text-field>
-							</v-list-item>
-							<v-list-item>
-								<v-text-field
-									v-model="password2"
-									:append-icon="pwdShow2 ? 'mdi-eye' : 'mdi-eye-off'"
-									:rules="[pwdRules.required, pwdRules.min, pwdRules.check]"
-									:type="pwdShow2 ? 'text' : 'password'"
-									label="비밀번호 확인"
-									@click:append="pwdShow2 = !pwdShow2"
-								></v-text-field>
-							</v-list-item>
-						</v-form>
-					</v-list>
+							<v-toolbar-title>프로필 편집</v-toolbar-title>
+							<v-spacer></v-spacer>
+							<v-toolbar-items>
+								<v-btn
+									text
+									color="primary"
+									style="font-size:18px;"
+									:disabled="!editValid"
+									@click="updateInfo"
+								>
+									완료
+								</v-btn>
+							</v-toolbar-items>
+						</v-toolbar>
+						<v-list subheader class="profile-edit">
+							<v-avatar size="90" class="profile-edit-image">
+								<img
+									id="edit-profile-image"
+									:src="editImage"
+									alt="profile-image"
+								/>
+							</v-avatar>
+							<!-- <form style="margin:0px 46%;">
+							<v-file-input
+								v-model="uploadImage"
+								hide-input
+								truncate-length="15"
+								prepend-icon="mdi-tooltip-image"
+								@change="previewImage($event)"
+								id="profile-file-upload"
+								style="width:20px;"
+							>
+							</v-file-input>
+						</form> -->
+							<button type="file" class="btn-update__info">
+								사진수정<input
+									ref="inputFile"
+									type="file"
+									accept="image/*"
+									@change="onChangeFile()"
+									class="fake-btn"
+								/>
+							</button>
+
+							<!-- <v-subheader>아이디</v-subheader> -->
+							<v-form ref="editForm" v-model="editValid" lazy-validation>
+								<v-list-item>
+									<v-text-field
+										v-model="editData.email"
+										label="아이디"
+										readonly
+									></v-text-field>
+								</v-list-item>
+								<v-list-item>
+									<v-text-field
+										v-model="editData.nickname"
+										:counter="10"
+										:rules="nameRules"
+										label="이름"
+										clearable
+										required
+									></v-text-field>
+								</v-list-item>
+							</v-form>
+						</v-list>
+					</v-form>
 				</v-card>
 			</v-dialog>
 
@@ -125,8 +132,9 @@
 </template>
 
 <script>
-import { fetchProfile } from '@/api/profile';
+import { fetchProfile, updateProfile } from '@/api/profile';
 import { mapMutations } from 'vuex';
+import bus from '@/utils/bus';
 // import axios from 'axios';
 export default {
 	data() {
@@ -137,17 +145,20 @@ export default {
 
 			profileEdit: false,
 			editValid: true,
-			pwdShow1: false,
-			pwdShow2: false,
 
 			userInfo: [],
 			userId: null,
 			email: '',
 			userName: '', // 유저 이름
 			profileImg: null, // 유저 프로필 이미지
-			password1: '',
-			password2: '',
 
+			editImage: null,
+			uploadImage: null,
+			editData: {
+				profile_image: null,
+				nickname: '',
+				email: '',
+			},
 			nameRules: [
 				v => !!v || '이름을 입력해주세요.',
 				v => (v && v.length <= 10) || '10글자 이내로 입력해주세요.',
@@ -157,6 +168,7 @@ export default {
 				min: v => v.length >= 8 || '비밀번호가 너무 짧습니다.',
 				check: v => this.password1 == v || '비밀번호가 일치하지 않습니다.',
 			},
+			changeImage: '',
 		};
 	},
 	mounted() {
@@ -168,15 +180,96 @@ export default {
 			try {
 				const userPK = this.$store.getters.getId;
 				const { data } = await fetchProfile(userPK);
+				this.userId = userPK;
 				this.profileImg = data.user.profile_image;
 				this.userName = data.user.nickname;
 				this.email = data.user.email;
+
+				this.editData.profile_image = this.profileImg;
 			} catch (error) {
 				console.log(error);
 			}
 		},
+		previewImage(e) {
+			if (e) {
+				console.log(e);
+				// var fileImage = document.getElementById('profile-file-upload');
+				// const formData = new FormData();
+				// formData.append('profile_image', fileImage.files[0]);
+				// console.log('이건 뭐?');
+				// console.log(fileImage.files[0]);
+				// this.editData.profile_image = formData;
+				// console.log(formData.get('profile_image'));
+				// this.editData.profile_image = URL.createObjectURL(e);
+				window.$('#edit-profile-image').attr('src', URL.createObjectURL(e));
+			}
+		},
+		openEdit() {
+			this.editData.nickname = this.userName;
+			this.editData.email = this.email;
+			this.editImage = this.profileImg;
+		},
 		goToSchedule() {
 			this.$router.push('/schedule');
+		},
+		// async patchImage(img) {
+		// 	try {
+		// 		// const id = this.$store.getters.getId;
+		// 		const formdata = new FormData();
+		// 		formdata.append('profile_image', img);
+		// 		// await updateImage(id, formdata);
+		// 	} catch (error) {
+		// 		bus.$emit('show:warning', '이미지를 가져오는데 실패했어요 :(');
+		// 	}
+		// },
+
+		// validateFile(file) {
+		// 	const imageArray = ['image/png', 'image/jpg', 'image/jpeg'];
+		// 	if (imageArray.includes(file.type)) return true;
+		// 	return false;
+		// },
+		async onChangeFile() {
+			try {
+				const changeImage = this.$refs.inputFile.files[0];
+				const isValidate = await this.validateFile(changeImage);
+				if (isValidate) {
+					const formdata = new FormData();
+					formdata.append('profile_image', changeImage);
+					this.editData.profile_image = formdata;
+					// await this.patchImage(changeImage);
+					// await this.fetchData();
+					bus.$emit('show:toast', '프로필이 변경 되었어요');
+				} else {
+					bus.$emit(
+						'show:warning',
+						'.jpg, .jpeg, .png형태의 파일을 넣어주세요!',
+					);
+				}
+			} catch (error) {
+				bus.$emit('show:warning', '이미지를 가져오는데 실패했어요 :(');
+			}
+		},
+		async updateInfo() {
+			// const formdata = new FormData();
+			// formdata.append('profile_image', this.changeImage);
+			// this.editData.profile_image = formdata;
+
+			// if (!this.uploadImage) {
+			// 	this.editData.profile_image = this.profileImg;
+			// } else {
+			// 	// this.editData.profile_image = this.uploadImage;
+			// 	console.log('바꼇어');
+			// 	console.log(this.editData.profile_image);
+			// }
+			try {
+				const { data } = await updateProfile(this.userId, this.editData);
+				console.log('결과');
+				console.log(data);
+				this.fetchData();
+				alert('정상적으로 변경되었습니다.');
+			} catch (error) {
+				console.log(error);
+			}
 		},
 		logoutUser() {
 			this.clearUsername();
@@ -236,6 +329,30 @@ export default {
 	}
 	.profile-edit-icon {
 		margin: 0px 39%;
+	}
+	.btn-update__info {
+		margin-right: 0.5rem;
+		position: relative;
+		width: 150px;
+		height: 40px;
+		color: white;
+		font-size: 1rem;
+		background: green;
+		border-radius: 15px;
+		border: none;
+		&:hover {
+			cursor: pointer;
+			background: green;
+		}
+		.fake-btn {
+			cursor: pointer;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+		}
 	}
 }
 </style>
