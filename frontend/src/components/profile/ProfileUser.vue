@@ -13,7 +13,7 @@
 			</v-col>
 
 			<!-- 업적(클릭시 업적 목록으로 이동) -->
-			<v-col class="profile-active">
+			<v-col class="profile-active" @click="goAchievePage">
 				<p class="profile-cnt">{{ achieveCnt }}</p>
 				<p class="profile-content">업적</p>
 			</v-col>
@@ -174,6 +174,9 @@ export default {
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		goAchievePage() {
+			this.$router.push('/achieve');
 		},
 		goToSchedule() {
 			this.$router.push('/schedule');
