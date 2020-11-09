@@ -36,6 +36,8 @@
 </template>
 
 <script>
+// import { achieve } from '@/api/achieve';
+
 export default {
 	data: () => ({
 		selectedItem: 0,
@@ -79,6 +81,9 @@ export default {
 			},
 		],
 	}),
+	methods: {
+		fetchData() {},
+	},
 };
 </script>
 
