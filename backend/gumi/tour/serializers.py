@@ -5,7 +5,7 @@ from .models import Place, Mission, CustomMission, SearchRecord
 class PlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Place
-        fields = '__all__'
+        fields = ['course','place','content']
 
 class MissionSerializer(serializers.ModelSerializer):
     class Meta:

@@ -16,7 +16,7 @@ class Place(models.Model):
     course = models.IntegerField()
     course_name = models.CharField(max_length=50)
     place = models.CharField(max_length=30)
-    image = models.ImageField(upload_to=course_directory_path)
+    image = models.ImageField(upload_to=course_directory_path, null=True)
     content = models.TextField()
     dong = models.CharField(max_length=50)
     time = models.TextField(default='')

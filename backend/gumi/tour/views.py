@@ -30,6 +30,14 @@ class CourseView(APIView):
         }
         return Response(res,status=status.HTTP_200_OK)
 
+    def post(self, request, course_id):
+        data = request.data
+        data['course'] = course_id
+        serializer = PlaceSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 class ListView(APIView):
 
     permission_classes = [Permission]
