@@ -34,6 +34,9 @@ export default new Vuex.Store({
 		clearToken(state) {
 			state.token = null;
 		},
+		clearId(state) {
+			state.id = null;
+		},
 	},
 	actions: {
 		SETUP_USER({ commit }, { user: { username, pk }, token }) {
