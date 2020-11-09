@@ -23,14 +23,15 @@ class AchievementView(APIView):
     permission_classes =[AcheivementPermission]
 
     def get(self, request, user_pk):
-        user_achieve = Achievement.objects.filter(user = user_pk)
+        user = get_object_or_404(User, pk=user_pk)
+        user_achieve = Achievement.objects.filter(user = user)
         if len(user_achieve) > 0:
-            user_achieve = get_object_or_404(Achievement, user=user_pk)
+            user_achieve = get_object_or_404(Achievement, user=user)
             serializer = AchievementSerializer(user_achieve)
             return Response(serializer.data)
         else:
             user_achieve = Achievement()
-            user_achieve.user = request.user
+            user_achieve.user = user
             user_achieve.save()
             serializer = AchievementSerializer(user_achieve)
             return Response(serializer.data)
