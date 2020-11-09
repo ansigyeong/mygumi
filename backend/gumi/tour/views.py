@@ -30,6 +30,14 @@ class CourseView(APIView):
         }
         return Response(res,status=status.HTTP_200_OK)
 
+    def post(self, request, course_id):
+        data = request.data
+        data['course'] = course_id
+        serializer = PlaceSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 class ListView(APIView):
 
     permission_classes = [Permission]
@@ -49,12 +57,13 @@ class MissionView(APIView):
 
     permission_classes = [Permission]
     
-    def get_object(self, mission_id):
-        return get_object_or_404(Mission, pk=mission_id)
+    def get_place(self, place_id):
+        return get_object_or_404(Place, pk=place_id)
 
-    def get(self, request, mission_id):
-        mission = self.get_object(mission_id)
-        serializer = MissionSerializer(mission)
+    def get(self, request, place_id):
+        place = self.get_place(place_id)
+        missions = Mission.objects.filter(place = place)
+        serializer = MissionSerializer(missions, many = True)
         res = {
             'data' : serializer.data
         }
@@ -120,8 +129,10 @@ class SearchGetView(APIView):
 
 class SearchView(APIView):
     def get(self, request, user_id, dong):
-        searchs = Place.objects.filter(dong=dong)
-        print(dong)
+        search_dong = Place.objects.filter(dong__contains=dong)
+        search_name = Place.objects.filter(course_name__contains=dong)
+        search_place = Place.objects.filter(place__contains=dong)
+        searchs = search_dong.union(search_name, search_place)
         user = get_object_or_404(User, pk=user_id)
         searchSerializer = PlaceSerializer(instance=searchs, many=True)
         userSearch = SearchRecord.objects.filter(user=user).order_by('created_at')

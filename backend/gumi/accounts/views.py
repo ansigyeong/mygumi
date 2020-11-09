@@ -13,6 +13,8 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .serializers import UserSerializer, VisitSerializer
 from .models import VisitCheck
+from review.serializers import ReviewSerializer
+from review.models import Review
 
 User = get_user_model()
 
@@ -26,8 +28,12 @@ class UserDetailView(APIView):
         user = self.get_object(user_pk)
         userSerializer = UserSerializer(user)
 
+        reviews = Review.objects.filter(user=user).order_by('-id')
+        reviewSerializer = ReviewSerializer(instance=reviews, many=True)
+
         data = {
             'user': userSerializer.data,
+            'reviews': reviewSerializer.data
         }
         return Response(data)
     
