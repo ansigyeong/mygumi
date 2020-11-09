@@ -9,7 +9,7 @@ export function setInterceptors(instance) {
 			config.headers.Authorization = cookies.isKey('auth-token')
 				? `Bearer ${store.getters['getToken'] || cookies.get('auth-token')}`
 				: null;
-			console.log(config);
+			// console.log(config);
 			return config;
 		},
 		function(error) {

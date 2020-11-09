@@ -42,8 +42,9 @@ export default {
 			this.$router.push('/schedule');
 		},
 		goProfile() {
+
 			this.isLogined
-				? this.$router.push('/profile')
+				? this.$router.push(`/profile/${userId}`')
 				: this.$router.push('/login');
 		},
 	},

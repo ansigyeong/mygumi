@@ -30,8 +30,7 @@ const routes = [
 		component: () => import('@/views/review/ReviewDetailPage.vue'),
 	},
 	{
-		// 유저명으로 경로 변경
-		path: '/profile',
+		path: '/profile/:userId',
 		name: 'profile',
 		component: () => import('@/views/accounts/ProfilePage.vue'),
 	},
@@ -70,7 +69,7 @@ const routes = [
 	{
 		path: '/plan',
 		name: 'plan',
-		component: () => import('@/views/schedule/SchedulePlanPage.vue'),
+		component: () => import('@/views/schedule/PlanPage.vue'),
 	},
 	{
 		path: '/achieve',
