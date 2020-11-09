@@ -34,7 +34,7 @@
 				프로필 편집
 			</v-btn>
 			<v-spacer />
-			<v-btn style="width: 28%" color="red" outlined>
+			<v-btn style="width: 28%" color="red" outlined @click="logoutUser">
 				로그아웃
 			</v-btn>
 		</v-row>
@@ -43,6 +43,7 @@
 
 <script>
 import { fetchProfile } from '@/api/profile';
+import { mapMutations } from 'vuex';
 // import axios from 'axios';
 export default {
 	data() {
@@ -62,6 +63,7 @@ export default {
 		this.fetchData();
 	},
 	methods: {
+		...mapMutations(['clearUsername', 'clearToken', 'clearId']),
 		async fetchData() {
 			try {
 				const userPK = this.userId;
@@ -72,6 +74,15 @@ export default {
 		},
 		goToSchedule() {
 			this.$router.push('/schedule');
+		},
+		logoutUser() {
+			this.clearUsername();
+			this.clearToken();
+			this.clearId();
+			this.$cookies.remove('auth-token');
+			this.$cookies.remove('username');
+			this.$cookies.remove('id');
+			this.$router.push('/');
 		},
 	},
 };
