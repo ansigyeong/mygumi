@@ -43,7 +43,7 @@ class ReviewView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     def get(self, request):
-        queryset = Review.objects.all()
+        queryset = Review.objects.all().order_by('-id')
         serializer = ReviewSerializer(instance=queryset, many=True)
         data = {
             'review': serializer.data,
