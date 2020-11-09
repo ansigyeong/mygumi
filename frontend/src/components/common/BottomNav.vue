@@ -40,7 +40,8 @@ export default {
 			this.$router.push('/schedule');
 		},
 		goProfile() {
-			this.$router.push('/profile');
+			const userId = this.$cookies.get('id');
+			this.$router.push(`/profile/${userId}`);
 		},
 	},
 };
