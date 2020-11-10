@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from tour.models import Place
 
 User = settings.AUTH_USER_MODEL
 
@@ -7,6 +8,7 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     content = models.TextField()
+    place = models.ForeignKey(Place, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
