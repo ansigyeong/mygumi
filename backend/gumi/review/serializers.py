@@ -24,7 +24,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     images = ReviewImageSerializer(many=True, read_only=True)
     class Meta:
         model = Review
-        fields = ['id', 'title', 'content', 'comments', 'images', 'user', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'content', 'comments', 'images', 'user', 'created_at', 'updated_at', 'place']
     def get_comments(self, instance):
         com_get = Comment.objects.filter(review=instance)
         com_serializer = CommentSerializer(instance=com_get, many=True)
@@ -34,4 +34,4 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False, read_only=True)
     class Meta:
         model = Review
-        fields = ['id', 'title', 'content']
+        fields = ['id', 'title', 'content', 'place']
