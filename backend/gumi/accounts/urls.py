@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     path('<int:user_pk>/', views.UserDetailView.as_view()),
     path('<int:user_pk>/visited/', views.VisitCheckView.as_view()),
+    path('users/', views.UserListView.as_view()),
 ]
