@@ -28,7 +28,6 @@ class ScheduleView(APIView):
     def get(self, request,user_id):
         # schedule_pk : 0 이면 전체 스케줄 목록 조회 1 이상이면 특정 스케줄 조회
         schedule = Schedule.objects.filter(user=user_id)
-        print(schedule)
         serializer = ScheduleSerializer(instance=schedule, many=True)
         # print(serializer.data['data']['user'])
         res = {
