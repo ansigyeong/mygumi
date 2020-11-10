@@ -17,7 +17,7 @@ from django.conf import settings
 from accounts.models import CustomUser
 from tour.models import Place
 from .permissions import SchedulePermission
-
+from accounts.serializers import UserSerializer
 
 User = get_user_model()
 
@@ -28,14 +28,16 @@ class ScheduleView(APIView):
     def get(self, request,user_id):
         # schedule_pk : 0 이면 전체 스케줄 목록 조회 1 이상이면 특정 스케줄 조회
         schedule = Schedule.objects.filter(user=user_id)
+        print(schedule)
         serializer = ScheduleSerializer(instance=schedule, many=True)
+        # print(serializer.data['data']['user'])
         res = {
             'data': serializer.data
         }
         return Response(res,status=status.HTTP_200_OK)
 
     def post(self, request, user_id):
-        user = get_list_or_404(User,id=user_id)
+        # user = get_list_or_404(User,id=user_id)
         data = request.data
         data['host'] = user_id
         data['user'] = [user_id]
