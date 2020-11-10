@@ -91,7 +91,7 @@ class VisitCheckView(APIView):
 class UserListView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request, user_pk):
+    def get(self, request):
         users = User.objects.all()
         userSerializer = UserSerializer(instance=users, many=True)
 
