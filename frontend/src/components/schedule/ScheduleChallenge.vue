@@ -10,23 +10,27 @@
 			</v-row>
 		</header>
 		<section>
-			<v-card class="schedule-card">
+			<v-card
+				class="schedule-card"
+				v-for="schedule in schedules"
+				:key="schedule.id"
+			>
 				<v-row class="schedule-list">
 					<section class="schedule-user">
 						<v-avatar size="30" class="schedule-img">
-							<img :src="scheduleImg" alt="profile-image" />
+							<img :src="schedule.image" alt="profile-image" />
 						</v-avatar>
 						<p class="schedule-name">
-							{{ writerName }}
+							{{ schedule.host }}
 						</p>
 					</section>
 					<v-col class="schedule-challenge">
-						<p class="schedule-name">{{ scheduleName }}</p>
-						<p class="schedule-date">{{ scheduleDate }}</p>
+						<p class="schedule-name">{{ schedule.title }}</p>
+						<p class="schedule-date">{{ schedule.date }}</p>
 					</v-col>
 					<section class="schedule-play">
 						<!-- 챌린지 시작 버튼 -->
-						<v-btn class="schedule-btn" icon>
+						<v-btn class="schedule-btn" icon @click="goToChallenge">
 							<v-icon>mdi-play-circle-outline</v-icon>
 						</v-btn>
 					</section>
@@ -37,6 +41,9 @@
 </template>
 
 <script>
+import { scheduleList } from '@/api/schedule';
+import { fetchProfile } from '@/api/profile';
+
 export default {
 	data() {
 		return {
@@ -47,7 +54,15 @@ export default {
 			writerName: '김영주', // 일정 작성자 이름
 			scheduleName: '구미 첫 여행~~!', // 일정 이름
 			scheduleDate: '10월 30일', // 여행 날짜
+
+			schedules: [],
+			hostId: null,
+			hostName: null,
+			hostImage: null,
 		};
+	},
+	mounted() {
+		this.getSchedule();
 	},
 	created() {
 		// 오늘 날짜
@@ -79,6 +94,50 @@ export default {
 		} else if (month == 12) {
 			this.todayMonth = 'Dec';
 		}
+	},
+	methods: {
+		async getSchedule() {
+			try {
+				const userId = this.$store.getters.getId;
+				const { data } = await scheduleList(userId);
+				const plans = data.data;
+				for (var i = 0; i < plans.length; i++) {
+					var planTitle = plans[i].title;
+
+					var planDate = plans[i].date;
+					var planMonth = planDate[5] + planDate[6];
+					var planDay = planDate[8] + planDate[9];
+					var planWhere = planMonth + '월 ' + planDay + '일';
+
+					var planHost = plans[i].host;
+					this.hostId = planHost;
+					this.fetchData();
+					setTimeout(() => {
+						var plan = {
+							title: planTitle,
+							date: planWhere,
+							host: this.hostName,
+							image: this.hostImage,
+						};
+						this.schedules.push(plan);
+					}, 300);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async fetchData() {
+			try {
+				const { data } = await fetchProfile(this.hostId);
+				this.hostImage = data.user.profile_image;
+				this.hostName = data.user.nickname;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		goToChallenge() {
+			return this.$router.push('/mission');
+		},
 	},
 };
 </script>
