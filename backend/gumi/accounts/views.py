@@ -87,3 +87,15 @@ class VisitCheckView(APIView):
             'review': visitSerializer.data,
         }
         return Response(data)
+
+class UserListView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, user_pk):
+        users = User.objects.all()
+        userSerializer = UserSerializer(instance=users, many=True)
+
+        data = {
+            'users': userSerializer.data,
+        }
+        return Response(data)
