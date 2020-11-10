@@ -44,6 +44,7 @@ urlpatterns = [
     path('review/', include('review.urls')),
     path('achievements/', include('achievements.urls')),
     path('schedule/', include('schedule.urls')),
+    path('terroitory/', include('territory.urls')),
 
     # swagger
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0)),
