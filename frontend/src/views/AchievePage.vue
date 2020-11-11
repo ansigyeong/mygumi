@@ -3,7 +3,7 @@
 		<v-card tile>
 			<div class="card-header">
 				<p class="title">업적</p>
-				<p class="result">🏆 3/27</p>
+				<p class="result">🏆 {{ completeList.length }}/{{ toDoList.length }}</p>
 				<hr />
 			</div>
 			<v-list rounded>
