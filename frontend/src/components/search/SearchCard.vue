@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section @click="goToDetail">
 		<!-- 클릭시 여행지 상세 페이지로 이동 -->
 		<v-card v-ripple class="search-card">
 			<v-img class="search-card-img" :src="totalURL" />
@@ -19,10 +19,6 @@
 				/>
 			</v-card-text>
 		</v-card>
-
-		<!-- <article>
-      검색 결과가 없습니다.
-    </article> -->
 	</section>
 </template>
 
@@ -31,8 +27,8 @@ export default {
 	data() {
 		return {
 			searchTitle: this.searchData.place, // 여행지 제목
-			// searchImg: this.totalURL, // 여행지 사진
 			searchRating: 4, // 여행지 별점
+			searchId: this.searchData.id,
 		};
 	},
 	props: {
@@ -47,6 +43,11 @@ export default {
 		},
 		totalURL() {
 			return this.baseURL + this.imgURL;
+		},
+	},
+	methods: {
+		goToDetail() {
+			this.$router.push(`/location/${this.searchId}`);
 		},
 	},
 };

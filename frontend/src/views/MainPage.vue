@@ -23,7 +23,7 @@
 			<section class="recommend-card">
 				<img
 					class="recommend-img"
-					src="@/assets/images/temp_gumi.png"
+					src="@/assets/images/temp_gumi2.png"
 					alt="recommendImg"
 				/>
 			</section>
