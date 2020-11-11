@@ -10,7 +10,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import permission_classes
 
 from .models import Mission, Place, CustomMission, SearchRecord
-from .serializers import PlaceSerializer, CustomSerializer, MissionSerializer, SearchRecordSerializer
+from .serializers import PlaceSerializer, CustomSerializer, MissionSerializer, SearchRecordSerializer, PlaceListSerializer
 from .permissions import Permission
 
 User = get_user_model()
@@ -24,7 +24,7 @@ class CourseView(APIView):
 
     def get(self, request, course_id):
         place = self.get_object(course_id)
-        serializer = PlaceSerializer(instance=place, many=True)
+        serializer = PlaceListSerializer(instance=place, many=True)
         res = {
             'data': serializer.data
         }
