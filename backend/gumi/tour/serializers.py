@@ -11,7 +11,10 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['nickname', 'profile_image']
+        fields = [
+            'nickname',
+            'profile_image'
+        ]
 
 class ReviewImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,8 +29,8 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'content', 'comments', 'images', 'created_at', 'updated_at', 'place', 'create_user']
 
     def get_create_user(self, instance):
-        user_get = get_object_or_404(User, nickname = instance.user)
-        user_serializer = UserSerializer(instance = user_get)
+        user_get = get_object_or_404(User, pk = instance.user_id)
+        user_serializer = UserSerializer(instance=user_get)
         return user_serializer.data
 
 class PlaceSerializer(serializers.ModelSerializer):
