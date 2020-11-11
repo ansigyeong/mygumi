@@ -3,6 +3,16 @@ from rest_framework import serializers
 from .models import Place, Mission, CustomMission, SearchRecord
 from review.models import Review, ReviewImage
 
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+
+User = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['nickname', 'profile_image']
+
 class ReviewImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewImage
@@ -10,9 +20,15 @@ class ReviewImageSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     images = ReviewImageSerializer(many=True, read_only=True)
+    create_user = serializers.SerializerMethodField()
     class Meta:
         model = Review
-        fields = ['id', 'title', 'content', 'comments', 'images', 'user', 'created_at', 'updated_at', 'place']
+        fields = ['id', 'title', 'content', 'comments', 'images', 'created_at', 'updated_at', 'place', 'create_user']
+
+    def get_create_user(self, instance):
+        user_get = get_object_or_404(User, nickname = instance.user)
+        user_serializer = UserSerializer(instance = user_get)
+        return user_serializer.data
 
 class PlaceSerializer(serializers.ModelSerializer):
     reviews = serializers.SerializerMethodField()
