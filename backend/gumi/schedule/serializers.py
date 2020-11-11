@@ -8,7 +8,7 @@ class ScheduleSerializer(serializers.ModelSerializer):
     host = serializers.SerializerMethodField()
     class Meta:
         model = Schedule
-        fields = ['place','user','host','date','title']
+        fields = ['id', 'place','user','host','date','title']
     
     def get_user(self, instance):
         return UserSerializer(instance.user, many=True).data
