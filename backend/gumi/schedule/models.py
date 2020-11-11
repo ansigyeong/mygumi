@@ -9,4 +9,4 @@ class Schedule(models.Model):
     user = models.ManyToManyField(User, related_name='user_schedule')
     host = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
-    title = models.CharField(max_length=10)
+    title = models.CharField(max_length=25)

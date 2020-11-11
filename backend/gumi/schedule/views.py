@@ -67,8 +67,7 @@ class HostView(APIView):
     def delete(self, request, user_id, schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
         schedule.delete()
-        serializer = ScheduleSerializer(instance=schedule)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class PlaceView(APIView):
 
