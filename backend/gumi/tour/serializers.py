@@ -43,6 +43,11 @@ class PlaceSerializer(serializers.ModelSerializer):
         review_serializer = ReviewSerializer(instance=review_get, many=True)
         return review_serializer.data
 
+class PlaceListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Place
+        fields = '__all__'
+
 class MissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mission
