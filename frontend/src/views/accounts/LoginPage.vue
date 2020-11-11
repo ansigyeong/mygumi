@@ -49,7 +49,6 @@ export default {
 		async submitForm() {
 			try {
 				const { data } = await loginUser(this.loginData);
-				console.log(data);
 				cookies.set('id', data.user.pk);
 				cookies.set('username', data.user.username);
 				cookies.set('auth-token', data.token);

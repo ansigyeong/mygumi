@@ -88,6 +88,9 @@ export default {
 			this.locationData = data.data;
 			this.reviews = data.data.reviews;
 		},
+		addTravelList() {
+			console.log('어느 페이지로 가야하지?');
+		},
 		goWriteReview() {
 			const locationId = this.$route.params.locationId;
 			this.$router.push(`/location/${locationId}/create`);
