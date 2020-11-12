@@ -6,10 +6,24 @@ export function scheduleList(userId) {
 export function addSchedule(userId, scheduleData) {
 	return auth.post(`schedule/${userId}/`, scheduleData);
 }
-export function addPlace(placeId, schedulePk) {
-	console.log('장소 정보');
-	console.log(placeId);
-	console.log('스케쥴 정보');
-	console.log(schedulePk);
-	return auth.post(`schedule/${placeId}/${schedulePk}/`);
+export function addPlace(schedulePk, placeData) {
+	return auth.post(`schedule/${schedulePk}/place/`, placeData);
+}
+export function addFriend(schedulePk, userData) {
+	return auth.post(`schedule/${schedulePk}/invite/`, userData);
+}
+export function getSchedule(userId, schedulePk) {
+	return auth.get(`schedule/${userId}/${schedulePk}/`);
+}
+export function updateSchedule(userId, schedulePk, scheduleData) {
+	return auth.patch(`schedule/${userId}/${schedulePk}/`, scheduleData);
+}
+export function deletePlace(placeId, schedulePk) {
+	return auth.delete(`schedule/${placeId}/${schedulePk}/place/`);
+}
+export function deleteSchedule(userId, schedulePk) {
+	return auth.delete(`schedule/${userId}/${schedulePk}/`);
+}
+export function deleteFriend(userId, schedulePk) {
+	return auth.delete(`schedule/${userId}/${schedulePk}/invite/`);
 }
