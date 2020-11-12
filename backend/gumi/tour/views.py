@@ -134,7 +134,7 @@ class SearchView(APIView):
         search_place = Place.objects.filter(place__contains=dong)
         searchs = search_dong.union(search_name, search_place)
         user = get_object_or_404(User, pk=user_id)
-        searchSerializer = PlaceSerializer(instance=searchs, many=True)
+        searchSerializer = PlaceListSerializer(instance=searchs, many=True)
         userSearch = SearchRecord.objects.filter(user=user).order_by('created_at')
         check_dong = SearchRecord.objects.filter(user=user, search=dong)
         if len(check_dong) > 0:

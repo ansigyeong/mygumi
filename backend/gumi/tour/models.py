@@ -21,7 +21,7 @@ class Place(models.Model):
     dong = models.CharField(max_length=50)
     time = models.TextField(default='')
     latitude = models.CharField(max_length=15)
-    logitude = models.CharField(max_length=15)
+    longitude = models.CharField(max_length=15)
 
 class Mission(models.Model):
     place = models.ForeignKey(Place,on_delete=models.CASCADE)
