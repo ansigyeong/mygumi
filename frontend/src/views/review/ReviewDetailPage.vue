@@ -8,9 +8,7 @@
 			</section>
 			<p class="header-title">{{ reviewData.title }}</p>
 			<section class="header-etc">
-				<p class="createtime">{{ reviewData.created_at }}</p>
-				<!-- <p>|</p>
-				<p class="views">조회 100</p> -->
+				<p class="createtime">{{ reviewData.created_at.slice(0, 10) }}</p>
 			</section>
 		</header>
 		<article class="detail-body">{{ reviewData.content }}</article>

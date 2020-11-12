@@ -7,8 +7,8 @@
 			<v-card-title class="search-card-title">
 				{{ searchTitle }}
 			</v-card-title>
-
-			<v-card-text class="search-card-rating">
+			<v-card-text> 주소 : {{ searchData.dong }} </v-card-text>
+			<!-- <v-card-text class="search-card-rating">
 				<v-rating
 					v-model="searchRating"
 					background-color="grey"
@@ -17,7 +17,7 @@
 					readonly
 					dense
 				/>
-			</v-card-text>
+			</v-card-text> -->
 		</v-card>
 	</section>
 </template>

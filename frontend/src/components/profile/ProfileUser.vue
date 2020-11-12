@@ -4,7 +4,7 @@
 			<v-col class="profile-info">
 				<section class="profile-user">
 					<v-avatar size="90">
-						<img :src="profileImg" alt="profile-image" />
+						<img :src="`${baseURL}${profileImg}`" alt="profile-image" />
 					</v-avatar>
 					<p class="profile-name">
 						{{ userName }}
@@ -70,35 +70,23 @@
 						</v-toolbar>
 						<v-list subheader class="profile-edit">
 							<v-avatar size="90" class="profile-edit-image">
-								<img
+								<!-- <img
 									id="edit-profile-image"
 									:src="editImage"
 									alt="profile-image"
-								/>
+								/> -->
 							</v-avatar>
-							<!-- <form style="margin:0px 46%;">
-							<v-file-input
-								v-model="uploadImage"
-								hide-input
-								truncate-length="15"
-								prepend-icon="mdi-tooltip-image"
-								@change="previewImage($event)"
-								id="profile-file-upload"
-								style="width:20px;"
-							>
-							</v-file-input>
-						</form> -->
-							<button type="file" class="btn-update__info">
-								사진수정<input
-									ref="inputFile"
-									type="file"
-									accept="image/*"
-									@change="onChangeFile()"
-									class="fake-btn"
-								/>
-							</button>
+							<!-- <button type="file" class="btn-update__info">
+								사진수정
+							</button> -->
+							<input
+								ref="inputFile"
+								type="file"
+								accept="image/*"
+								@change="onChangeFile"
+								class="fake-btn"
+							/>
 
-							<!-- <v-subheader>아이디</v-subheader> -->
 							<v-form ref="editForm" v-model="editValid" lazy-validation>
 								<v-list-item>
 									<v-text-field
@@ -134,8 +122,7 @@
 <script>
 import { fetchProfile, updateProfile } from '@/api/profile';
 import { mapMutations } from 'vuex';
-import bus from '@/utils/bus';
-// import axios from 'axios';
+
 export default {
 	data() {
 		return {
@@ -174,6 +161,11 @@ export default {
 	mounted() {
 		this.fetchData();
 	},
+	computed: {
+		baseURL() {
+			return process.env.VUE_APP_API_URL;
+		},
+	},
 	methods: {
 		...mapMutations(['clearUsername', 'clearToken', 'clearId']),
 		async fetchData() {
@@ -181,7 +173,7 @@ export default {
 				const userPK = this.$store.getters.getId;
 				const { data } = await fetchProfile(userPK);
 				this.userId = userPK;
-				this.profileImg = data.user.profile_image;
+				this.profileImg = data.user.profile_image.slice(1);
 				this.userName = data.user.nickname;
 				this.email = data.user.email;
 
@@ -208,7 +200,7 @@ export default {
 			this.editData.nickname = this.userName;
 			this.editData.email = this.email;
 			this.editImage = this.profileImg;
-        },
+		},
 		goAchievePage() {
 			this.$router.push('/achieve');
 		},
@@ -231,45 +223,22 @@ export default {
 		// 	if (imageArray.includes(file.type)) return true;
 		// 	return false;
 		// },
-		async onChangeFile() {
+		onChangeFile() {
 			try {
-				const changeImage = this.$refs.inputFile.files[0];
-				const isValidate = await this.validateFile(changeImage);
-				if (isValidate) {
-					const formdata = new FormData();
-					formdata.append('profile_image', changeImage);
-					this.editData.profile_image = formdata;
-					// await this.patchImage(changeImage);
-					// await this.fetchData();
-					bus.$emit('show:toast', '프로필이 변경 되었어요');
-				} else {
-					bus.$emit(
-						'show:warning',
-						'.jpg, .jpeg, .png형태의 파일을 넣어주세요!',
-					);
-				}
+				console.log('@@');
 			} catch (error) {
-				bus.$emit('show:warning', '이미지를 가져오는데 실패했어요 :(');
+				console.log(error);
 			}
 		},
 		async updateInfo() {
-			// const formdata = new FormData();
-			// formdata.append('profile_image', this.changeImage);
-			// this.editData.profile_image = formdata;
-
-			// if (!this.uploadImage) {
-			// 	this.editData.profile_image = this.profileImg;
-			// } else {
-			// 	// this.editData.profile_image = this.uploadImage;
-			// 	console.log('바꼇어');
-			// 	console.log(this.editData.profile_image);
-			// }
 			try {
-				const { data } = await updateProfile(this.userId, this.editData);
-				console.log('결과');
-				console.log(data);
-				this.fetchData();
-				alert('정상적으로 변경되었습니다.');
+				const changeImage = this.$refs.inputFile.files[0];
+				const formdata = new FormData();
+				formdata.append('profile_image', changeImage);
+				formdata.append('nickname', this.editData.nickname);
+				formdata.append('email', this.editData.email);
+				await updateProfile(this.userId, formdata);
+				this.$router.go('');
 			} catch (error) {
 				console.log(error);
 			}
@@ -343,19 +312,17 @@ export default {
 		background: green;
 		border-radius: 15px;
 		border: none;
+		margin: 0 auto;
 		&:hover {
 			cursor: pointer;
 			background: green;
 		}
-		.fake-btn {
-			cursor: pointer;
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			opacity: 0;
-		}
+	}
+	.fake-btn {
+		cursor: pointer;
+		margin-left: 2rem;
+		width: 100%;
+		height: 100%;
 	}
 }
 </style>
