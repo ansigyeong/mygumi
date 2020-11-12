@@ -72,6 +72,10 @@
 							<p style="text-align:center; margin:30px auto 50px;">
 								선택된 코스가 없습니다.
 							</p>
+							<!-- 작성중(제목, 유저, 날짜)이면 저장 -->
+							<!-- 코스Id 널 -->
+							<!-- 코스검색 페이지로 이동 -->
+							<!-- 검색후 생성 페이지로 와서 코스정보, 작성중정보 불러오기 -->
 							<v-btn style="width:100%; margin-bottom:20px;"
 								>코스 추가하기</v-btn
 							>
@@ -135,21 +139,23 @@
 											<template v-slot:item="friends">
 												<!-- todo 1. 나 빼고 띄우기 -->
 												<template>
-													<v-list-item-avatar>
-														<img
-															:src="
-																'https://k3d201.p.ssafy.io:8080' +
-																	friends.item.profile_image
-															"
-														/>
-													</v-list-item-avatar>
-													<v-list-item-content>
-														<v-list-item-title v-html="friends.item.nickname">
-														</v-list-item-title>
-														<v-list-item-subtitle>{{
-															friends.item.email
-														}}</v-list-item-subtitle>
-													</v-list-item-content>
+													<v-row style="margin:0px">
+														<v-list-item-avatar>
+															<img
+																:src="
+																	'https://k3d201.p.ssafy.io:8080' +
+																		friends.item.profile_image
+																"
+															/>
+														</v-list-item-avatar>
+														<v-list-item-content>
+															<v-list-item-title v-html="friends.item.nickname">
+															</v-list-item-title>
+															<v-list-item-subtitle>{{
+																friends.item.email
+															}}</v-list-item-subtitle>
+														</v-list-item-content>
+													</v-row>
 												</template>
 											</template>
 										</v-autocomplete>
@@ -164,7 +170,7 @@
 						</v-dialog>
 					</div>
 
-					<v-btn text class="add-event-button" @click="createSchedule">
+					<v-btn text class="add-event-button" @click="writeSchedule">
 						<span class="add-event-button__title">작성</span>
 						<span class="add-event-button__icon">
 							<v-icon>mdi-playlist-plus</v-icon>
@@ -179,7 +185,7 @@
 <script>
 import { courseTour } from '@/api/tour';
 import { fetchUsers } from '@/api/profile';
-import { addSchedule } from '@/api/schedule';
+import { addSchedule, addPlace } from '@/api/schedule';
 export default {
 	data() {
 		return {
@@ -194,6 +200,8 @@ export default {
 			userList: [],
 			userId: null,
 			courseId: null,
+			scheduleId: null,
+			placeId: null,
 			plans: [],
 			deletePlace: [],
 			titleRules: [
@@ -201,7 +209,7 @@ export default {
 				v => (v && v.length <= 25) || '25글자 이내로 입력해주세요.',
 			],
 			scheduleData: {
-				title: '',
+				title: null,
 				date: new Date().toISOString().substr(0, 10),
 			},
 		};
@@ -267,6 +275,7 @@ export default {
 			const deleteAgree = confirm('정말로 이 장소를 삭제하시겠습니까?');
 			if (deleteAgree) {
 				this.deletePlace.push(placeId);
+
 				if (this.deletePlace.length == this.plans.length) {
 					this.allDelete = true;
 				}
@@ -296,22 +305,43 @@ export default {
 				console.log(error);
 			}
 		},
+		writeSchedule() {
+			this.createSchedule();
+			if (this.scheduleId && !this.allDelete) {
+				for (var i = 0; i < this.plans.length; i++) {
+					if (!this.deletePlace.includes(this.plans[i])) {
+						this.placeId = this.plans[i];
+						this.createPlace();
+					}
+				}
+			}
+		},
 		async createSchedule() {
 			try {
 				this.scheduleValidate();
-				if (this.scheduleValid) {
-					const { data } = await addSchedule(this.userId, this.scheduleData);
-					console.log(data);
+				if (this.allDelete) {
+					alert('코스를 추가해주세요.');
+				} else {
+					if (this.scheduleValid) {
+						const { data } = await addSchedule(this.userId, this.scheduleData);
+						this.scheduleId = data.id;
+						console.log('스케쥴 생성');
+						console.log(data);
+					}
 				}
 			} catch (error) {
 				console.log(error);
 			}
 		},
-		// async createPlace() {
-		// 	try {
-
-		// 	}
-		// }
+		async createPlace() {
+			try {
+				const { data } = await addPlace(this.placeId, this.scheduleId);
+				console.log('장소 추가');
+				console.log(data);
+			} catch (error) {
+				console.log(error);
+			}
+		},
 	},
 };
 </script>
