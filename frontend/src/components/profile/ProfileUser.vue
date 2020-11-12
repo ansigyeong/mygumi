@@ -208,7 +208,7 @@ export default {
 			this.editData.nickname = this.userName;
 			this.editData.email = this.email;
 			this.editImage = this.profileImg;
-        },
+		},
 		goAchievePage() {
 			this.$router.push('/achieve');
 		},
