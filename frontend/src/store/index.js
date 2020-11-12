@@ -10,12 +10,14 @@ export default new Vuex.Store({
 		token: cookies.isKey('auth-token') ? cookies.get('auth-token') : null,
 		username: cookies.isKey('username') ? cookies.get('username') : null,
 		id: cookies.isKey('id') ? cookies.get('id') : null,
+		courseId: cookies.isKey('courseId') ? cookies.get('courseId') : null,
 	},
 	getters: {
 		isLogined: state => !!state.token,
 		getToken: state => state.token,
 		getUsername: state => state.username,
 		getId: state => state.id,
+		getCourseId: state => state.courseId,
 	},
 	mutations: {
 		setUsername(state, username) {
@@ -36,6 +38,10 @@ export default new Vuex.Store({
 		},
 		clearId(state) {
 			state.id = null;
+		},
+		setCourseId(state, courseId) {
+			cookies.set('courseId', courseId);
+			state.courseId = courseId;
 		},
 	},
 	actions: {

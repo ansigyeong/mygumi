@@ -36,47 +36,49 @@
 					<h3>
 						여행 일정
 					</h3>
-					<v-col cols="12">
-						<v-text-field
-							v-model="title"
-							label="일정 제목"
-							clearable
-							:rules="[() => !!title || '제목을 입력해주세요.']"
-						/>
+					<v-col cols="12" style="padding:32px 0px 0px;">
+						<v-form ref="scheduleForm" v-model="scheduleValid" lazy-validation>
+							<v-text-field
+								v-model="scheduleData.title"
+								label="일정 제목"
+								placeholder="일정 제목을 입력해주세요."
+								:counter="25"
+								outlined
+								dense
+								clearable
+								:rules="titleRules"
+							/>
+						</v-form>
 					</v-col>
 					<div class="events-wrapper">
-						<!-- 시간되면 정렬기능 추가 -->
-						<div class="event">
-							<h4 class="event__point">첫번째 여행지 (퀴즈)</h4>
-							<span class="event__duration">약 30분 소요</span>
-							<p class="event__description">
-								황상동 52-3번지
-							</p>
-							<v-icon class="fire-icon hot">mdi-close-circle</v-icon>
+						<div class="event" v-for="plan in plans" :key="plan.id">
+							<div v-if="!deletePlace.includes(plan.id)">
+								<h4 class="event__point">{{ plan.place }}</h4>
+								<!-- <span class="event__duration">약 30분 소요</span> -->
+								<p class="event__description">
+									{{ plan.dong }}
+								</p>
+								<v-btn
+									class="fire-icon"
+									color="error"
+									icon
+									@click="removePlace(plan.id)"
+								>
+									<v-icon>mdi-close-circle</v-icon>
+								</v-btn>
+							</div>
 						</div>
-						<div class="event">
-							<h4 class="event__point">두번째 여행지 (장소)</h4>
-							<span class="event__duration">약 1시간 소요</span>
-							<p class="event__description">
-								진평동 373번지
+						<div class="event" v-if="!courseId || allDelete">
+							<p style="text-align:center; margin:30px auto 50px;">
+								선택된 코스가 없습니다.
 							</p>
-							<v-icon class="fire-icon hot">mdi-close-circle</v-icon>
-						</div>
-						<div class="event">
-							<h4 class="event__point">세번째 여행지 (활동)</h4>
-							<span class="event__duration">약 45분 소요</span>
-							<p class="event__description">
-								옥계동 3-23번지
-							</p>
-							<v-icon class="fire-icon hot">mdi-close-circle</v-icon>
-						</div>
-						<div class="event">
-							<h4 class="event__point">네번째 여행지 (음식)</h4>
-							<span class="event__duration">약 20분 소요</span>
-							<p class="event__description">
-								산동면 32번지
-							</p>
-							<v-icon class="fire-icon hot"> mdi-close-circle</v-icon>
+							<!-- 작성중(제목, 유저, 날짜)이면 저장 -->
+							<!-- 코스Id 널 -->
+							<!-- 코스검색 페이지로 이동 -->
+							<!-- 검색후 생성 페이지로 와서 코스정보, 작성중정보 불러오기 -->
+							<v-btn style="width:100%; margin-bottom:20px;"
+								>코스 추가하기</v-btn
+							>
 						</div>
 						<v-row class="event active">
 							<i class="ion ion-ios-radio-button-on icon-in-active-mode"></i>
@@ -88,7 +90,7 @@
 									:key="index"
 									class="event__description"
 								>
-									{{ friend }}
+									{{ friend.nickname }}
 								</span>
 							</div>
 							<v-spacer />
@@ -110,8 +112,8 @@
 											chips
 											color="blue-grey lighten-2"
 											label="친구 추가"
-											item-text="name"
-											item-value="name"
+											item-text="nickname"
+											item-value="nickname"
 											multiple
 										>
 											<template v-slot:selection="addFriend">
@@ -120,30 +122,40 @@
 													:input-value="addFriend.selected"
 													close
 													@click="addFriend.select"
-													@click:close="remove(addFriend.item)"
+													@click:close="removeFriend(addFriend.item)"
 												>
 													<v-avatar left>
-														<v-img :src="addFriend.item.avatar"></v-img>
+														<v-img
+															:src="
+																'https://k3d201.p.ssafy.io:8080' +
+																	addFriend.item.profile_image
+															"
+														></v-img>
 													</v-avatar>
-													{{ addFriend.item.name }}
+													{{ addFriend.item.nickname }}
 												</v-chip>
 											</template>
 
 											<template v-slot:item="friends">
-												<template v-if="typeof friends.item !== 'object'">
-													<v-list-item-content
-														v-text="friends.item"
-													></v-list-item-content>
-												</template>
-												<template v-else>
-													<v-list-item-avatar>
-														<img :src="friends.item.avatar" />
-													</v-list-item-avatar>
-													<v-list-item-content>
-														<v-list-item-title
-															v-html="friends.item.name"
-														></v-list-item-title>
-													</v-list-item-content>
+												<!-- todo 1. 나 빼고 띄우기 -->
+												<template>
+													<v-row style="margin:0px">
+														<v-list-item-avatar>
+															<img
+																:src="
+																	'https://k3d201.p.ssafy.io:8080' +
+																		friends.item.profile_image
+																"
+															/>
+														</v-list-item-avatar>
+														<v-list-item-content>
+															<v-list-item-title v-html="friends.item.nickname">
+															</v-list-item-title>
+															<v-list-item-subtitle>{{
+																friends.item.email
+															}}</v-list-item-subtitle>
+														</v-list-item-content>
+													</v-row>
 												</template>
 											</template>
 										</v-autocomplete>
@@ -157,19 +169,13 @@
 							</v-card>
 						</v-dialog>
 					</div>
-					<v-btn text class="add-event-button">
-						<span class="add-event-button__title">일정 작성</span>
+
+					<v-btn text class="add-event-button" @click="writeSchedule">
+						<span class="add-event-button__title">작성</span>
 						<span class="add-event-button__icon">
 							<v-icon>mdi-playlist-plus</v-icon>
 						</span>
 					</v-btn>
-					<!-- <v-btn text class="event-btn">
-						<v-icon class="fire-icon done">mdi-playlist-plus</v-icon>
-						<h4 class="event__point">여행지 추가</h4>
-					</v-btn> -->
-					<!-- <v-btn class="add-event-button">
-						<span class="add-event-button__title">여행지 추가하기</span>
-					</v-btn> -->
 				</div>
 			</section>
 		</div>
@@ -177,10 +183,12 @@
 </template>
 
 <script>
+import { courseTour } from '@/api/tour';
+import { fetchUsers } from '@/api/profile';
+import { addSchedule, addPlace } from '@/api/schedule';
 export default {
 	data() {
 		return {
-			title: '',
 			selectDate: new Date().toISOString().substr(0, 10), // 선택한 날짜
 			viewDate: null, // 선택된 날짜 형식 변경
 			modalFriends: false, // 친구 추가 모달
@@ -188,31 +196,29 @@ export default {
 			selectFriends: [], // 선택한 친구 목록
 			isUpdating: false,
 			scheduleValid: true,
-			userList: [
-				{
-					name: '김영주',
-					avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-				},
-				{
-					name: '도정우',
-					avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-				},
-				{
-					name: '문종혁',
-					avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-				},
-				{
-					name: '안시경',
-					avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-				},
-				{
-					name: '황영준',
-					avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-				},
+			allDelete: false,
+			userList: [],
+			userId: null,
+			courseId: null,
+			scheduleId: null,
+			placeId: null,
+			plans: [],
+			deletePlace: [],
+			titleRules: [
+				v => !!v || '제목을 입력해주세요.',
+				v => (v && v.length <= 25) || '25글자 이내로 입력해주세요.',
 			],
+			scheduleData: {
+				title: null,
+				date: new Date().toISOString().substr(0, 10),
+			},
 		};
 	},
 	mounted() {
+		this.userId = this.$store.getters.getId;
+		this.courseId = this.$store.getters.getCourseId;
+		this.usersData();
+		this.courseData();
 		var today = new Date().toISOString().substr(0, 10);
 		// 월만 따로 저장
 		var todayMonth = today[5] + today[6];
@@ -223,7 +229,7 @@ export default {
 		}
 		// 년도만 따로 저장
 		var todayYear = today[0] + today[1] + today[2] + today[3];
-		this.viewDate = todayMonth + '월 ' + todayDate + '일, ' + todayYear;
+		this.viewDate = todayMonth + '월 ' + todayDate + '일, ' + todayYear + '년';
 
 		// 캘린더 css 변경
 		window.$('.v-expansion-panels').click(() => {
@@ -236,9 +242,9 @@ export default {
 	},
 	watch: {
 		selectDate() {
+			this.scheduleData.date = this.selectDate;
 			// 월만 따로 저장
 			var selectMonth = this.selectDate[5] + this.selectDate[6];
-
 			// 일만 따로 저장
 			var selectD = this.selectDate[9];
 			if (this.selectDate[8]) {
@@ -250,7 +256,8 @@ export default {
 				this.selectDate[1] +
 				this.selectDate[2] +
 				this.selectDate[3];
-			this.viewDate = selectMonth + '월 ' + selectD + '일, ' + selectYear;
+			this.viewDate =
+				selectMonth + '월 ' + selectD + '일, ' + selectYear + '년';
 		},
 		isUpdating(val) {
 			if (val) {
@@ -259,9 +266,81 @@ export default {
 		},
 	},
 	methods: {
-		remove(item) {
-			const index = this.selectFriends.indexOf(item.name);
+		removeFriend(item) {
+			const index = this.selectFriends.indexOf(item.nickname);
 			if (index >= 0) this.selectFriends.splice(index, 1);
+		},
+		removePlace(placeId) {
+			// console.log(placeId);
+			const deleteAgree = confirm('정말로 이 장소를 삭제하시겠습니까?');
+			if (deleteAgree) {
+				this.deletePlace.push(placeId);
+
+				if (this.deletePlace.length == this.plans.length) {
+					this.allDelete = true;
+				}
+			}
+		},
+		scheduleValidate() {
+			this.$refs.scheduleForm.validate();
+			if (!this.scheduleData.title) {
+				this.scheduleValid = false;
+			}
+		},
+		async courseData() {
+			try {
+				if (this.courseId) {
+					const { data } = await courseTour(this.courseId);
+					this.plans = data.data;
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async usersData() {
+			try {
+				const { data } = await fetchUsers();
+				this.userList = data.users;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		writeSchedule() {
+			this.createSchedule();
+			if (this.scheduleId && !this.allDelete) {
+				for (var i = 0; i < this.plans.length; i++) {
+					if (!this.deletePlace.includes(this.plans[i])) {
+						this.placeId = this.plans[i];
+						this.createPlace();
+					}
+				}
+			}
+		},
+		async createSchedule() {
+			try {
+				this.scheduleValidate();
+				if (this.allDelete) {
+					alert('코스를 추가해주세요.');
+				} else {
+					if (this.scheduleValid) {
+						const { data } = await addSchedule(this.userId, this.scheduleData);
+						this.scheduleId = data.id;
+						console.log('스케쥴 생성');
+						console.log(data);
+					}
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async createPlace() {
+			try {
+				const { data } = await addPlace(this.placeId, this.scheduleId);
+				console.log('장소 추가');
+				console.log(data);
+			} catch (error) {
+				console.log(error);
+			}
 		},
 	},
 };
@@ -454,7 +533,7 @@ export default {
 }
 
 .upcoming-events {
-	margin-top: 10px;
+	margin: 10px 0px 20px;
 	.container {
 		h3 {
 			color: #333;
@@ -492,7 +571,7 @@ export default {
 			padding: 12px 0px;
 		}
 		.events-wrapper {
-			margin-bottom: 30px;
+			margin: 0px;
 			.event {
 				position: relative;
 				margin-bottom: 25px;
@@ -607,7 +686,7 @@ export default {
 
 .add-event-button {
 	height: 50px !important;
-	width: 170px;
+	width: 120px;
 	display: flex;
 	align-items: center;
 	margin-left: auto;
@@ -644,6 +723,9 @@ export default {
 			font-size: 25px;
 			padding: 13px 0;
 		}
+	}
+	.v-menu__content {
+		z-index: 9999 !important;
 	}
 }
 </style>

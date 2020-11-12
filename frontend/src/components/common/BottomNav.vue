@@ -64,7 +64,7 @@ export default {
 	filter: drop-shadow(0 0 5px rgba(31, 31, 31, 0.1));
 	position: fixed;
 	bottom: 0;
-	z-index: 999;
+	z-index: 200;
 }
 
 .nav-slot {
