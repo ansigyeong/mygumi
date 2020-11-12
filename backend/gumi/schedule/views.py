@@ -77,7 +77,7 @@ class PlaceAddView(APIView):
     def post(self, request, schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
         if schedule.host.id == request.user.id:
-            places = request.data['places']
+            places = request.data
             for place in places:
                 schedule.place.add(place)
             serializer = ScheduleSerializer(instance=schedule)
@@ -122,7 +122,7 @@ class InvitedAddView(APIView):
     def post(self, request, schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
         if schedule.host.id == request.user.id:
-            users = request.data['users']
+            users = request.data
             for user in users:
                 schedule.user.add(user)
             serializer = ScheduleSerializer(instance=schedule)
