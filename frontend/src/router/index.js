@@ -56,7 +56,7 @@ const routes = [
 		component: () => import('@/views/accounts/LoginPage.vue'),
 	},
 	{
-		path: '/mission',
+		path: '/mission/:territoryName',
 		name: 'mission',
 		component: () => import('@/views/MissionPage.vue'),
 	},

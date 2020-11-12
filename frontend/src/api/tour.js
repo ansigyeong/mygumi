@@ -19,3 +19,7 @@ export function getSearch(userId, dong) {
 export function deleteHistory(userId, dong) {
 	return auth.delete(`tour/search/${userId}/${dong}/`);
 }
+
+export function fetchMission(territoryName) {
+	return auth.get(`territory/${territoryName}`);
+}
