@@ -4,26 +4,44 @@
 		<header class="detail-header">
 			<section class="user-box">
 				<img class="user-profile" src="@/assets/images/temp_gumi.png" alt="" />
-				<p class="user-id">dudghkd1</p>
+				<p class="user-id">{{ writer.nickname }}</p>
 			</section>
-			<p class="header-title">TEMP TITLE</p>
+			<p class="header-title">{{ reviewData.title }}</p>
 			<section class="header-etc">
-				<p class="createtime">2020-11-03</p>
-				<p>|</p>
-				<p class="views">조회 100</p>
+				<p class="createtime">{{ reviewData.created_at.slice(0, 10) }}</p>
 			</section>
 		</header>
-		<article class="detail-body"></article>
+		<article class="detail-body">{{ reviewData.content }}</article>
 		<section class="user-profile"></section>
 		<footer class="detail-footer"></footer>
 	</section>
 </template>
 
 <script>
+import { fetchArticle } from '@/api/review';
+import { fetchProfile } from '@/api/profile';
 import DetailHeader from '@/components/common/DetailHeader.vue';
 export default {
+	data() {
+		return {
+			reviewData: null,
+			writer: null,
+		};
+	},
 	components: {
 		DetailHeader,
+	},
+	methods: {
+		async fetchData() {
+			const reviewId = this.$route.params.reviewId;
+			const { data } = await fetchArticle(reviewId);
+			this.reviewData = data.review;
+			const res = await fetchProfile(data.review.user);
+			this.writer = res.data.user;
+		},
+	},
+	mounted() {
+		this.fetchData();
 	},
 };
 </script>
@@ -37,6 +55,7 @@ export default {
 	height: 40px;
 }
 .detail-header {
+	margin-bottom: 2rem;
 	.user-box {
 		display: flex;
 		align-items: center;
@@ -63,6 +82,8 @@ export default {
 		p {
 			margin-right: 0.3rem;
 		}
+	}
+	.detail-body {
 	}
 }
 </style>

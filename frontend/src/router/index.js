@@ -15,17 +15,17 @@ const routes = [
 		component: () => import('@/views/accounts/SignupPage.vue'),
 	},
 	{
-		path: '/location',
+		path: '/location/:locationId',
 		name: 'location',
 		component: () => import('@/views/LocationPage.vue'),
 	},
 	{
-		path: '/location/create',
+		path: '/location/:locationId/create',
 		name: 'reviewCreate',
 		component: () => import('@/views/review/CreateReviewPage.vue'),
 	},
 	{
-		path: '/location/reviews/:reviewId',
+		path: '/location/:locationId/reviews/:reviewId',
 		name: 'reviewDetail',
 		component: () => import('@/views/review/ReviewDetailPage.vue'),
 	},
