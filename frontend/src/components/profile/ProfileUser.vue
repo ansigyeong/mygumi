@@ -174,6 +174,7 @@ export default {
 				const { data } = await fetchProfile(userPK);
 				this.userId = userPK;
 				this.profileImg = data.user.profile_image.slice(1);
+				console.log(data.user);
 				this.userName = data.user.nickname;
 				this.email = data.user.email;
 

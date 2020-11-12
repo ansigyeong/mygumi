@@ -15,18 +15,30 @@
 				v-for="schedule in schedules"
 				:key="schedule.id"
 			>
-				<v-row class="schedule-list">
+				<v-row
+					class="schedule-list"
+					v-if="schedule.date >= today"
+					@click="goToDetailPlan(schedule.id)"
+				>
 					<section class="schedule-user">
 						<v-avatar size="30" class="schedule-img">
-							<img :src="schedule.image" alt="profile-image" />
+							<img
+								:src="
+									'https://k3d201.p.ssafy.io:8080' + schedule.host.profile_image
+								"
+								alt="profile-image"
+							/>
 						</v-avatar>
 						<p class="schedule-name">
-							{{ schedule.host }}
+							{{ schedule.host.nickname }}
 						</p>
 					</section>
 					<v-col class="schedule-challenge">
 						<p class="schedule-name">{{ schedule.title }}</p>
-						<p class="schedule-date">{{ schedule.date }}</p>
+						<p class="schedule-date">
+							{{ schedule.date[5] }}{{ schedule.date[6] }}월
+							{{ schedule.date[8] }}{{ schedule.date[9] }}일
+						</p>
 					</v-col>
 					<section class="schedule-play">
 						<!-- 챌린지 시작 버튼 -->
@@ -49,6 +61,7 @@ export default {
 		return {
 			todayMonth: null, // 오늘 날짜(월)
 			todayDate: null, // 오늘 날짜(일)
+			today: null,
 
 			scheduleImg: 'https://picsum.photos/200', // 일정 작성자 이미지
 			writerName: '김영주', // 일정 작성자 이름
@@ -69,6 +82,8 @@ export default {
 		var today = new Date();
 		this.todayDate = today.getDate();
 		var month = today.getMonth() + 1;
+		var year = today.getFullYear();
+		this.today = year + '-' + month + '-' + this.todayDate;
 		if (month == 1) {
 			this.todayMonth = 'Jan';
 		} else if (month == 2) {
@@ -100,28 +115,17 @@ export default {
 			try {
 				const userId = this.$store.getters.getId;
 				const { data } = await scheduleList(userId);
-				const plans = data.data;
-				for (var i = 0; i < plans.length; i++) {
-					var planTitle = plans[i].title;
-
-					var planDate = plans[i].date;
-					var planMonth = planDate[5] + planDate[6];
-					var planDay = planDate[8] + planDate[9];
-					var planWhere = planMonth + '월 ' + planDay + '일';
-
-					var planHost = plans[i].host;
-					this.hostId = planHost;
-					this.fetchData();
-					setTimeout(() => {
-						var plan = {
-							title: planTitle,
-							date: planWhere,
-							host: this.hostName,
-							image: this.hostImage,
-						};
-						this.schedules.push(plan);
-					}, 300);
-				}
+				this.schedules = data.data;
+				this.schedules.sort(function(a, b) {
+					if (a.date > b.date) {
+						return 1;
+					}
+					if (a.date < b.date) {
+						return -1;
+					}
+					return 0;
+				});
+				// console.log(this.schedules);
 			} catch (error) {
 				console.log(error);
 			}
@@ -138,6 +142,9 @@ export default {
 		goToChallenge() {
 			return this.$router.push('/mission');
 		},
+		goToDetailPlan(scheduleId) {
+			return this.$router.push(`/plan/${scheduleId}`);
+		},
 	},
 };
 </script>
@@ -145,7 +152,8 @@ export default {
 <style lang="scss" scoped>
 .schedule-content {
 	width: 100%;
-	height: 100vh;
+	height: 100%;
+	min-height: 100vh;
 	background-color: white;
 	border-top-left-radius: 50px;
 	box-shadow: -3px -3px 10px 1px navy;
