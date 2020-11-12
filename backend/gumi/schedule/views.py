@@ -62,6 +62,7 @@ class HostView(APIView):
     def patch(self, request, user_id, schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
         schedule.date = request.data['date']
+        schedule.title = request.data['title']
         schedule.save()
         serializer = ScheduleSerializer(instance=schedule)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
