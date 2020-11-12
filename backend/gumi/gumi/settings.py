@@ -62,7 +62,8 @@ INSTALLED_APPS = [
     'tour',
     'review',
     'achievements',
-    'schedule'
+    'schedule',
+    'territory'
 
 ]
 
