@@ -60,6 +60,9 @@ class VisitCheckView(APIView):
     @swagger_auto_schema(request_body=VisitSerializer)
     def post(self, request, user_pk):
         place = request.data['place']
+        user = get_object_or_404(User, id=user_pk)
+        if request.user != user:
+            return Response('본인이 아닙니다')
         visit = VisitCheck()
         visit.place = place
         visit.user = request.user
