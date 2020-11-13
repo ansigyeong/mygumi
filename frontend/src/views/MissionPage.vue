@@ -4,13 +4,51 @@
 			<!-- 헤더 -->
 			<div class="card-header">
 				<p class="title">미션</p>
-				<p class="result">🏆 {{ completes.length }}/{{ missions.length }}</p>
+				<p class="result">
+					🏆 {{ completes.length }}/{{ missions.length + completes.length }}
+				</p>
 				<hr />
 			</div>
 
 			<!-- 미션 카드 -->
 			<section class="mission">
 				<v-timeline :dense="$vuetify.breakpoint.smAndDown">
+					<!-- 완료한 미션 -->
+					<v-timeline-item
+						v-for="complete in completes"
+						:key="complete.id"
+						color="cyan lighten-1"
+						fill-dot
+						right
+					>
+						<v-card>
+							<v-card-title class="cyan lighten-1">
+								<v-icon dark size="30" class="mr-4">
+									mdi-map-marker-outline
+								</v-icon>
+								<h5 class="white--text">
+									{{ complete.answer }}
+								</h5>
+							</v-card-title>
+							<div style="text-align: center;">
+								{{ complete.content }}
+							</div>
+							<v-divider></v-divider>
+							<br />
+							<v-img
+								:src="`https://k3d201.p.ssafy.io:8080/${complete.image}`"
+								max-height="150"
+								max-width="250"
+								style="margin: auto;"
+							></v-img>
+							<br />
+							<v-divider></v-divider>
+							<p style="text-align: center;">
+								Mission Complete!
+							</p>
+						</v-card>
+					</v-timeline-item>
+
 					<v-timeline-item
 						v-for="mission in missions"
 						:key="mission.id"
@@ -18,26 +56,32 @@
 						fill-dot
 						right
 					>
-						<!-- 완료한 미션 -->
+						<!-- 잠긴 미션 -->
+						<v-card v-if="!mission.open">
+							<v-card-title class="green lighten-1">
+								<v-icon class="mr-2" dark size="30">
+									mdi-lock
+								</v-icon>
+								<h5 class="white--text">{{ mission.order }}번째 미션</h5>
+							</v-card-title>
+							<div style="text-align: center;">
+								<v-icon size="100">mdi-lock</v-icon>
+								<p>이전 미션을 완료해주세요.</p>
+							</div>
+						</v-card>
 						<!-- 진행중인 미션 -->
-						<v-card>
-							<v-card-title v-if="!complete" class="cyan lighten-1">
+						<v-card v-else>
+							<v-card-title class="cyan lighten-1">
 								<input
 									type="text"
-									placeholder="정답을 입력해주세요."
+									placeholder=" 정답을 입력해주세요."
 									v-model="inputData"
+									style="font-size: 15px; max-width: 150px; border: solid 1px gray; border-radius: 0.5rem; margin-right: 5px;"
 								/>
-								<v-btn @click="submitData">제출</v-btn>
+								<v-btn @click="submitData" small>제출</v-btn>
 							</v-card-title>
-							<v-card-title v-if="complete" class="cyan lighten-1">
-								<v-icon dark size="30" class="mr-4">
-									mdi-map-marker-outline
-								</v-icon>
-								<h5 class="white--text">
-									{{ mission.answer }}
-								</h5>
-							</v-card-title>
-							<div v-if="!complete" style="text-align: center;">
+
+							<div style="text-align: center;">
 								{{ mission.content }}
 							</div>
 							<v-divider></v-divider>
@@ -49,38 +93,14 @@
 								style="margin: auto;"
 							></v-img>
 							<br />
-							<div style="text-align: center;" v-if="!complete">
-								<v-btn v-if="!hint" @click="showHint()">힌트 보기</v-btn>
-								<small v-if="hint">{{ mission.hint }}</small>
+							<div style="text-align: center;">
+								<v-btn v-if="!hint[mission.id]" @click="showHint(mission.id)"
+									>힌트 보기</v-btn
+								>
+								<small v-else>{{ mission.hint }}</small>
 							</div>
 							<br />
 							<v-divider></v-divider>
-							<p style="text-align: center;" v-if="complete">
-								Mission Complete!
-							</p>
-						</v-card>
-					</v-timeline-item>
-
-					<!-- 잠긴 미션 -->
-					<v-timeline-item
-						color="green lighten-1"
-						fill-dot
-						right
-						style="margin-bottom: 100px;"
-					>
-						<v-card>
-							<v-card-title class="green lighten-1">
-								<v-icon class="mr-2" dark size="30">
-									mdi-lock
-								</v-icon>
-								<h5 class="white--text">
-									다섯 번째 미션
-								</h5>
-							</v-card-title>
-							<div style="text-align: center;">
-								<v-icon size="100">mdi-lock</v-icon>
-								<p>이전 미션을 완료해주세요.</p>
-							</div>
 						</v-card>
 					</v-timeline-item>
 				</v-timeline>
@@ -90,7 +110,10 @@
 </template>
 
 <script>
+import { visitCheck } from '@/api/visit';
 import { fetchMission } from '@/api/tour';
+import Vue from 'vue';
+
 export default {
 	data() {
 		return {
@@ -98,10 +121,10 @@ export default {
 			missions: [],
 			completes: [],
 			idx: 0,
-			complete: false,
-			hint: false,
+			hint: [],
 		};
 	},
+	computed: {},
 	mounted() {
 		this.fetchData();
 	},
@@ -111,6 +134,12 @@ export default {
 				const territory = this.$route.params.territoryName;
 				const { data } = await fetchMission(territory);
 				this.missions = data.territory.missions;
+				this.missions.forEach(el => {
+					el.open = false;
+					const temp = el.id;
+					this.hint[`${temp}`] = false;
+				});
+				this.missions[0].open = true;
 			} catch (error) {
 				console.log(error);
 			}
@@ -125,7 +154,7 @@ export default {
 				var tempContent = this.missions[this.idx].content;
 				var tempHint = this.missions[this.idx].hint;
 				var tempId = this.missions[this.idx].id;
-				var tempImg = this.missions[this.idx].imgage;
+				var tempImg = this.missions[this.idx].image;
 				var tempOrder = this.missions[this.idx].order;
 				var tempTerritory = this.missions[this.idx].territory;
 				this.completes.push({
@@ -133,24 +162,38 @@ export default {
 					content: tempContent,
 					hint: tempHint,
 					id: tempId,
-					imgage: tempImg,
+					image: tempImg,
 					order: tempOrder,
 					territory: tempTerritory,
 				});
 				this.missions.shift();
-				this.idx++;
-				this.complete = true;
+				this.inputData = '';
+				if (!this.missions.length) {
+					this.runVisitCheck();
+				} else {
+					this.missions[this.idx].open = true;
+				}
 				alert('정답입니다 :)');
-				console.log('미션미션미션');
-				console.log(this.missions);
-				console.log('완료완료완료');
-				console.log(this.completes);
 			} else {
 				alert('틀렸습니다 :(');
 			}
 		},
-		showHint() {
-			this.hint = true;
+		showHint(id) {
+			Vue.set(this.hint, id, true);
+		},
+		async runVisitCheck() {
+			try {
+				const dong = this.$route.params.territoryName;
+				const userId = this.$store.getters.getId;
+				const form = {
+					place: dong,
+					check: 1,
+					user: userId,
+				};
+				await visitCheck(this.userPK, form);
+			} catch (error) {
+				console.log(error);
+			}
 		},
 	},
 };
