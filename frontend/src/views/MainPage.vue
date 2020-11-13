@@ -1,6 +1,28 @@
 <template>
 	<section class="main-container">
 		<AppHeader />
+		<div class="main-history" v-if="isLogin">
+			<p class="main-history__text">{{ username }}! 어디까지 가봤니?</p>
+			<div class="main-history__imgbox">
+				<img
+					class="main-history__img"
+					src="@/assets/images/gumi_map.png"
+					alt="map"
+				/>
+				<img
+					v-if="mapData.진평동"
+					class="flag flag-jinpeong"
+					src="@/assets/images/flag.png"
+					alt="flag"
+				/>
+				<img
+					v-if="mapData.인동"
+					class="flag flag-in"
+					src="@/assets/images/flag.png"
+					alt="flag"
+				/>
+			</div>
+		</div>
 		<div class="main-box">
 			<p class="main-box__text">오늘은 어디로 가볼까?</p>
 			<div class="main-box__fakeInput" @click="goToSearchPage">
@@ -15,16 +37,17 @@
 			<section class="recommend-card">
 				<img
 					class="recommend-img"
-					src="@/assets/images/temp_gumi.png"
+					src="@/assets/images/course1.png"
 					alt="recommendImg"
-					@click="goToCoursePage"
+					@click="goToCoursePage(1)"
 				/>
 			</section>
 			<section class="recommend-card">
 				<img
 					class="recommend-img"
-					src="@/assets/images/temp_gumi2.png"
+					src="@/assets/images/course2.png"
 					alt="recommendImg"
+					@click="goToCoursePage(2)"
 				/>
 			</section>
 		</section>
@@ -33,23 +56,51 @@
 
 <script>
 import AppHeader from '@/components/common/AppHeader.vue';
+import { mapGetters } from 'vuex';
+import { fetchProfile, getMap } from '@/api/profile';
 
 export default {
 	data() {
 		return {
-			// 임시
-			courseId: 1,
+			username: null,
+			mapData: {
+				진평동: false,
+				인동: false,
+			},
 		};
 	},
 	components: {
 		AppHeader,
 	},
+	computed: {
+		...mapGetters(['isLogined']),
+		isLogin() {
+			return this.isLogined;
+		},
+	},
+	created() {
+		this.fetchData();
+		this.fetchMap();
+	},
 	methods: {
+		async fetchData() {
+			const userId = this.$store.getters.getId;
+			const { data } = await fetchProfile(userId);
+			this.username = data.user.nickname;
+		},
+		async fetchMap() {
+			const userId = this.$store.getters.getId;
+			const { data } = await getMap(userId);
+			data.visited.forEach(el => {
+				const place = el.place;
+				this.mapData[`${place}`] = true;
+			});
+		},
 		goToSearchPage() {
 			this.$router.push('/search');
 		},
-		goToCoursePage() {
-			this.$router.push(`/course/${this.courseId}`);
+		goToCoursePage(courseId) {
+			this.$router.push(`/course/${courseId}`);
 		},
 	},
 };
@@ -59,6 +110,34 @@ export default {
 .main-container {
 	margin-left: 5%;
 	margin-right: 5%;
+	.main-history {
+		margin-bottom: 1.1rem;
+		.main-history__text {
+			font-size: 1.2rem;
+			margin-bottom: 1rem;
+		}
+		.main-history__imgbox {
+			position: relative;
+			display: flex;
+			flex-direction: center;
+			justify-content: center;
+			.main-history__img {
+				width: 90%;
+			}
+			.flag {
+				position: absolute;
+				width: 8%;
+			}
+			.flag-jinpeong {
+				top: 72%;
+				right: 33%;
+			}
+			.flag-in {
+				top: 74%;
+				right: 24%;
+			}
+		}
+	}
 	.main-box {
 		display: flex;
 		flex-direction: column;

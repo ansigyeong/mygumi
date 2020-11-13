@@ -3,7 +3,11 @@
 		<DetailHeader />
 		<header class="detail-header">
 			<section class="user-box">
-				<img class="user-profile" src="@/assets/images/temp_gumi.png" alt="" />
+				<img
+					class="user-profile"
+					:src="checkImg(writer.profile_image)"
+					alt=""
+				/>
 				<p class="user-id">{{ writer.nickname }}</p>
 			</section>
 			<p class="header-title">{{ reviewData.title }}</p>
@@ -11,7 +15,9 @@
 				<p class="createtime">{{ reviewData.created_at.slice(0, 10) }}</p>
 			</section>
 		</header>
-		<article class="detail-body">{{ reviewData.content }}</article>
+		<article class="detail-body" v-html="content">
+			{{ content }}
+		</article>
 		<section class="user-profile"></section>
 		<footer class="detail-footer"></footer>
 	</section>
@@ -26,6 +32,7 @@ export default {
 		return {
 			reviewData: null,
 			writer: null,
+			content: null,
 		};
 	},
 	components: {
@@ -36,8 +43,23 @@ export default {
 			const reviewId = this.$route.params.reviewId;
 			const { data } = await fetchArticle(reviewId);
 			this.reviewData = data.review;
+			this.content = data.review.content;
 			const res = await fetchProfile(data.review.user);
 			this.writer = res.data.user;
+		},
+		checkImg(img) {
+			if (img === null) {
+				var ramdomNumber = Math.floor(Math.random() * 100) + 1;
+				return `https://picsum.photos/500/300?image=${ramdomNumber}`;
+			} else {
+				const image = img.slice(1);
+				return `${this.baseURL}${image}`;
+			}
+		},
+	},
+	computed: {
+		baseURL() {
+			return process.env.VUE_APP_API_URL;
 		},
 	},
 	mounted() {
