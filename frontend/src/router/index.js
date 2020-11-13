@@ -15,23 +15,22 @@ const routes = [
 		component: () => import('@/views/accounts/SignupPage.vue'),
 	},
 	{
-		path: '/location',
+		path: '/location/:locationId',
 		name: 'location',
 		component: () => import('@/views/LocationPage.vue'),
 	},
 	{
-		path: '/location/create',
+		path: '/location/:locationId/create',
 		name: 'reviewCreate',
 		component: () => import('@/views/review/CreateReviewPage.vue'),
 	},
 	{
-		path: '/location/reviews/:reviewId',
+		path: '/location/:locationId/reviews/:reviewId',
 		name: 'reviewDetail',
 		component: () => import('@/views/review/ReviewDetailPage.vue'),
 	},
 	{
-		// 유저명으로 경로 변경
-		path: '/profile',
+		path: '/profile/:userId',
 		name: 'profile',
 		component: () => import('@/views/accounts/ProfilePage.vue'),
 	},
@@ -39,14 +38,13 @@ const routes = [
 		path: '/search',
 		name: 'search',
 		component: () => import('@/views/search/SearchPage.vue'),
-		children: [
-			{
-				path: 'result',
-				name: 'searchResult',
-				component: () => import('@/components/search/SearchResult.vue'),
-			},
-		],
 	},
+	{
+		path: '/search/:searchString',
+		name: 'searchResult',
+		component: () => import('@/views/search/SearchResultPage.vue'),
+	},
+
 	{
 		path: '/course/:courseId',
 		name: 'course',
@@ -58,7 +56,7 @@ const routes = [
 		component: () => import('@/views/accounts/LoginPage.vue'),
 	},
 	{
-		path: '/mission',
+		path: '/mission/:territoryName',
 		name: 'mission',
 		component: () => import('@/views/MissionPage.vue'),
 	},
@@ -70,7 +68,17 @@ const routes = [
 	{
 		path: '/plan',
 		name: 'plan',
-		component: () => import('@/views/schedule/SchedulePlanPage.vue'),
+		component: () => import('@/views/schedule/PlanPage.vue'),
+	},
+	{
+		path: '/plan/:scheduleId',
+		name: 'planDetail',
+		component: () => import('@/views/schedule/PlanDetailPage.vue'),
+	},
+	{
+		path: '/plan/:scheduleId/update',
+		name: 'planUpdate',
+		component: () => import('@/views/schedule/PlanUpdatePage.vue'),
 	},
 	{
 		path: '/achieve',

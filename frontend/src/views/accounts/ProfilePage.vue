@@ -4,17 +4,8 @@
 			<header>
 				<h2 class="profile-title">프로필</h2>
 			</header>
-			<section v-if="isLogin">
-				<profile-user />
-			</section>
-			<section v-if="isLogin">
-				<profile-tabs />
-			</section>
-			<section v-else>
-				<v-btn class="profile-btn" color="grey" outlined @click="goToLoginPage">
-					로그인
-				</v-btn>
-			</section>
+			<profile-user />
+			<profile-tabs />
 		</v-container>
 	</v-app>
 </template>
@@ -27,12 +18,18 @@ export default {
 	name: 'profile',
 	data() {
 		return {
-			isLogin: true,
+			isLogin: false,
 		};
 	},
 	components: {
 		ProfileUser,
 		ProfileTabs,
+	},
+	mounted() {
+		if (!this.$store.getters.isLogined) {
+			this.goToLoginPage();
+			// console.log('go login');
+		}
 	},
 	methods: {
 		goToLoginPage() {

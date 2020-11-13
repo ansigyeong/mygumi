@@ -29,8 +29,4 @@ export default {
 	font-family: 'Jeju Gothic', sans-serif !important;
 	line-height: 1.5;
 }
-
-#app {
-	min-height: 100vh;
-}
 </style>
