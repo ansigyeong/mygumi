@@ -25,6 +25,9 @@
 			<v-card-subtitle class="pb-0" style="margin: 10px;">
 				주소 : {{ locationData.dong }}
 			</v-card-subtitle>
+			<v-card-subtitle style="margin: 10px;">
+				{{ content }}
+			</v-card-subtitle>
 		</v-card>
 
 		<!-- 지도 -->
@@ -33,6 +36,7 @@
 			style="width:95%;height:400px; margin: auto; z-index: 0;"
 		></div>
 		<hr />
+		<div class="no-review" v-if="noReview">💬 후기가 없습니다!</div>
 		<div class="review-title">💬{{ locationData.place }}의 리뷰</div>
 		<v-card
 			class="mx-auto"
@@ -71,6 +75,9 @@ export default {
 		return {
 			reviews: [],
 			locationData: null,
+			content: null,
+			longitude: null,
+			latitude: null,
 		};
 	},
 	created() {
@@ -89,6 +96,9 @@ export default {
 		},
 		kakaoKEY() {
 			return process.env.VUE_APP_KAKAO_KEY;
+		},
+		noReview() {
+			return this.reviews.length === 0 ? true : false;
 		},
 	},
 	updated() {
@@ -148,9 +158,8 @@ export default {
 				}
 			}
 			var container = document.getElementById('map');
-			console.log(container);
 			var options = {
-				center: new kakao.maps.LatLng(36.13079341, 128.2986528),
+				center: new kakao.maps.LatLng(this.latitude, this.longitude),
 				level: 4,
 			};
 			var map = new kakao.maps.Map(container, options);
@@ -166,6 +175,9 @@ export default {
 			const { data } = await location(locationId);
 			this.locationData = data.data;
 			this.reviews = data.data.reviews;
+			this.longitude = data.data.longitude;
+			this.latitude = data.data.latitude;
+			this.content = data.data.content;
 		},
 		addTravelList() {
 			console.log('어느 페이지로 가야하지?');
@@ -213,5 +225,11 @@ export default {
 	top: 1rem;
 	left: 1rem;
 	z-index: 999;
+}
+.no-review {
+	margin-top: 1rem;
+	margin-left: 1rem;
+	margin-bottom: 2rem;
+	font-size: 1.5rem;
 }
 </style>

@@ -18,16 +18,8 @@
 		</section>
 		<section class="articleform-wrap">
 			<div class="editor">
-				<editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
+				<editor-menu-bar :editor="editor" v-slot="{ commands }">
 					<div class="menubar">
-						<button
-							type="button"
-							class="menubar__button"
-							:class="{ 'is-active': isActive.bold() }"
-							@click="commands.bold"
-						>
-							<img class="icon" src="@/assets/images/icons/bold.svg" />
-						</button>
 						<button
 							type="button"
 							class="menubar__button"
@@ -45,7 +37,7 @@
 
 <script>
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
-import { Bold, Image, Placeholder } from 'tiptap-extensions';
+import { Image, Placeholder } from 'tiptap-extensions';
 import { submitArticle } from '@/api/review';
 import { location } from '@/api/tour';
 
@@ -88,7 +80,6 @@ export default {
 			const tempEditor = new Editor({
 				extensions: [
 					new Image(),
-					new Bold(),
 					new Placeholder({
 						emptyEditorClass: 'is-editor-empty',
 						emptyNodeClass: 'is-empty',

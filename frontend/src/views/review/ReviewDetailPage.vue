@@ -15,7 +15,9 @@
 				<p class="createtime">{{ reviewData.created_at.slice(0, 10) }}</p>
 			</section>
 		</header>
-		<article class="detail-body">{{ reviewData.content }}</article>
+		<article class="detail-body" v-html="content">
+			{{ content }}
+		</article>
 		<section class="user-profile"></section>
 		<footer class="detail-footer"></footer>
 	</section>
@@ -30,6 +32,7 @@ export default {
 		return {
 			reviewData: null,
 			writer: null,
+			content: null,
 		};
 	},
 	components: {
@@ -40,6 +43,7 @@ export default {
 			const reviewId = this.$route.params.reviewId;
 			const { data } = await fetchArticle(reviewId);
 			this.reviewData = data.review;
+			this.content = data.review.content;
 			const res = await fetchProfile(data.review.user);
 			this.writer = res.data.user;
 		},
