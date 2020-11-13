@@ -95,7 +95,6 @@ export default {
 			try {
 				const userPK = this.$store.getters.getId;
 				const { data } = await fetchAchieve(userPK);
-				console.log(data);
 				this.jinpyeong = data.jinpyeong;
 				this.geumosan = data.geumosan;
 				this.bicycle = data.bicycle;

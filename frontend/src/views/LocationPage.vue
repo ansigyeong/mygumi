@@ -179,9 +179,7 @@ export default {
 			this.latitude = data.data.latitude;
 			this.content = data.data.content;
 		},
-		addTravelList() {
-			console.log('어느 페이지로 가야하지?');
-		},
+		addTravelList() {},
 		goWriteReview() {
 			const locationId = this.$route.params.locationId;
 			this.$router.push(`/location/${locationId}/create`);

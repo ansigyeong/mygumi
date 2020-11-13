@@ -73,7 +73,6 @@ export default {
 					password: this.signupData.password1,
 				};
 				await loginUser(tempLoginData);
-				console.log(data);
 				cookies.set('id', data.user.pk);
 				cookies.set('username', data.user.username);
 				cookies.set('auth-token', data.token);

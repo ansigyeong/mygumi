@@ -7,9 +7,6 @@
 			<i class="icon ion-md-close" @click="goToMain"></i>
 		</div>
 		<p class="noResult" v-if="!isSearchArray">찾으시는 장소가 없습니다 :(</p>
-		<div></div>
-		<hr />
-		<p>장소</p>
 		<div :key="searchData.id" v-for="searchData in searchArray">
 			<SearchCard :searchData="searchData" />
 		</div>
@@ -36,7 +33,6 @@ export default {
 				const userId = this.$store.getters.getId;
 				const dong = this.$route.params.searchString;
 				const { data } = await getSearch(userId, dong);
-				console.log(data);
 				this.searchArray = data;
 			} catch (error) {
 				console.log(error);
