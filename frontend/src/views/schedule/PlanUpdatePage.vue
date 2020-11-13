@@ -173,6 +173,8 @@ import {
 	updateSchedule,
 	deletePlace,
 	deleteSchedule,
+	deleteFriend,
+	addFriend,
 } from '@/api/schedule';
 import { fetchUsers } from '@/api/profile';
 import { location } from '@/api/tour';
@@ -203,7 +205,9 @@ export default {
 			placeId: null,
 			friendId: null,
 			friendData: [],
-			usersId: null,
+			deleteId: null,
+			addId: [],
+			friendList: [],
 		};
 	},
 	mounted() {
@@ -310,9 +314,6 @@ export default {
 		},
 		// 스케쥴 작성
 		updateInfo() {
-			// console.log(this.scheduleInfo.place);
-			// console.log(this.plans);
-			// console.log(this.deletePlace);
 			this.updatePlan();
 		},
 		// 스케쥴 수정 요청
@@ -342,16 +343,23 @@ export default {
 								return item.nickname == this.selectFriends[j];
 							});
 							this.friendId++;
-							if (this.friendId != this.userId) {
-								this.friendData.push(this.friendId);
-							}
+							this.friendData.push(this.friendId);
 						}
 						for (var k = 0; k < this.scheduleInfo.user.length; k++) {
+							this.friendList.push(this.scheduleInfo.user[k].id);
 							if (!this.friendData.includes(this.scheduleInfo.user[k].id)) {
-								this.usersId = this.scheduleInfo.user[k].id;
-								this.popFriend();
+								this.deleteId = this.scheduleInfo.user[k].id;
+								if (this.deleteId != this.userId) {
+									this.popFriend();
+								}
 							}
 						}
+						for (var l = 0; l < this.friendData.length; l++) {
+							if (!this.friendList.includes(this.friendData[l])) {
+								this.addId.push(this.friendData[l]);
+							}
+						}
+						this.pushFriend();
 					}
 				}
 			} catch (error) {
@@ -376,21 +384,28 @@ export default {
 				console.log(error);
 			}
 		},
-		// async popFriend() {
-		//   try {
-		//     await deleteFriend(this.)
-		//   }
-		// }
+		// 친구 삭제 요청
+		async popFriend() {
+			try {
+				await deleteFriend(this.deleteId, this.scheduleId);
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		// 친구 추가 요청
+		async pushFriend() {
+			try {
+				await addFriend(this.scheduleId, this.addId);
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		// 스케쥴 삭제 확인창
 		removePlan() {
-			console.log('aaaaaaaaaaa');
-			console.log(this.selectFriends);
-			console.log(this.scheduleInfo.user);
-			console.log(this.friendData);
-			// if (confirm('전체 일정을 삭제하실껀가요?')) {
-			// 	this.popPlan();
-			// 	return this.$router.push('/schedule');
-			// }
+			if (confirm('전체 일정을 삭제하실껀가요?')) {
+				this.popPlan();
+				return this.$router.push('/schedule');
+			}
 		},
 		goToChallengePage() {
 			alert('챌린지 하자!!!!');
