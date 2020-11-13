@@ -31,7 +31,7 @@
 					<div class="v-timeline-item__divider">
 						<div class="v-timeline-item__dot v-timeline-item__dot--small">
 							<v-img
-								:src="`${course.image}`"
+								:src="'https://k3d201.p.ssafy.io:8080' + `${course.image}`"
 								class="v-timeline-item__inner-dot blue"
 							></v-img>
 						</div>
