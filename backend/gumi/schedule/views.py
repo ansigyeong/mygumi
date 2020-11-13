@@ -19,6 +19,8 @@ from tour.models import Place
 from .permissions import SchedulePermission
 from accounts.serializers import UserSerializer
 
+from drf_yasg.utils import swagger_auto_schema
+
 User = get_user_model()
 
 class ScheduleView(APIView):
@@ -60,6 +62,7 @@ class HostView(APIView):
     def patch(self, request, user_id, schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
         schedule.date = request.data['date']
+        schedule.title = request.data['title']
         schedule.save()
         serializer = ScheduleSerializer(instance=schedule)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -67,17 +70,18 @@ class HostView(APIView):
     def delete(self, request, user_id, schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
         schedule.delete()
-        serializer = ScheduleSerializer(instance=schedule)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-class PlaceView(APIView):
-
+class PlaceAddView(APIView):
     permission_classes =[SchedulePermission]
 
-    def post(self, request, place_id,schedule_pk):
+    def post(self, request, schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
         if schedule.host.id == request.user.id:
-            schedule.place.add(place_id)
+            places = request.data
+            for place in places:
+                schedule.place.add(place)
+
             serializer = ScheduleSerializer(instance=schedule)
             response = {
                 'status': True,
@@ -90,7 +94,11 @@ class PlaceView(APIView):
                 'status': False,
                 'message': '호스트만 방문 지역 추가가 가능합니다.'
             }
-            return Response(response, status=status.HTTP_200_OK)      
+            return Response(response, status=status.HTTP_200_OK)
+
+class PlaceView(APIView):
+
+    permission_classes =[SchedulePermission]
 
     def delete(self, request, place_id,schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
@@ -110,15 +118,15 @@ class PlaceView(APIView):
             }
             return Response(response, status=status.HTTP_200_OK)   
 
-
-class InvitedView(APIView):
-
+class InvitedAddView(APIView):
     permission_classes =[SchedulePermission]
 
-    def post(self, request, user_id, schedule_pk):
+    def post(self, request, schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)
         if schedule.host.id == request.user.id:
-            schedule.user.add(user_id)
+            users = request.data
+            for user in users:
+                schedule.user.add(user)
             serializer = ScheduleSerializer(instance=schedule)
             response = {
                 'status': True,
@@ -132,6 +140,10 @@ class InvitedView(APIView):
                 'message': '호스트만 초대가 가능합니다.'
             }
             return Response(response, status=status.HTTP_200_OK)
+
+class InvitedView(APIView):
+
+    permission_classes =[SchedulePermission]
 
     def delete(self, request, user_id, schedule_pk):
         schedule = get_object_or_404(Schedule,id=schedule_pk)

@@ -10,16 +10,21 @@ def course_directory_path(instance, filename):
     # instance.course_name을 가져오면 charfield로 받아온 값을 적용한다
     # /media/course/1/filename
     # /media/course/금오산/filename
-    return 'course/{}/{}'.format(instance.course_name, filename)
+    return 'course/{}/{}'.format(instance.place, filename)
+
+class Course(models.Model):
+    course_num = models.IntegerField()
+    course_name = models.CharField(max_length=50)
 
 class Place(models.Model):
-    course = models.IntegerField()
-    course_name = models.CharField(max_length=50)
     place = models.CharField(max_length=30)
     image = models.ImageField(upload_to=course_directory_path, null=True)
     content = models.TextField()
     dong = models.CharField(max_length=50)
     time = models.TextField(default='')
+    latitude = models.CharField(max_length=15)
+    longitude = models.CharField(max_length=15)
+    course = models.ManyToManyField(Course, related_name='place_course')
 
 class Mission(models.Model):
     place = models.ForeignKey(Place,on_delete=models.CASCADE)

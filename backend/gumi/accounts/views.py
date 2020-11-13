@@ -59,32 +59,33 @@ class VisitCheckView(APIView):
     
     @swagger_auto_schema(request_body=VisitSerializer)
     def post(self, request, user_pk):
-        places = request.data['place']
-        for place in places:
-            visit = VisitCheck()
-            visit.place = place
-            visit.user = request.user
-            visit.check = 1
-            visit.save()
+        place = request.data['place']
+        user = get_object_or_404(User, id=user_pk)
+        if request.user != user:
+            return Response('본인이 아닙니다')
+        visit = VisitCheck()
+        visit.place = place
+        visit.user = request.user
+        visit.check = 1
+        visit.save()
         visits = VisitCheck.objects.filter(user=user_pk)
         visitSerializer = VisitSerializer(instance=visits, many=True)   
         data = {
-            'review': visitSerializer.data,
+            'visited': visitSerializer.data,
         }
         return Response(data)
     
     @swagger_auto_schema(request_body=VisitSerializer)
     def patch(self, request, user_pk):
-        places = request.data['place']
+        place = request.data['place']
         user = get_object_or_404(User, pk=user_pk)
-        for place in places:
-            visit = get_object_or_404(VisitCheck, user=user, place=place)
-            visit.check = 0
-            visit.save()
+        visit = get_object_or_404(VisitCheck, user=user, place=place)
+        visit.check = 0
+        visit.save()
         visits = VisitCheck.objects.filter(user=user_pk)
         visitSerializer = VisitSerializer(instance=visits, many=True)   
         data = {
-            'review': visitSerializer.data,
+            'visited': visitSerializer.data,
         }
         return Response(data)
 
