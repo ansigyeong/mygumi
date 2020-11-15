@@ -15,11 +15,7 @@
 				v-for="schedule in schedules"
 				:key="schedule.id"
 			>
-				<v-row
-					class="schedule-list"
-					v-if="schedule.date >= today"
-					@click="goToDetailPlan(schedule.id)"
-				>
+				<v-row class="schedule-list" v-if="schedule.date >= today">
 					<section class="schedule-user">
 						<v-avatar size="30" class="schedule-img">
 							<img
@@ -33,7 +29,10 @@
 							{{ schedule.host.nickname }}
 						</p>
 					</section>
-					<v-col class="schedule-challenge">
+					<v-col
+						class="schedule-challenge"
+						@click="goToDetailPlan(schedule.id)"
+					>
 						<p class="schedule-name">{{ schedule.title }}</p>
 						<p class="schedule-date">
 							{{ schedule.date[5] }}{{ schedule.date[6] }}월
@@ -139,7 +138,7 @@ export default {
 			}
 		},
 		goToChallenge() {
-			return this.$router.push('/mission');
+			alert('챌린지하자!!');
 		},
 		goToDetailPlan(scheduleId) {
 			return this.$router.push(`/plan/${scheduleId}`);
