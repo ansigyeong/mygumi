@@ -36,7 +36,6 @@ export default {
 				const userId = this.$store.getters.getId;
 				const dong = this.$route.params.searchString;
 				const { data } = await getSearch(userId, dong);
-				console.log(data);
 				this.searchArray = data;
 			} catch (error) {
 				console.log(error);

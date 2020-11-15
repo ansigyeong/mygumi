@@ -4,11 +4,6 @@
 			<v-app-bar flat color="rgba(0, 0, 0, 0)" class="schedule-bar">
 				<h2 class="schedule-title">여행 일정</h2>
 				<v-spacer />
-
-				<!-- 일정 추가 버튼 -->
-				<!-- <v-btn class="schedule-icon" icon @click="goToPlanPage">
-					<v-icon>mdi-calendar-plus</v-icon>
-				</v-btn> -->
 			</v-app-bar>
 		</header>
 		<section>
@@ -18,8 +13,7 @@
 					<p class="schedule-text">주변 여행을 즐기고 싶다면?</p>
 				</v-col>
 				<div class="schedule-start">
-					<!-- 미션 시작 버튼 -->
-					<v-btn class="schedule-btn">Start</v-btn>
+					<v-btn class="schedule-btn" @click="goToMissionPage">Start</v-btn>
 				</div>
 			</v-row>
 		</section>
@@ -35,6 +29,9 @@ export default {
 			this.setCourseId(null);
 			this.$cookies.remove('courseId');
 			this.$router.push('/plan');
+		},
+		goToMissionPage() {
+			this.$router.push('/mission/진평동');
 		},
 	},
 };

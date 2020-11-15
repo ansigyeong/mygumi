@@ -79,8 +79,10 @@ export default {
 		},
 	},
 	created() {
-		this.fetchData();
-		this.fetchMap();
+		if (this.isLogined) {
+			this.fetchData();
+			this.fetchMap();
+		}
 	},
 	methods: {
 		async fetchData() {

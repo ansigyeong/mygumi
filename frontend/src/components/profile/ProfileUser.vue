@@ -69,21 +69,11 @@
 							</v-toolbar-items>
 						</v-toolbar>
 						<v-list subheader class="profile-edit">
-							<v-avatar size="90" class="profile-edit-image">
-								<!-- <img
-									id="edit-profile-image"
-									:src="editImage"
-									alt="profile-image"
-								/> -->
-							</v-avatar>
-							<!-- <button type="file" class="btn-update__info">
-								사진수정
-							</button> -->
+							<v-avatar size="90" class="profile-edit-image"> </v-avatar>
 							<input
 								ref="inputFile"
 								type="file"
 								accept="image/*"
-								@change="onChangeFile"
 								class="fake-btn"
 							/>
 
@@ -174,7 +164,6 @@ export default {
 				const { data } = await fetchProfile(userPK);
 				this.userId = userPK;
 				this.profileImg = data.user.profile_image.slice(1);
-				console.log(data.user);
 				this.userName = data.user.nickname;
 				this.email = data.user.email;
 
@@ -185,15 +174,6 @@ export default {
 		},
 		previewImage(e) {
 			if (e) {
-				console.log(e);
-				// var fileImage = document.getElementById('profile-file-upload');
-				// const formData = new FormData();
-				// formData.append('profile_image', fileImage.files[0]);
-				// console.log('이건 뭐?');
-				// console.log(fileImage.files[0]);
-				// this.editData.profile_image = formData;
-				// console.log(formData.get('profile_image'));
-				// this.editData.profile_image = URL.createObjectURL(e);
 				window.$('#edit-profile-image').attr('src', URL.createObjectURL(e));
 			}
 		},
@@ -207,29 +187,6 @@ export default {
 		},
 		goToSchedule() {
 			this.$router.push('/schedule');
-		},
-		// async patchImage(img) {
-		// 	try {
-		// 		// const id = this.$store.getters.getId;
-		// 		const formdata = new FormData();
-		// 		formdata.append('profile_image', img);
-		// 		// await updateImage(id, formdata);
-		// 	} catch (error) {
-		// 		bus.$emit('show:warning', '이미지를 가져오는데 실패했어요 :(');
-		// 	}
-		// },
-
-		// validateFile(file) {
-		// 	const imageArray = ['image/png', 'image/jpg', 'image/jpeg'];
-		// 	if (imageArray.includes(file.type)) return true;
-		// 	return false;
-		// },
-		onChangeFile() {
-			try {
-				console.log('@@');
-			} catch (error) {
-				console.log(error);
-			}
 		},
 		async updateInfo() {
 			try {
