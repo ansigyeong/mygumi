@@ -1,6 +1,11 @@
 <template>
 	<section class="login-container">
-		<div class="temp"></div>
+		<img
+			class="logo-img"
+			src="@/assets/images/logo.png"
+			alt="logo"
+			@click="goMain"
+		/>
 		<p class="login-msg">로그인</p>
 		<div class="login-box">
 			<label class="login-label" for="email">이메일</label>
@@ -27,22 +32,29 @@
 
 <script>
 import { loginUser } from '@/api/auth';
+import { mapMutations } from 'vuex';
+import cookies from 'vue-cookies';
+
 export default {
 	data() {
 		return {
 			loginData: {
-				// username: '김김김',
 				email: '',
 				password: '',
 			},
 		};
 	},
 	methods: {
+		...mapMutations(['setUsername', 'setToken', 'setId']),
 		async submitForm() {
 			try {
 				const { data } = await loginUser(this.loginData);
-				this.$store.dispatch('SETUP_USER', data);
-				// this.$store.dispatch('LOGIN', data);
+				cookies.set('id', data.user.pk);
+				cookies.set('username', data.user.username);
+				cookies.set('auth-token', data.token);
+				this.setUsername(data.user.username);
+				this.setToken(data.token);
+				this.setId(data.user.pk);
 				this.$router.push('/');
 			} catch (error) {
 				console.log(error);
@@ -51,6 +63,9 @@ export default {
 		goToSignup() {
 			this.$router.push('/signup');
 		},
+		goMain() {
+			this.$router.push('/');
+		},
 	},
 };
 </script>
@@ -58,10 +73,16 @@ export default {
 <style lang="scss" scoped>
 .login-container {
 	margin: 5% 3%;
+
+	.logo-img {
+		margin-top: 2rem;
+		width: 10%;
+	}
+
 	.login-msg {
 		font-size: 2rem;
 		color: #3e4042;
-		margin-top: 2rem;
+		margin-top: 1rem;
 		margin-bottom: 1rem;
 	}
 	.login-box {

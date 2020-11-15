@@ -2,6 +2,7 @@
 	<div id="app">
 		<router-view />
 		<BottomNav></BottomNav>
+		<div class="temp-space"></div>
 	</div>
 </template>
 
@@ -30,7 +31,7 @@ export default {
 	line-height: 1.5;
 }
 
-#app {
-	min-height: 100vh;
+.temp-space {
+	height: 3rem;
 }
 </style>

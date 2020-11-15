@@ -1,6 +1,6 @@
 <template>
 	<section class="profile-tabs">
-		<template>
+		<!-- <template>
 			<v-tabs v-model="profileTabs" color="black" grow>
 				<v-tab>
 					<v-icon>mdi-tooltip-image</v-icon>
@@ -9,23 +9,23 @@
 					<v-icon>mdi-tooltip-edit</v-icon>
 				</v-tab>
 			</v-tabs>
-		</template>
+		</template> -->
 
-		<v-tabs-items v-model="profileTabs">
-			<v-tab-item>
-				<profile-photo />
-			</v-tab-item>
-
+		<!-- <v-tabs-items v-model="profileTabs">
+			<v-tab-item> -->
+		<profile-photo />
+		<!-- </v-tab-item>
+			
 			<v-tab-item>
 				<review-card />
 			</v-tab-item>
-		</v-tabs-items>
+		</v-tabs-items> -->
 	</section>
 </template>
 
 <script>
 import ProfilePhoto from '@/components/profile/ProfilePhoto.vue';
-import ReviewCard from '@/components/review/ReviewCard.vue';
+// import ReviewCard from '@/components/review/ReviewCard.vue';
 
 export default {
 	data() {
@@ -35,7 +35,7 @@ export default {
 	},
 	components: {
 		ProfilePhoto,
-		ReviewCard,
+		// ReviewCard,
 	},
 };
 </script>

@@ -4,12 +4,8 @@
 			<header>
 				<h2 class="profile-title">프로필</h2>
 			</header>
-			<section>
-				<profile-user />
-			</section>
-			<section>
-				<profile-tabs />
-			</section>
+			<profile-user />
+			<profile-tabs />
 		</v-container>
 	</v-app>
 </template>
@@ -20,9 +16,24 @@ import ProfileTabs from '@/components/profile/ProfileTabs';
 
 export default {
 	name: 'profile',
+	data() {
+		return {
+			isLogin: false,
+		};
+	},
 	components: {
 		ProfileUser,
 		ProfileTabs,
+	},
+	mounted() {
+		if (!this.$store.getters.isLogined) {
+			this.goToLoginPage();
+		}
+	},
+	methods: {
+		goToLoginPage() {
+			this.$router.push('/login');
+		},
 	},
 };
 </script>
@@ -32,5 +43,11 @@ export default {
 	margin-left: 5px;
 	font-weight: bold;
 	font-size: 20px;
+}
+.profile-btn {
+	width: 100%;
+	margin: 0px;
+	box-shadow: none;
+	background-color: white !important;
 }
 </style>

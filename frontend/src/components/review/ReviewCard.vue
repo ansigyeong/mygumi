@@ -30,7 +30,7 @@
 
 				<v-list-item-content class="review-card-userinfo">
 					<v-card-subtitle class="review-card-text">
-						{{ reviewName }} · {{ reviewDate }}
+						{{ reviewName }} · {{ reviewDate.slice(0, 10) }}
 					</v-card-subtitle>
 				</v-list-item-content>
 			</v-list-item>

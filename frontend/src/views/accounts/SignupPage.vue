@@ -1,5 +1,11 @@
 <template>
 	<section class="signup-container">
+		<img
+			class="logo-img"
+			src="@/assets/images/logo.png"
+			alt="logo"
+			@click="goMain"
+		/>
 		<p class="signup-msg">회원가입</p>
 		<div class="signup-box">
 			<label class="signup-label" for="email">이메일</label>
@@ -15,7 +21,7 @@
 			<input
 				id="name"
 				type="text"
-				v-model="signupData.username"
+				v-model="signupData.nickname"
 				placeholder="김구미"
 			/>
 		</div>
@@ -42,13 +48,15 @@
 </template>
 
 <script>
-import { registerUser } from '@/api/auth';
+import { registerUser, loginUser } from '@/api/auth';
+import { mapMutations } from 'vuex';
+import cookies from 'vue-cookies';
 
 export default {
 	data() {
 		return {
 			signupData: {
-				username: '',
+				nickname: '',
 				email: '',
 				password1: '',
 				password2: '',
@@ -56,15 +64,28 @@ export default {
 		};
 	},
 	methods: {
+		...mapMutations(['setUsername', 'setToken', 'setId']),
 		async submitForm() {
 			try {
 				const { data } = await registerUser(this.signupData);
-				this.$store.dispatch('SETUP_USER', data);
-				this.$store.dispatch('LOGIN', data);
+				const tempLoginData = {
+					email: this.signupData.email,
+					password: this.signupData.password1,
+				};
+				await loginUser(tempLoginData);
+				cookies.set('id', data.user.pk);
+				cookies.set('username', data.user.username);
+				cookies.set('auth-token', data.token);
+				this.setUsername(data.user.username);
+				this.setToken(data.token);
+				this.setId(data.user.pk);
 				this.$router.push('/');
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		goMain() {
+			this.$router.push('/');
 		},
 	},
 };
@@ -73,10 +94,14 @@ export default {
 <style lang="scss" scoped>
 .signup-container {
 	margin: 5% 3%;
+	.logo-img {
+		margin-top: 2rem;
+		width: 10%;
+	}
 	.signup-msg {
 		font-size: 2rem;
 		color: #3e4042;
-		margin-top: 2rem;
+		margin-top: 1rem;
 		margin-bottom: 1rem;
 	}
 	.signup-box {

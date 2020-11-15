@@ -9,51 +9,85 @@
 				<span class="schedule-text">즐거운 여행되세요~~!!</span>
 			</v-row>
 		</header>
-		<section>
-			<v-card class="schedule-card">
-				<v-row class="schedule-list">
+		<section v-if="schedules">
+			<v-card
+				class="schedule-card"
+				v-for="schedule in schedules"
+				:key="schedule.id"
+			>
+				<v-row class="schedule-list" v-if="schedule.date >= today">
 					<section class="schedule-user">
 						<v-avatar size="30" class="schedule-img">
-							<img :src="scheduleImg" alt="profile-image" />
+							<img
+								:src="
+									'https://k3d201.p.ssafy.io:8080' + schedule.host.profile_image
+								"
+								alt="profile-image"
+							/>
 						</v-avatar>
 						<p class="schedule-name">
-							{{ writerName }}
+							{{ schedule.host.nickname }}
 						</p>
 					</section>
-					<v-col class="schedule-challenge">
-						<p class="schedule-name">{{ scheduleName }}</p>
-						<p class="schedule-date">{{ scheduleDate }}</p>
+					<v-col
+						class="schedule-challenge"
+						@click="goToDetailPlan(schedule.id)"
+					>
+						<p class="schedule-name">{{ schedule.title }}</p>
+						<p class="schedule-date">
+							{{ schedule.date[5] }}{{ schedule.date[6] }}월
+							{{ schedule.date[8] }}{{ schedule.date[9] }}일
+						</p>
 					</v-col>
 					<section class="schedule-play">
 						<!-- 챌린지 시작 버튼 -->
-						<v-btn class="schedule-btn" icon>
+						<v-btn
+							class="schedule-btn"
+							icon
+							@click="goToChallenge(schedule.id)"
+						>
 							<v-icon>mdi-play-circle-outline</v-icon>
 						</v-btn>
 					</section>
 				</v-row>
 			</v-card>
 		</section>
+		<p v-else>작성된 일정이 없습니다.</p>
 	</section>
 </template>
 
 <script>
+import { scheduleList } from '@/api/schedule';
+import { fetchProfile } from '@/api/profile';
+
 export default {
 	data() {
 		return {
 			todayMonth: null, // 오늘 날짜(월)
 			todayDate: null, // 오늘 날짜(일)
+			today: null,
 
 			scheduleImg: 'https://picsum.photos/200', // 일정 작성자 이미지
 			writerName: '김영주', // 일정 작성자 이름
 			scheduleName: '구미 첫 여행~~!', // 일정 이름
 			scheduleDate: '10월 30일', // 여행 날짜
+
+			schedules: [],
+			hostId: null,
+			hostName: null,
+			hostImage: null,
 		};
+	},
+	mounted() {
+		this.getSchedule();
 	},
 	created() {
 		// 오늘 날짜
 		var today = new Date();
 		this.todayDate = today.getDate();
 		var month = today.getMonth() + 1;
+		var year = today.getFullYear();
+		this.today = year + '-' + month + '-' + this.todayDate;
 		if (month == 1) {
 			this.todayMonth = 'Jan';
 		} else if (month == 2) {
@@ -80,13 +114,49 @@ export default {
 			this.todayMonth = 'Dec';
 		}
 	},
+	methods: {
+		async getSchedule() {
+			try {
+				const userId = this.$store.getters.getId;
+				const { data } = await scheduleList(userId);
+				this.schedules = data.data;
+				this.schedules.sort(function(a, b) {
+					if (a.date > b.date) {
+						return 1;
+					}
+					if (a.date < b.date) {
+						return -1;
+					}
+					return 0;
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async fetchData() {
+			try {
+				const { data } = await fetchProfile(this.hostId);
+				this.hostImage = data.user.profile_image;
+				this.hostName = data.user.nickname;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		goToChallenge(scheduleId) {
+			return this.$router.push(`/challenge/${scheduleId}`);
+		},
+		goToDetailPlan(scheduleId) {
+			return this.$router.push(`/plan/${scheduleId}`);
+		},
+	},
 };
 </script>
 
 <style lang="scss" scoped>
 .schedule-content {
 	width: 100%;
-	height: 100vh;
+	height: 100%;
+	min-height: 100vh;
 	background-color: white;
 	border-top-left-radius: 50px;
 	box-shadow: -3px -3px 10px 1px navy;
