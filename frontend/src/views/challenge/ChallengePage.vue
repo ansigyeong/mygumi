@@ -200,10 +200,6 @@ export default {
 				console.log(error);
 			}
 		},
-		mergeData() {
-			console.log(this.plans);
-			console.log(this.missions);
-		},
 		successMission(placeId) {
 			this.complete.push(placeId);
 		},
