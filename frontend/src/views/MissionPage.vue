@@ -128,6 +128,7 @@ export default {
 	mounted() {
 		this.fetchData();
 	},
+	watch: {},
 	methods: {
 		async fetchData() {
 			try {
@@ -173,7 +174,14 @@ export default {
 				} else {
 					this.missions[this.idx].open = true;
 				}
-				alert('정답입니다 :)');
+				if (
+					this.completes.length ==
+					this.missions.length + this.completes.length
+				) {
+					alert('최종장소는 마지막 정답입니다. 해당 장소로 이동해주세요:)');
+				} else {
+					alert('정답입니다 :)');
+				}
 			} else {
 				alert('틀렸습니다 :(');
 			}
@@ -202,6 +210,7 @@ export default {
 <style lang="scss" scoped>
 .mission {
 	padding-right: 1rem;
+	margin-bottom: 10px;
 }
 .card-header {
 	margin: 1.5rem;

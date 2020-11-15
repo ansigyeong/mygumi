@@ -369,9 +369,7 @@ export default {
 		// 장소 삭제 요청
 		async popPlace() {
 			try {
-				// const { data } =
 				await deletePlace(this.placeId, this.scheduleId);
-				// console.log(data);
 			} catch (error) {
 				console.log(error);
 			}
