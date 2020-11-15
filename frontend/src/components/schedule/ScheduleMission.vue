@@ -19,7 +19,7 @@
 				</v-col>
 				<div class="schedule-start">
 					<!-- 미션 시작 버튼 -->
-					<v-btn class="schedule-btn">Start</v-btn>
+					<v-btn class="schedule-btn" @click="goToMission">Start</v-btn>
 				</div>
 			</v-row>
 		</section>
@@ -35,6 +35,10 @@ export default {
 			this.setCourseId(null);
 			this.$cookies.remove('courseId');
 			this.$router.push('/plan');
+		},
+		goToMission() {
+			alert('진평동 미션실시!');
+			this.$router.push('/mission/진평동');
 		},
 	},
 };
