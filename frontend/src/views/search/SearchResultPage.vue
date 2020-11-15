@@ -7,9 +7,6 @@
 			<i class="icon ion-md-close" @click="goToMain"></i>
 		</div>
 		<p class="noResult" v-if="!isSearchArray">찾으시는 장소가 없습니다 :(</p>
-		<div></div>
-		<hr />
-		<p>장소</p>
 		<div :key="searchData.id" v-for="searchData in searchArray">
 			<SearchCard :searchData="searchData" />
 		</div>

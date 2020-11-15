@@ -12,5 +12,5 @@ function createWithAuth(url, options) {
 	return instance;
 }
 
-export const base = create(process.env.VUE_APP_API_URL);
-export const auth = createWithAuth(process.env.VUE_APP_API_URL);
+export const base = create('https://k3d201.p.ssafy.io:8080/');
+export const auth = createWithAuth('https://k3d201.p.ssafy.io:8080/');

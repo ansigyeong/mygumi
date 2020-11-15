@@ -23,7 +23,8 @@
 				{{ locationData.place }}
 			</div>
 			<v-card-subtitle class="pb-0" style="margin: 10px;">
-				주소 : {{ locationData.dong }}
+				주소 : {{ locationData.dong }} <br />
+				시간 : {{ locationData.time }}
 			</v-card-subtitle>
 			<v-card-subtitle style="margin: 10px;" v-if="!content == '.'">
 				{{ content }}
@@ -179,6 +180,10 @@ export default {
 			this.latitude = data.data.latitude;
 			this.content = data.data.content;
 		},
+<<<<<<< frontend/src/views/LocationPage.vue
+=======
+		addTravelList() {},
+>>>>>>> frontend/src/views/LocationPage.vue
 		goWriteReview() {
 			const locationId = this.$route.params.locationId;
 			this.$router.push(`/location/${locationId}/create`);

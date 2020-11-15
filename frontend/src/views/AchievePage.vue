@@ -3,7 +3,9 @@
 		<v-card tile>
 			<div class="card-header">
 				<p class="title">업적</p>
-				<p class="result">🏆 {{ completeList.length }}/{{ toDoList.length }}</p>
+				<p class="result">
+					🏆 {{ completeList.length }}/{{ completeList + toDoList.length }}
+				</p>
 				<hr />
 			</div>
 			<v-list rounded>
@@ -44,7 +46,7 @@ export default {
 		toDoList: [
 			{
 				text: '진평동 마스터',
-				detail: '진평동에서 미션 10개 완료하기',
+				detail: '진평동 미션 10개 완료하기',
 				icon: 'mdi-lock',
 				jinpyeong: false,
 			},

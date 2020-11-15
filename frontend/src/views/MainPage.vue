@@ -16,6 +16,12 @@
 					alt="flag"
 				/>
 				<img
+					v-if="mapData.선산읍"
+					class="flag flag-seonsan"
+					src="@/assets/images/flag.png"
+					alt="flag"
+				/>
+				<img
 					v-if="mapData.인동"
 					class="flag flag-in"
 					src="@/assets/images/flag.png"
@@ -66,6 +72,7 @@ export default {
 			mapData: {
 				진평동: false,
 				인동: false,
+				선산읍: false,
 			},
 		};
 	},
@@ -129,6 +136,10 @@ export default {
 			.flag {
 				position: absolute;
 				width: 8%;
+			}
+			.flag-seonsan {
+				top: 30%;
+				left: 37%;
 			}
 			.flag-jinpeong {
 				top: 72%;
