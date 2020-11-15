@@ -23,10 +23,8 @@
 				{{ locationData.place }}
 			</div>
 			<v-card-subtitle class="pb-0" style="margin: 10px;">
-				주소 : {{ locationData.dong }}
-			</v-card-subtitle>
-			<v-card-subtitle style="margin: 10px;">
-				{{ content }}
+				주소 : {{ locationData.dong }} <br />
+				시간 : {{ locationData.time }}
 			</v-card-subtitle>
 		</v-card>
 
