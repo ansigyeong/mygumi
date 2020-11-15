@@ -179,6 +179,7 @@ export default {
 					this.missions.length + this.completes.length
 				) {
 					alert('최종장소는 마지막 정답입니다. 해당 장소로 이동해주세요:)');
+					this.$router.push('/');
 				} else {
 					alert('정답입니다 :)');
 				}

@@ -9,7 +9,7 @@
 				<span class="schedule-text">즐거운 여행되세요~~!!</span>
 			</v-row>
 		</header>
-		<section>
+		<section v-if="schedules">
 			<v-card
 				class="schedule-card"
 				v-for="schedule in schedules"
@@ -41,13 +41,18 @@
 					</v-col>
 					<section class="schedule-play">
 						<!-- 챌린지 시작 버튼 -->
-						<v-btn class="schedule-btn" icon @click="goToChallenge">
+						<v-btn
+							class="schedule-btn"
+							icon
+							@click="goToChallenge(schedule.id)"
+						>
 							<v-icon>mdi-play-circle-outline</v-icon>
 						</v-btn>
 					</section>
 				</v-row>
 			</v-card>
 		</section>
+		<p v-else>작성된 일정이 없습니다.</p>
 	</section>
 </template>
 
@@ -137,8 +142,8 @@ export default {
 				console.log(error);
 			}
 		},
-		goToChallenge() {
-			alert('챌린지하자!!');
+		goToChallenge(scheduleId) {
+			return this.$router.push(`/challenge/${scheduleId}`);
 		},
 		goToDetailPlan(scheduleId) {
 			return this.$router.push(`/plan/${scheduleId}`);
