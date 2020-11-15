@@ -9,17 +9,13 @@
 				<span class="schedule-text">즐거운 여행되세요~~!!</span>
 			</v-row>
 		</header>
-		<section>
+		<section v-if="schedules">
 			<v-card
 				class="schedule-card"
 				v-for="schedule in schedules"
 				:key="schedule.id"
 			>
-				<v-row
-					class="schedule-list"
-					v-if="schedule.date >= today"
-					@click="goToDetailPlan(schedule.id)"
-				>
+				<v-row class="schedule-list" v-if="schedule.date >= today">
 					<section class="schedule-user">
 						<v-avatar size="30" class="schedule-img">
 							<img
@@ -33,7 +29,10 @@
 							{{ schedule.host.nickname }}
 						</p>
 					</section>
-					<v-col class="schedule-challenge">
+					<v-col
+						class="schedule-challenge"
+						@click="goToDetailPlan(schedule.id)"
+					>
 						<p class="schedule-name">{{ schedule.title }}</p>
 						<p class="schedule-date">
 							{{ schedule.date[5] }}{{ schedule.date[6] }}월
@@ -42,13 +41,18 @@
 					</v-col>
 					<section class="schedule-play">
 						<!-- 챌린지 시작 버튼 -->
-						<v-btn class="schedule-btn" icon @click="goToChallenge">
+						<v-btn
+							class="schedule-btn"
+							icon
+							@click="goToChallenge(schedule.id)"
+						>
 							<v-icon>mdi-play-circle-outline</v-icon>
 						</v-btn>
 					</section>
 				</v-row>
 			</v-card>
 		</section>
+		<p v-else>작성된 일정이 없습니다.</p>
 	</section>
 </template>
 
@@ -138,8 +142,8 @@ export default {
 				console.log(error);
 			}
 		},
-		goToChallenge() {
-			return this.$router.push('/mission');
+		goToChallenge(scheduleId) {
+			return this.$router.push(`/challenge/${scheduleId}`);
 		},
 		goToDetailPlan(scheduleId) {
 			return this.$router.push(`/plan/${scheduleId}`);

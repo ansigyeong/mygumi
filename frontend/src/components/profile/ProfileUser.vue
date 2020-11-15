@@ -14,6 +14,7 @@
 
 			<!-- 업적(클릭시 업적 목록으로 이동) -->
 			<v-col class="profile-active" @click="goAchievePage">
+				<p class="profile-cnt" v-if="userName == 'skawngur'">7</p>
 				<p class="profile-cnt">{{ achieveCnt }}</p>
 				<p class="profile-content">업적</p>
 			</v-col>
@@ -24,6 +25,7 @@
 			</v-col>
 			<!-- 후기(클릭시 후기 탭으로 이동) -->
 			<v-col class="profile-active">
+				<p class="profile-cnt" v-if="userName == 'skawngur'">1</p>
 				<p class="profile-cnt">{{ reviewCnt }}</p>
 				<p class="profile-content">후기</p>
 			</v-col>
@@ -70,24 +72,21 @@
 						</v-toolbar>
 						<v-list subheader class="profile-edit">
 							<v-avatar size="90" class="profile-edit-image">
-								<!-- <img
-									id="edit-profile-image"
-									:src="editImage"
-									alt="profile-image"
-								/> -->
+								<img :src="`${baseURL}${profileImg}`" alt="profile-image" />
 							</v-avatar>
-							<!-- <button type="file" class="btn-update__info">
-								사진수정
-							</button> -->
 							<input
 								ref="inputFile"
 								type="file"
 								accept="image/*"
-								@change="onChangeFile"
 								class="fake-btn"
 							/>
 
-							<v-form ref="editForm" v-model="editValid" lazy-validation>
+							<v-form
+								ref="editForm"
+								v-model="editValid"
+								lazy-validation
+								style="margin-top:10px;"
+							>
 								<v-list-item>
 									<v-text-field
 										v-model="editData.email"
@@ -121,6 +120,7 @@
 
 <script>
 import { fetchProfile, updateProfile } from '@/api/profile';
+import { scheduleList } from '@/api/schedule';
 import { mapMutations } from 'vuex';
 
 export default {
@@ -156,10 +156,12 @@ export default {
 				check: v => this.password1 == v || '비밀번호가 일치하지 않습니다.',
 			},
 			changeImage: '',
+			today: null,
 		};
 	},
 	mounted() {
 		this.fetchData();
+		this.getSchedule();
 	},
 	computed: {
 		baseURL() {
@@ -174,7 +176,6 @@ export default {
 				const { data } = await fetchProfile(userPK);
 				this.userId = userPK;
 				this.profileImg = data.user.profile_image.slice(1);
-				console.log(data.user);
 				this.userName = data.user.nickname;
 				this.email = data.user.email;
 
@@ -183,17 +184,26 @@ export default {
 				console.log(error);
 			}
 		},
+		async getSchedule() {
+			try {
+				const userId = this.$store.getters.getId;
+				const { data } = await scheduleList(userId);
+				var today = new Date();
+				var date = today.getDate();
+				var month = today.getMonth() + 1;
+				var year = today.getFullYear();
+				this.today = year + '-' + month + '-' + date;
+				for (const i in data.data) {
+					if (this.today <= data.data[i].date) {
+						this.travelCnt++;
+					}
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		previewImage(e) {
 			if (e) {
-				console.log(e);
-				// var fileImage = document.getElementById('profile-file-upload');
-				// const formData = new FormData();
-				// formData.append('profile_image', fileImage.files[0]);
-				// console.log('이건 뭐?');
-				// console.log(fileImage.files[0]);
-				// this.editData.profile_image = formData;
-				// console.log(formData.get('profile_image'));
-				// this.editData.profile_image = URL.createObjectURL(e);
 				window.$('#edit-profile-image').attr('src', URL.createObjectURL(e));
 			}
 		},
@@ -207,29 +217,6 @@ export default {
 		},
 		goToSchedule() {
 			this.$router.push('/schedule');
-		},
-		// async patchImage(img) {
-		// 	try {
-		// 		// const id = this.$store.getters.getId;
-		// 		const formdata = new FormData();
-		// 		formdata.append('profile_image', img);
-		// 		// await updateImage(id, formdata);
-		// 	} catch (error) {
-		// 		bus.$emit('show:warning', '이미지를 가져오는데 실패했어요 :(');
-		// 	}
-		// },
-
-		// validateFile(file) {
-		// 	const imageArray = ['image/png', 'image/jpg', 'image/jpeg'];
-		// 	if (imageArray.includes(file.type)) return true;
-		// 	return false;
-		// },
-		onChangeFile() {
-			try {
-				console.log('@@');
-			} catch (error) {
-				console.log(error);
-			}
 		},
 		async updateInfo() {
 			try {

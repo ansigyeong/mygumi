@@ -23,9 +23,10 @@
 				{{ locationData.place }}
 			</div>
 			<v-card-subtitle class="pb-0" style="margin: 10px;">
-				주소 : {{ locationData.dong }}
+				주소 : {{ locationData.dong }} <br />
+				시간 : {{ locationData.time }}
 			</v-card-subtitle>
-			<v-card-subtitle style="margin: 10px;">
+			<v-card-subtitle style="margin: 10px;" v-if="!content == '.'">
 				{{ content }}
 			</v-card-subtitle>
 		</v-card>
@@ -37,7 +38,7 @@
 		></div>
 		<hr />
 		<div class="no-review" v-if="noReview">💬 후기가 없습니다!</div>
-		<div class="review-title">💬{{ locationData.place }}의 리뷰</div>
+		<div class="review-title" v-else>💬{{ locationData.place }}의 리뷰</div>
 		<v-card
 			class="mx-auto"
 			v-for="review in reviews"
@@ -179,7 +180,6 @@ export default {
 			this.latitude = data.data.latitude;
 			this.content = data.data.content;
 		},
-		addTravelList() {},
 		goWriteReview() {
 			const locationId = this.$route.params.locationId;
 			this.$router.push(`/location/${locationId}/create`);
@@ -189,7 +189,8 @@ export default {
 			this.$router.push(`/location/${locationId}/reviews/${reviewId}`);
 		},
 		goToMain() {
-			this.$router.push('/');
+			// this.$router.push('/');
+			this.$router.go(-1);
 		},
 	},
 };

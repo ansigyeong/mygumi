@@ -12,7 +12,8 @@
 					:key="course.id"
 					class="v-timeline-item theme--light"
 				>
-					<div class="v-timeline-item__body">
+					<!--  -->
+					<div class="v-timeline-item__body" @click="goToPlacePage(course.id)">
 						<div class="course-card v-card v-sheet theme--light">
 							<div class="row course-content">
 								<div class="course-info col">
@@ -29,7 +30,11 @@
 						</v-row>
 					</div>
 					<div class="v-timeline-item__divider">
-						<div class="v-timeline-item__dot v-timeline-item__dot--small">
+						<!--  -->
+						<div
+							class="v-timeline-item__dot v-timeline-item__dot--small"
+							@click="goToPlacePage(course.id)"
+						>
 							<v-img
 								:src="'https://k3d201.p.ssafy.io:8080' + `${course.image}`"
 								class="v-timeline-item__inner-dot blue"
@@ -63,6 +68,9 @@ export default {
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		goToPlacePage(courseId) {
+			this.$router.push(`/location/${courseId}`);
 		},
 	},
 };

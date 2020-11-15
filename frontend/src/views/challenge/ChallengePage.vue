@@ -5,65 +5,69 @@
 
 			<header class="header">
 				<div class="container">
-					<span>{{ scheduleTitle }}</span>
-					<v-btn
-						small
-						text
-						color="primary"
-						@click="goToPlanUpdatePage"
-						style="position:absolute; right:0px;"
-						>수정
-						<v-icon>mdi-pencil-box-outline</v-icon>
-					</v-btn>
+					<span style="color:#fff;">{{ scheduleTitle }}</span>
 				</div>
 			</header>
-
-			<!--======= Today =======-->
-
-			<section class="today-box" id="today-box">
-				<span class="breadcrumb">여행 날짜</span>
-				<p style="font-size:20px; padding: 16px 40px 0px;">
-					{{ viewDate }}
-				</p>
-			</section>
-
 			<!--======= Upcoming Events =======-->
 
 			<section class="upcoming-events">
 				<div class="container">
-					<h3 style="margin-bottom:20px;">
-						여행 일정
+					<h3 style="margin-bottom:20px; color:lavender;">
+						챌린지 🏆 {{ complete.length }} / {{ plans.length }}
 					</h3>
 					<div class="events-wrapper">
-						<div class="event" v-for="plan in plans" :key="plan.id">
-							<h4 class="event__point">{{ plan.place }}</h4>
-							<p class="event__description">
+						<v-card
+							class="event"
+							v-for="plan in plans"
+							:key="plan.id"
+							style="background-color:#fff; border-radius:10px;"
+						>
+							<v-subheader>Place</v-subheader>
+							<h4 class="event__point" style="padding:0px 6px;">
+								{{ plan.place }}
+							</h4>
+							<p class="event__description" style="padding:0px 6px 10px;">
 								{{ plan.dong }}
 							</p>
-						</div>
-						<v-row class="event active">
-							<i class="ion ion-ios-radio-button-on icon-in-active-mode"></i>
-							<div style="width: 70%;">
-								<span class="event__point">함께 갈 친구</span>
-								<br />
-								<span
-									v-for="(friend, index) in friends"
-									:key="index"
-									class="event__description"
-								>
-									{{ friend }}
-								</span>
-							</div>
-							<v-spacer />
-						</v-row>
+							<v-divider></v-divider>
+							<v-subheader>Challenge</v-subheader>
+							<p
+								class="event__point"
+								v-if="complete.includes(plan.id)"
+								style="padding:0px 6px 10px; text-decoration:line-through"
+							>
+								{{ plan.mission }}
+							</p>
+							<p class="event__point" v-else style="padding:0px 6px 10px;">
+								{{ plan.mission }}
+							</p>
+							<v-divider></v-divider>
+							<v-subheader>Success</v-subheader>
+							<p
+								class="event__point"
+								v-if="complete.includes(plan.id)"
+								style="padding:0px 6px 16px;"
+							>
+								{{ userName }}
+							</p>
+							<p class="event__point" v-else style="padding:0px 6px 16px;">
+								아직 성공한 친구가 없습니다.
+							</p>
+							<v-btn
+								disabled
+								v-if="complete.includes(plan.id)"
+								style="margin:4%; width:92%;"
+								>완료</v-btn
+							>
+							<v-btn
+								@click="successMission(plan.id)"
+								dark
+								v-else
+								style="margin:4%; width:92%;"
+								>완료</v-btn
+							>
+						</v-card>
 					</div>
-
-					<v-btn text class="add-event-button" @click="goToChallengePage">
-						<span class="add-event-button__title">여행 시작</span>
-						<span class="add-event-button__icon">
-							<v-icon>mdi-playlist-plus</v-icon>
-						</span>
-					</v-btn>
 				</div>
 			</section>
 		</div>
@@ -71,26 +75,63 @@
 </template>
 
 <script>
-import { getSchedule } from '@/api/schedule';
+import { fetchMission } from '@/api/challenge';
+import { fetchProfile } from '@/api/profile';
+import { getSchedule, deleteSchedule } from '@/api/schedule';
 import { location } from '@/api/tour';
 export default {
+	// placeData에 저장된 순서대로 재정렬 & 하면서 missions에서 해당하는거 추가
 	data() {
 		return {
 			selectDate: new Date().toISOString().substr(0, 10), // 선택한 날짜
 			viewDate: null, // 선택된 날짜 형식 변경
 			friends: [], // 친구 목록
 			userId: null,
+			userName: null,
 			scheduleId: null,
 			scheduleData: [],
 			scheduleTitle: null,
 			placeData: [],
 			plans: [],
+			missions: [],
+			complete: [],
+			turn: 0,
 		};
 	},
 	mounted() {
 		this.userId = this.$store.getters.getId;
 		this.scheduleId = this.$route.params.scheduleId;
 		this.fetchSchedule();
+		this.fetchData();
+	},
+	watch: {
+		plans() {
+			if (
+				this.plans.length == this.placeData.length &&
+				this.missions.length == this.placeData.length
+			) {
+				for (var k = 0; k < this.placeData.length; k++) {
+					this.plans[k]['mission'] = this.missions[k];
+				}
+			}
+		},
+		missions() {
+			if (
+				this.plans.length == this.placeData.length &&
+				this.missions.length == this.placeData.length
+			) {
+				for (var k = 0; k < this.placeData.length; k++) {
+					this.plans[k]['mission'] = this.missions[k];
+				}
+			}
+		},
+		complete() {
+			if (this.complete.length == this.placeData.length) {
+				alert('축하드립니다! 모든 챌린지를 완료하셨습니다.');
+				this.popPlan();
+				this.$router.push('/');
+			}
+		},
 	},
 	methods: {
 		// 스케줄 정보 불러오기
@@ -118,6 +159,7 @@ export default {
 					selectMonth + '월 ' + selectD + '일, ' + selectYear + '년';
 				for (var i = 0; i <= this.placeData.length - 1; i++) {
 					this.fetchPlace(this.placeData[i]);
+					this.getMission(this.placeData[i]);
 				}
 				for (var j = 0; j <= this.scheduleData.user.length - 1; j++) {
 					this.friends.push(this.scheduleData.user[j].nickname);
@@ -125,6 +167,12 @@ export default {
 			} catch (error) {
 				console.log(error);
 			}
+		},
+		// 유저 정보 불러오기
+		async fetchData() {
+			const userId = this.$store.getters.getId;
+			const { data } = await fetchProfile(userId);
+			this.userName = data.user.nickname;
 		},
 		// 장소 정보 불러오기
 		async fetchPlace(placeId) {
@@ -135,11 +183,25 @@ export default {
 				console.log(error);
 			}
 		},
-		goToPlanUpdatePage() {
-			return this.$router.push(`/plan/${this.scheduleId}/update`);
+		// 미션 정보 불러오기
+		async getMission(placeId) {
+			try {
+				const { data } = await fetchMission(placeId);
+				this.missions.push(data.data[0].title);
+			} catch (error) {
+				console.log(error);
+			}
 		},
-		goToChallengePage() {
-			return this.$router.push(`/challenge/${this.scheduleId}`);
+		// 스케쥴 삭제 요청
+		async popPlan() {
+			try {
+				await deleteSchedule(this.userId, this.scheduleId);
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		successMission(placeId) {
+			this.complete.push(placeId);
 		},
 	},
 };
@@ -152,7 +214,9 @@ export default {
 }
 
 .plan-wrapper {
-	background: #fff;
+	background: linear-gradient(to left, #485fed, rgba(255, 44, 118, 0.25)),
+		#485fed;
+	// background: #fff;
 	/* relative with .today-box::before*/
 	z-index: 1; /*positive*/ // PARENT
 	position: relative;
@@ -160,7 +224,7 @@ export default {
 	// width: 380px;
 	min-height: 100%;
 	// margin: auto;
-	padding: 10px 0 60px;
+	padding: 10px 0px;
 	// border-radius: 10px;
 	// box-shadow: 0px 10px 30px -10px #000;
 	overflow: auto;
@@ -232,8 +296,8 @@ export default {
 }
 
 .today-box {
-	background: linear-gradient(to left, #485fed, rgba(255, 44, 118, 0.25)),
-		#485fed;
+	// background: linear-gradient(to left, #485fed, rgba(255, 44, 118, 0.25)),
+	// 	#485fed;
 	color: #fff;
 	padding: 32px 0px 16px;
 	position: relative;
@@ -294,7 +358,7 @@ export default {
 			&::before {
 				content: '';
 				display: block;
-				width: 58%;
+				width: 50%;
 				height: 2px;
 				background-color: #e8e8e8;
 				position: absolute;
