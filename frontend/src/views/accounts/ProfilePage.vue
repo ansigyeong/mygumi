@@ -28,7 +28,6 @@ export default {
 	mounted() {
 		if (!this.$store.getters.isLogined) {
 			this.goToLoginPage();
-			// console.log('go login');
 		}
 	},
 	methods: {

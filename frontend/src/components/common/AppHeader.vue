@@ -1,7 +1,6 @@
 <template>
 	<header class="header-box">
 		<img class="header-img" src="@/assets/images/logo.png" alt="logo" />
-		<i class="icon ion-md-notifications"></i>
 	</header>
 </template>
 

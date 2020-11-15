@@ -125,7 +125,6 @@ export default {
 					}
 					return 0;
 				});
-				// console.log(this.schedules);
 			} catch (error) {
 				console.log(error);
 			}
