@@ -44,7 +44,6 @@ const routes = [
 		name: 'searchResult',
 		component: () => import('@/views/search/SearchResultPage.vue'),
 	},
-
 	{
 		path: '/course/:courseId',
 		name: 'course',
@@ -59,6 +58,11 @@ const routes = [
 		path: '/mission/:territoryName',
 		name: 'mission',
 		component: () => import('@/views/MissionPage.vue'),
+	},
+	{
+		path: '/challenge/:scheduleId',
+		name: 'challenge',
+		component: () => import('@/views/challenge/ChallengePage.vue'),
 	},
 	{
 		path: '/schedule',

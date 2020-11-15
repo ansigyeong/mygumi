@@ -6,7 +6,15 @@
 			<header class="header">
 				<div class="container">
 					<span>일정 수정</span>
-					<v-btn @click="removePlan">삭제</v-btn>
+					<v-btn
+						small
+						text
+						color="error"
+						@click="removePlan"
+						style="position:absolute; right:0px;"
+						>삭제
+						<v-icon>mdi-close-circle-outline</v-icon>
+					</v-btn>
 				</div>
 			</header>
 
@@ -64,7 +72,14 @@
 								</v-btn>
 							</div>
 						</div>
-
+						<div class="event" v-if="allDelete">
+							<p style="text-align:center; margin:30px auto 50px;">
+								선택된 코스가 없습니다.
+							</p>
+							<v-btn style="width:100%; margin-bottom:20px;" @click="addCourse"
+								>코스 추가하기</v-btn
+							>
+						</div>
 						<v-row class="event active">
 							<i class="ion ion-ios-radio-button-on icon-in-active-mode"></i>
 							<div style="width: 70%;">
@@ -394,6 +409,7 @@ export default {
 		async pushFriend() {
 			try {
 				await addFriend(this.scheduleId, this.addId);
+				return this.$router.push('/schedule');
 			} catch (error) {
 				console.log(error);
 			}
@@ -406,7 +422,10 @@ export default {
 			}
 		},
 		goToChallengePage() {
-			alert('챌린지 하자!!!!');
+			return this.$router.push(`/challenge/${this.scheduleId}`);
+		},
+		addCourse() {
+			this.$router.push('/');
 		},
 	},
 };

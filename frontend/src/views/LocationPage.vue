@@ -180,10 +180,6 @@ export default {
 			this.latitude = data.data.latitude;
 			this.content = data.data.content;
 		},
-<<<<<<< frontend/src/views/LocationPage.vue
-=======
-		addTravelList() {},
->>>>>>> frontend/src/views/LocationPage.vue
 		goWriteReview() {
 			const locationId = this.$route.params.locationId;
 			this.$router.push(`/location/${locationId}/create`);

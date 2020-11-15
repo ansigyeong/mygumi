@@ -72,11 +72,7 @@
 							<p style="text-align:center; margin:30px auto 50px;">
 								선택된 코스가 없습니다.
 							</p>
-							<!-- 작성중(제목, 유저, 날짜)이면 저장 -->
-							<!-- 코스Id 널 -->
-							<!-- 코스검색 페이지로 이동 -->
-							<!-- 검색후 생성 페이지로 와서 코스정보, 작성중정보 불러오기 -->
-							<v-btn style="width:100%; margin-bottom:20px;"
+							<v-btn style="width:100%; margin-bottom:20px;" @click="addCourse"
 								>코스 추가하기</v-btn
 							>
 						</div>
@@ -219,6 +215,13 @@ export default {
 		this.courseId = this.$store.getters.getCourseId;
 		this.usersData();
 		this.courseData();
+
+		var qtoday = new Date();
+		var qdate = qtoday.getDate();
+		var qmonth = qtoday.getMonth() + 1;
+		var qyear = qtoday.getFullYear();
+		this.selectDate = qyear + '-' + qmonth + '-' + qdate;
+
 		var today = new Date().toISOString().substr(0, 10);
 		// 월만 따로 저장
 		var todayMonth = today[5] + today[6];
@@ -363,6 +366,9 @@ export default {
 				console.log(error);
 			}
 		},
+		addCourse() {
+			this.$router.push('/');
+		},
 	},
 };
 </script>
@@ -382,7 +388,7 @@ export default {
 	// width: 380px;
 	min-height: 100%;
 	// margin: auto;
-	padding: 10px 0 60px;
+	padding: 10px 0px;
 	// border-radius: 10px;
 	// box-shadow: 0px 10px 30px -10px #000;
 	overflow: auto;

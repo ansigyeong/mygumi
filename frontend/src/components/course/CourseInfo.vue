@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<v-row justify="space-around" width="100px">
-			<v-img height="180px" :src="courseImg">
+			<v-img height="180px" :src="'https://k3d201.p.ssafy.io:8080' + courseImg">
 				<v-app-bar flat color="rgba(0, 0, 0, 0)" class="app-bar">
 					<v-spacer />
 
@@ -13,9 +13,7 @@
 				</v-app-bar>
 
 				<v-card-title class="white--text py-1">
-					<p class="course-title">
-						{{ courseName }}
-					</p>
+					<p class="course-title">{{ courseName }}</p>
 				</v-card-title>
 			</v-img>
 		</v-row>
@@ -29,7 +27,7 @@ import { mapMutations } from 'vuex';
 export default {
 	data() {
 		return {
-			courseImg: 'https://picsum.photos/300', // 코스 사진
+			courseImg: null, // 코스 사진
 			courseName: null,
 			coursePk: null,
 		};
@@ -44,7 +42,8 @@ export default {
 				this.coursePk = this.$route.params.courseId;
 				this.setCourseId(this.coursePk);
 				const { data } = await courseTour(this.coursePk);
-				this.courseName = data.data[0].course_name;
+				this.courseImg = data.data[0].image;
+				this.courseName = data.data[0].course[0].course_name;
 			} catch (error) {
 				console.log(error);
 			}
