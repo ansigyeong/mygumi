@@ -178,7 +178,7 @@ export default {
 				this.profileImg = data.user.profile_image.slice(1);
 				this.userName = data.user.nickname;
 				this.email = data.user.email;
-
+				this.reviewCnt = data.reviews.length;
 				this.editData.profile_image = this.profileImg;
 			} catch (error) {
 				console.log(error);
