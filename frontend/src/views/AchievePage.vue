@@ -4,7 +4,7 @@
 			<div class="card-header">
 				<p class="title">업적</p>
 				<p class="result">
-					🏆 {{ completeList.length }}/{{ completeList + toDoList.length }}
+					🏆 {{ completeList.length }}/{{ completeList.length + toDoList.length }}
 				</p>
 				<hr />
 			</div>

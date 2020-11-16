@@ -43,7 +43,7 @@
 			<section class="recommend-card">
 				<img
 					class="recommend-img"
-					src="@/assets/images/course1.png"
+					src="@/assets/images/course2.png"
 					alt="recommendImg"
 					@click="goToCoursePage(1)"
 				/>
@@ -51,7 +51,7 @@
 			<section class="recommend-card">
 				<img
 					class="recommend-img"
-					src="@/assets/images/course2.png"
+					src="@/assets/images/course1.png"
 					alt="recommendImg"
 					@click="goToCoursePage(2)"
 				/>

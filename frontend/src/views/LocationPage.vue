@@ -96,7 +96,7 @@ export default {
 			return '';
 		},
 		kakaoKEY() {
-			return process.env.VUE_APP_KAKAO_KEY;
+			return 'ee44fe7d97581683a916ae26e90c5ba1';
 		},
 		noReview() {
 			return this.reviews.length === 0 ? true : false;
