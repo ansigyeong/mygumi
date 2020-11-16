@@ -1,14 +1,14 @@
 <template>
-	<section>
+	<section @click="goToDetail">
 		<!-- 클릭시 여행지 상세 페이지로 이동 -->
 		<v-card v-ripple class="search-card">
-			<v-img class="search-card-img" :src="searchImg" />
+			<v-img class="search-card-img" :src="totalURL" />
 
 			<v-card-title class="search-card-title">
 				{{ searchTitle }}
 			</v-card-title>
-
-			<v-card-text class="search-card-rating">
+			<v-card-text> 주소 : {{ searchData.dong }} </v-card-text>
+			<!-- <v-card-text class="search-card-rating">
 				<v-rating
 					v-model="searchRating"
 					background-color="grey"
@@ -17,12 +17,8 @@
 					readonly
 					dense
 				/>
-			</v-card-text>
+			</v-card-text> -->
 		</v-card>
-
-		<!-- <article>
-      검색 결과가 없습니다.
-    </article> -->
 	</section>
 </template>
 
@@ -30,10 +26,29 @@
 export default {
 	data() {
 		return {
-			searchTitle: '낙동강 체육공원', // 여행지 제목
-			searchImg: 'https://picsum.photos/300', // 여행지 사진
+			searchTitle: this.searchData.place, // 여행지 제목
 			searchRating: 4, // 여행지 별점
+			searchId: this.searchData.id,
 		};
+	},
+	props: {
+		searchData: Object,
+	},
+	computed: {
+		baseURL() {
+			return process.env.VUE_APP_API_URL;
+		},
+		imgURL() {
+			return this.searchData.image.slice(1);
+		},
+		totalURL() {
+			return this.baseURL + this.imgURL;
+		},
+	},
+	methods: {
+		goToDetail() {
+			this.$router.push(`/location/${this.searchId}`);
+		},
 	},
 };
 </script>

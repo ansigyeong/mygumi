@@ -1,7 +1,6 @@
 <template>
 	<header class="header-box">
-		<img class="header-img" src="@/assets/images/logo2.png" alt="logo" />
-		<i class="icon ion-md-notifications"></i>
+		<img class="header-img" src="@/assets/images/logo.png" alt="logo" />
 	</header>
 </template>
 
@@ -17,7 +16,7 @@ export default {};
 	margin-bottom: 32px;
 	justify-content: center;
 	.header-img {
-		width: 20%;
+		width: 15%;
 	}
 	.ion-md-notifications {
 		position: absolute;

@@ -6,9 +6,9 @@
 				<v-spacer />
 
 				<!-- 일정 추가 버튼 -->
-				<v-btn class="schedule-icon" icon>
+				<!-- <v-btn class="schedule-icon" icon @click="goToPlanPage">
 					<v-icon>mdi-calendar-plus</v-icon>
-				</v-btn>
+				</v-btn> -->
 			</v-app-bar>
 		</header>
 		<section>
@@ -19,7 +19,7 @@
 				</v-col>
 				<div class="schedule-start">
 					<!-- 미션 시작 버튼 -->
-					<v-btn class="schedule-btn">Start</v-btn>
+					<v-btn class="schedule-btn" @click="goToMission">Start</v-btn>
 				</div>
 			</v-row>
 		</section>
@@ -27,14 +27,26 @@
 </template>
 
 <script>
-export default {};
+import { mapMutations } from 'vuex';
+export default {
+	methods: {
+		...mapMutations(['setCourseId']),
+		goToPlanPage() {
+			this.setCourseId(null);
+			this.$cookies.remove('courseId');
+			this.$router.push('/plan');
+		},
+		goToMission() {
+			alert('진평동 미션실시!');
+			this.$router.push('/mission/진평동');
+		},
+	},
+};
 </script>
 
 <style lang="scss" scoped>
 .schedule-bar {
 	.schedule-title {
-		margin-left: 25px;
-		// font-weight: bold;
 		width: 100%;
 		text-align: center;
 		font-size: 20px;
